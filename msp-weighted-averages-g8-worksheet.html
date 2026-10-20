@@ -144,17 +144,29 @@ body, input, button, textarea, select { font-family: 'GreekMath', 'Segoe UI', Ta
 <section class="card" id="wsec2">
 <h2>2️⃣ GPA</h2>
 <div class="intro">Each class has credits (weight). Grade points × credits, sum, divide by total credits.</div>
-<h3>Practice:</h3>
+<div class="rule"><strong>Grade points:</strong> A = 4, B = 3, C = 2 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>GPA</strong> = sum of (grade points × credits) ÷ total credits</div>
+<div style="background:#f5f3ff;border:1.5px solid #c4b5fd;border-radius:10px;padding:12px 16px;margin:10px 0 14px;">
+<div style="font-weight:800;color:#5b21b6;margin-bottom:6px;">📘 Example</div>
+<table class="rules"><tr><th>Class</th><th>Credits</th><th>Grade</th><th>Grade points</th></tr><tr><td>Math</td><td>1</td><td>A</td><td>4</td></tr><tr><td>English</td><td>1</td><td>B</td><td>3</td></tr><tr><td>Science</td><td>1</td><td>A</td><td>4</td></tr><tr><td>PE</td><td>0.5</td><td>C</td><td>2</td></tr></table>
+<div style="font-size:.95rem;line-height:1.75;">
+<strong>Step 1 — Total credits:</strong> 1 + 1 + 1 + 0.5 = <strong>3.5</strong><br>
+<strong>Step 2 — Multiply each grade by its credits, then add:</strong><br>
+&nbsp;&nbsp;Math 4 × 1 = 4<br>&nbsp;&nbsp;English 3 × 1 = 3<br>&nbsp;&nbsp;Science 4 × 1 = 4<br>&nbsp;&nbsp;PE 2 × 0.5 = 1<br>
+&nbsp;&nbsp;Sum = 4 + 3 + 4 + 1 = <strong>12</strong><br>
+<strong>Step 3 — Divide:</strong> GPA = 12 ÷ 3.5 ≈ <strong>3.43</strong><br>
+<span style="color:#475569;">Check: without PE the GPA would be 11 ÷ 3 ≈ 3.67. The C in PE pulls it down only a little because PE is worth just half a credit.</span>
+</div></div>
+<h3>Practice: Maya's report card</h3>
+<table class="rules"><tr><th>Class</th><th>Credits</th><th>Grade</th></tr><tr><td>Math</td><td>1</td><td>A</td></tr><tr><td>Science</td><td>1</td><td>B</td></tr><tr><td>Art</td><td>0.5</td><td>A</td></tr><tr><td>History</td><td>1</td><td>C</td></tr><tr><td>Spanish</td><td>0.5</td><td>B</td></tr></table>
 <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;"><div style="flex:1 1 380px;min-width:0;"><ol class="qlist">
-<li>Total credits =  <input class="ans" data-a="3.5" size="6"><svg viewBox="0 0 320 84" width="320" style="max-width:100%;height:auto;display:block;margin:6px 0 10px;background:#fff;border:1px solid #e2e8f0;border-radius:8px" role="img" aria-label="GPA"><text x="160.0" y="30.0" font-size="12" font-weight="800" fill="#1e3a8a" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">GPA = Σ(grade points × credits) ÷ total credits</text><text x="160.0" y="56.0" font-size="14" font-weight="800" fill="#475569" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">A = 4,  B = 3,  C = 2</text></svg></li>
-<li>Sum of (grade × credits) =  <input class="ans" data-a="12.0" size="7"><svg viewBox="0 0 320 84" width="320" style="max-width:100%;height:auto;display:block;margin:6px 0 10px;background:#fff;border:1px solid #e2e8f0;border-radius:8px" role="img" aria-label="GPA"><text x="160.0" y="30.0" font-size="12" font-weight="800" fill="#1e3a8a" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">GPA = Σ(grade points × credits) ÷ total credits</text><text x="160.0" y="56.0" font-size="14" font-weight="800" fill="#475569" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">A = 4,  B = 3,  C = 2</text></svg></li>
-<li>Weighted GPA =  <input class="ans" data-a="12.0 / 3.5 ≈ 3.43" size="20"><svg viewBox="0 0 320 84" width="320" style="max-width:100%;height:auto;display:block;margin:6px 0 10px;background:#fff;border:1px solid #e2e8f0;border-radius:8px" role="img" aria-label="GPA"><text x="160.0" y="30.0" font-size="12" font-weight="800" fill="#1e3a8a" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">GPA = Σ(grade points × credits) ÷ total credits</text><text x="160.0" y="56.0" font-size="14" font-weight="800" fill="#475569" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">A = 4,  B = 3,  C = 2</text></svg></li>
+<li>Total credits =  <input class="ans" data-a="4" size="6"></li>
+<li>Sum of (grade points × credits) =  <input class="ans" data-a="12.5" size="7"></li>
+<li>Weighted GPA (round to the nearest hundredth) =  <input class="ans" data-a="3.125" size="8"></li>
 </ol></div>
 <div class="mcalc" id="mcalc2" style="position:sticky;top:12px;margin-top:4px;flex:0 0 220px" data-expr=""><div class="mcalc-title">🧮 Calculator</div><div class="mcalc-disp"><span class="mcalc-expr"></span><span class="mcalc-val">0</span></div><div class="mcalc-grid"><button type="button" class="clr" data-k="C">C</button><button type="button" class="clr" data-k="BS">⌫</button><button type="button" data-k="(">(</button><button type="button" data-k=")">)</button><button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button><button type="button" class="op" data-k="/">÷</button><button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button><button type="button" class="op" data-k="*">×</button><button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" class="op" data-k="-">−</button><button type="button" data-k="0">0</button><button type="button" data-k=".">.</button><button type="button" class="eq" data-k="=">=</button><button type="button" class="op" data-k="+">+</button></div></div>
 </div>
-<table class="rules"><tr><th>Class</th><th>Credits</th><th>Grade</th><th>GPA points</th></tr><tr><td>Math</td><td>1</td><td>A (4.0)</td><td>4.0</td></tr><tr><td>English</td><td>1</td><td>B (3.0)</td><td>3.0</td></tr><tr><td>Science</td><td>1</td><td>A (4.0)</td><td>4.0</td></tr><tr><td>PE</td><td>0.5</td><td>C (2.0)</td><td>1.0</td></tr></table>
 <button class="check-btn" onclick="checkSection('wsec2')">✓ Check Answers</button><button type="button" onclick="saveAnswersToFile()" class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #047857; background:#059669; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0;">💾 Save</button><label class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #0369a1; background:#0284c7; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0; display:inline-block;">📁 Load<input type="file" accept=".json" style="display:none;" onchange="loadAnswersFromFile(event)"></label><button class="reset-btn" onclick="resetSection('wsec2')">↺ Clear</button><span class="score" id="score-wsec2">—</span> <button class="reveal-btn" onclick="toggle('ak2')">Show / Hide Answer Key</button>
-<div id="ak2" class="ak"><h4>Answer Key — Section 2</h4>(1) 3.5 (2) 12.0 (3) 12.0 / 3.5 ≈ 3.43</div>
+<div id="ak2" class="ak"><h4>Answer Key — Section 2</h4>(1) 1 + 1 + 0.5 + 1 + 0.5 = 4 &nbsp; (2) 4×1 + 3×1 + 4×0.5 + 2×1 + 3×0.5 = 4 + 3 + 2 + 2 + 1.5 = 12.5 &nbsp; (3) 12.5 ÷ 4 = 3.125 ≈ 3.13</div>
 </section>
 <section class="card" id="wsec3">
 <h2>3️⃣ Class Grade Weighting</h2>
