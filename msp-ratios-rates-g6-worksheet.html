@@ -94,7 +94,20 @@ input.ans.nocheck { background:#f8fafc; border-color:#cbd5e1; color:#334155; }
 }
 body, input, button, textarea, select { font-family: 'GreekMath', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important; }
 
-</style></head><body>
+</style><style id="mini-calc-style">
+.mcalc{display:inline-block;background:#f1f5f9;border:1.5px solid #94a3b8;border-radius:10px;padding:8px;margin:10px 0 4px;width:220px;vertical-align:top}
+.mcalc-title{font-size:.8rem;font-weight:800;color:#1a2a4a;margin:0 0 6px 2px}
+.mcalc-disp{background:#fff;border:1.5px solid #cbd5e1;border-radius:6px;padding:6px 8px;text-align:right;font:700 1.05rem/1.2 'Segoe UI',Arial,sans-serif;min-height:2.4em;overflow-wrap:anywhere;margin-bottom:6px}
+.mcalc-expr{display:block;font-size:.75rem;color:#64748b;font-weight:600;min-height:1em}
+.mcalc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.mcalc-grid button{padding:8px 0;border:1px solid #cbd5e1;border-radius:6px;background:#fff;font-weight:800;font-size:.95rem;cursor:pointer;color:#1f2937}
+.mcalc-grid button:hover{background:#e0f2fe}
+.mcalc-grid button.op{background:#fed7aa;color:#9a3412;border-color:#fdba74}
+.mcalc-grid button.eq{background:#2563eb;color:#fff;border-color:#1e40af}
+.mcalc-grid button.clr{background:#fee2e2;color:#991b1b;border-color:#fecaca}
+@media print{.mcalc{display:none!important}}
+</style>
+</head><body>
 <div class="container">
 <header>
   <div class="eyebrow">Grade 6 · Foundations Review</div>
@@ -140,7 +153,8 @@ body, input, button, textarea, select { font-family: 'GreekMath', 'Segoe UI', Ta
 <li>150 words in 5 minutes → per minute =  <input class="ans" data-a="30 wpm" size="8"></li>
 <li>$3.75 for 3 apples → per apple =  <input class="ans" data-a="1.25" size="7"></li>
 </ol>
-<button class="check-btn" onclick="checkSection('wsec3')">✓ Check Answers</button><button type="button" onclick="saveAnswersToFile()" class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #047857; background:#059669; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0;">💾 Save</button><label class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #0369a1; background:#0284c7; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0; display:inline-block;">📁 Load<input type="file" accept=".json" style="display:none;" onchange="loadAnswersFromFile(event)"></label><button class="reset-btn" onclick="resetSection('wsec3')">↺ Clear</button><span class="score" id="score-wsec3">—</span> <button class="reveal-btn" onclick="toggle('ak3')">Show / Hide Answer Key</button>
+<div class="mcalc" id="mcalc3" data-expr=""><div class="mcalc-title">🧮 Calculator</div><div class="mcalc-disp"><span class="mcalc-expr"></span><span class="mcalc-val">0</span></div><div class="mcalc-grid"><button type="button" class="clr" data-k="C">C</button><button type="button" class="clr" data-k="BS">⌫</button><button type="button" data-k="(">(</button><button type="button" data-k=")">)</button><button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button><button type="button" class="op" data-k="/">÷</button><button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button><button type="button" class="op" data-k="*">×</button><button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" class="op" data-k="-">−</button><button type="button" data-k="0">0</button><button type="button" data-k=".">.</button><button type="button" class="eq" data-k="=">=</button><button type="button" class="op" data-k="+">+</button></div></div>
+<br><button class="check-btn" onclick="checkSection('wsec3')">✓ Check Answers</button><button type="button" onclick="saveAnswersToFile()" class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #047857; background:#059669; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0;">💾 Save</button><label class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #0369a1; background:#0284c7; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0; display:inline-block;">📁 Load<input type="file" accept=".json" style="display:none;" onchange="loadAnswersFromFile(event)"></label><button class="reset-btn" onclick="resetSection('wsec3')">↺ Clear</button><span class="score" id="score-wsec3">—</span> <button class="reveal-btn" onclick="toggle('ak3')">Show / Hide Answer Key</button>
 <div id="ak3" class="ak"><h4>Answer Key — Section 3</h4>(1) 40 mph (2) $4/lb (3) 30 wpm (4) $1.25</div>
 </section>
 <section class="card" id="wsec4">
@@ -165,7 +179,8 @@ body, input, button, textarea, select { font-family: 'GreekMath', 'Segoe UI', Ta
 <li>10 oz for $2.50 vs 15 oz for $3.30. Better? <input class="ans" data-a="10 oz: $0.25/oz; 15 oz: $0.22/oz → 15 oz better" size="22"></li>
 <li>3 lb for $6 vs 5 lb for $9. Better? <input class="ans" data-a="3 lb: $2/lb; 5 lb: $1.80/lb → 5 lb better" size="22"></li>
 </ol>
-<button class="check-btn" onclick="checkSection('wsec5')">✓ Check Answers</button><button type="button" onclick="saveAnswersToFile()" class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #047857; background:#059669; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0;">💾 Save</button><label class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #0369a1; background:#0284c7; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0; display:inline-block;">📁 Load<input type="file" accept=".json" style="display:none;" onchange="loadAnswersFromFile(event)"></label><button class="reset-btn" onclick="resetSection('wsec5')">↺ Clear</button><span class="score" id="score-wsec5">—</span> <button class="reveal-btn" onclick="toggle('ak5')">Show / Hide Answer Key</button>
+<div class="mcalc" id="mcalc5" data-expr=""><div class="mcalc-title">🧮 Calculator</div><div class="mcalc-disp"><span class="mcalc-expr"></span><span class="mcalc-val">0</span></div><div class="mcalc-grid"><button type="button" class="clr" data-k="C">C</button><button type="button" class="clr" data-k="BS">⌫</button><button type="button" data-k="(">(</button><button type="button" data-k=")">)</button><button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button><button type="button" class="op" data-k="/">÷</button><button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button><button type="button" class="op" data-k="*">×</button><button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" class="op" data-k="-">−</button><button type="button" data-k="0">0</button><button type="button" data-k=".">.</button><button type="button" class="eq" data-k="=">=</button><button type="button" class="op" data-k="+">+</button></div></div>
+<br><button class="check-btn" onclick="checkSection('wsec5')">✓ Check Answers</button><button type="button" onclick="saveAnswersToFile()" class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #047857; background:#059669; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0;">💾 Save</button><label class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #0369a1; background:#0284c7; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0; display:inline-block;">📁 Load<input type="file" accept=".json" style="display:none;" onchange="loadAnswersFromFile(event)"></label><button class="reset-btn" onclick="resetSection('wsec5')">↺ Clear</button><span class="score" id="score-wsec5">—</span> <button class="reveal-btn" onclick="toggle('ak5')">Show / Hide Answer Key</button>
 <div id="ak5" class="ak"><h4>Answer Key — Section 5</h4>(1) 10 oz: $0.25/oz; 15 oz: $0.22/oz → 15 oz better (2) 3 lb: $2/lb; 5 lb: $1.80/lb → 5 lb better</div>
 </section>
 
@@ -486,4 +501,33 @@ document.addEventListener('keydown', function(e){
 
 </script>
 <!--NO-AUTOFILL--><script>(function(){function f(){document.querySelectorAll('input.ans, input[id^="ans"]').forEach(function(i){if(i.dataset.noaf)return;i.dataset.noaf='1';i.setAttribute('autocomplete','off');i.setAttribute('autocorrect','off');i.setAttribute('autocapitalize','off');i.setAttribute('spellcheck','false');i.setAttribute('name','ans-'+Math.random().toString(36).slice(2,10));});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',f);else f();try{new MutationObserver(f).observe(document.documentElement,{childList:true,subtree:true});}catch(e){}})();</script><!--/NO-AUTOFILL-->
+<script id="mini-calc-js">
+(function(){
+  var SYM={'*':'×','/':'÷','-':'−','+':'+'};
+  function show(c){var e=c.dataset.expr||''; c.querySelector('.mcalc-val').textContent=e===''?'0':e.replace(/[*\/\-+]/g,function(m){return ' '+SYM[m]+' ';});}
+  function evaluate(str){ // safe parser: + - * / ( ) and decimals
+    var t=str.match(/\d*\.?\d+|[()+\-*\/]/g)||[], i=0;
+    function peek(){return t[i];} function next(){return t[i++];}
+    function factor(){var k=next(); if(k==='-')return -factor(); if(k==='+')return factor(); if(k==='('){var v=expr(); if(next()!==')')throw 0; return v;} var n=parseFloat(k); if(isNaN(n))throw 0; return n;}
+    function term(){var v=factor(); while(peek()==='*'||peek()==='/'){var o=next(),r=factor(); if(o==='/'&&r===0)throw 'div0'; v=o==='*'?v*r:v/r;} return v;}
+    function expr(){var v=term(); while(peek()==='+'||peek()==='-'){var o=next(),r=term(); v=o==='+'?v+r:v-r;} return v;}
+    var v=expr(); if(i<t.length)throw 0; return v;
+  }
+  function fmt(v){var r=Math.round(v*1e10)/1e10; return String(r);}
+  function press(c,k){
+    var e=c.dataset.expr||'', ex=c.querySelector('.mcalc-expr');
+    if(c.dataset.done==='1'){ if(/[0-9.(]/.test(k)){e='';} ex.textContent=''; c.dataset.done=''; }
+    if(k==='C'){e='';ex.textContent='';}
+    else if(k==='BS'){e=e.slice(0,-1);}
+    else if(k==='='){ if(!e)return; try{var v=evaluate(e); ex.textContent=c.querySelector('.mcalc-val').textContent+' ='; e=fmt(v); c.dataset.done='1';}catch(err){ex.textContent=(err==='div0'?'Cannot divide by 0':'Check your entry'); return;} }
+    else if(/[*\/+]/.test(k)){ if(e===''&&k!=='-')return; if(/[*\/+\-]$/.test(e))e=e.slice(0,-1); e+=k; }
+    else if(k==='-'){ if(/[*\/+\-]$/.test(e)&&!/[*\/]$/.test(e))e=e.slice(0,-1); e+=k; }
+    else if(k==='.'){ var last=(e.match(/[\d.]*$/)||[''])[0]; if(last.indexOf('.')>=0)return; e+=(last===''?'0.':'.'); }
+    else { e+=k; }
+    c.dataset.expr=e; show(c);
+  }
+  document.addEventListener('click',function(ev){var b=ev.target.closest('.mcalc button'); if(!b)return; press(b.closest('.mcalc'),b.dataset.k);});
+  document.addEventListener('keydown',function(ev){var c=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('.mcalc'); if(!c)return; var k=ev.key; var map={'Enter':'=','Backspace':'BS','Escape':'C','x':'*','X':'*'}; k=map[k]||k; if(/^[0-9.()+\-*\/=]$/.test(k)||k==='BS'||k==='C'){ev.preventDefault(); press(c,k);}});
+})();
+</script>
 </body></html>
