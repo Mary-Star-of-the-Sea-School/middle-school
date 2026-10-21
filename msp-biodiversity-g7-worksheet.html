@@ -469,4 +469,23 @@ document.addEventListener('keydown', function(e){
 
 </script>
 <!--NO-AUTOFILL--><script>(function(){function f(){document.querySelectorAll('input.ans, input[id^="ans"]').forEach(function(i){if(i.dataset.noaf)return;i.dataset.noaf='1';i.setAttribute('autocomplete','off');i.setAttribute('autocorrect','off');i.setAttribute('autocapitalize','off');i.setAttribute('spellcheck','false');i.setAttribute('name','ans-'+Math.random().toString(36).slice(2,10));});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',f);else f();try{new MutationObserver(f).observe(document.documentElement,{childList:true,subtree:true});}catch(e){}})();</script><!--/NO-AUTOFILL-->
+<script id="ratio-forms">
+// Accept a ratio in any of the three forms: 3:5, 3/5, 3 to 5 (and equivalent ratios like 6:10)
+(function(){
+  var prev = window.isCorrect;
+  function parseRatio(x){
+    var t = String(x == null ? '' : x).trim().toLowerCase().replace(/\s+/g,' ');
+    var m = t.match(/^(-?\d+(?:\.\d+)?)\s*(?::|\/|to)\s*(-?\d+(?:\.\d+)?)$/);
+    return m ? [parseFloat(m[1]), parseFloat(m[2])] : null;
+  }
+  window.isCorrect = function(student, expected){
+    var e = String(expected || '');
+    if (/^\s*-?\d+(\.\d+)?\s*:\s*-?\d+(\.\d+)?\s*$/.test(e)) {
+      var a = parseRatio(student), b = parseRatio(e);
+      if (a && b) return Math.abs(a[0]*b[1] - a[1]*b[0]) < 1e-9 && a[1] !== 0;
+    }
+    return prev ? prev.apply(this, arguments) : null;
+  };
+})();
+</script>
 </body></html>
