@@ -176,12 +176,18 @@ body, input, button, textarea, select { font-family: 'GreekMath', 'Segoe UI', Ta
 <div class="intro">Compare unit rates. Smaller price per unit = better deal.</div>
 <h3>Practice:</h3>
 <ol class="qlist">
-<li>10 oz for $2.50 vs 15 oz for $3.30. Better? <input class="ans" data-a="10 oz: $0.25/oz; 15 oz: $0.22/oz → 15 oz better" size="22"></li>
-<li>3 lb for $6 vs 5 lb for $9. Better? <input class="ans" data-a="3 lb: $2/lb; 5 lb: $1.80/lb → 5 lb better" size="22"></li>
+<li>10 oz for $2.50 vs 15 oz for $3.30.<br>
+Unit price of 10 oz = $<input class="ans" data-a="0.25" size="6"> per oz &nbsp;&nbsp;
+Unit price of 15 oz = $<input class="ans" data-a="0.22" size="6"> per oz<br>
+Better buy: <input class="ans" data-a="15 oz" size="8"> <span style="color:#64748b;font-size:.88rem;">(type 10 oz or 15 oz)</span></li>
+<li>3 lb for $6 vs 5 lb for $9.<br>
+Unit price of 3 lb = $<input class="ans" data-a="2" size="6"> per lb &nbsp;&nbsp;
+Unit price of 5 lb = $<input class="ans" data-a="1.80" size="6"> per lb<br>
+Better buy: <input class="ans" data-a="5 lb" size="8"> <span style="color:#64748b;font-size:.88rem;">(type 3 lb or 5 lb)</span></li>
 </ol>
 <div class="mcalc" id="mcalc5" data-expr=""><div class="mcalc-title">🧮 Calculator</div><div class="mcalc-disp"><span class="mcalc-expr"></span><span class="mcalc-val">0</span></div><div class="mcalc-grid"><button type="button" class="clr" data-k="C">C</button><button type="button" class="clr" data-k="BS">⌫</button><button type="button" data-k="(">(</button><button type="button" data-k=")">)</button><button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button><button type="button" class="op" data-k="/">÷</button><button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button><button type="button" class="op" data-k="*">×</button><button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" class="op" data-k="-">−</button><button type="button" data-k="0">0</button><button type="button" data-k=".">.</button><button type="button" class="eq" data-k="=">=</button><button type="button" class="op" data-k="+">+</button></div></div>
 <br><button class="check-btn" onclick="checkSection('wsec5')">✓ Check Answers</button><button type="button" onclick="saveAnswersToFile()" class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #047857; background:#059669; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0;">💾 Save</button><label class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #0369a1; background:#0284c7; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0; display:inline-block;">📁 Load<input type="file" accept=".json" style="display:none;" onchange="loadAnswersFromFile(event)"></label><button class="reset-btn" onclick="resetSection('wsec5')">↺ Clear</button><span class="score" id="score-wsec5">—</span> <button class="reveal-btn" onclick="toggle('ak5')">Show / Hide Answer Key</button>
-<div id="ak5" class="ak"><h4>Answer Key — Section 5</h4>(1) 10 oz: $0.25/oz; 15 oz: $0.22/oz → 15 oz better (2) 3 lb: $2/lb; 5 lb: $1.80/lb → 5 lb better</div>
+<div id="ak5" class="ak"><h4>Answer Key — Section 5</h4>(1) 2.50 ÷ 10 = $0.25 per oz; 3.30 ÷ 15 = $0.22 per oz → <strong>15 oz</strong> is the better buy &nbsp; (2) 6 ÷ 3 = $2 per lb; 9 ÷ 5 = $1.80 per lb → <strong>5 lb</strong> is the better buy</div>
 </section>
 
 </main>
