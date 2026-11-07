@@ -31,6 +31,20 @@ textarea{width:100%;min-height:96px;padding:9px 11px;border:1.5px solid #94a3b8;
 textarea:focus,input:focus,select:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.15)}
 .words{display:grid;grid-template-columns:180px 1fr;gap:8px 12px}
 .words input{padding:8px 10px;border:1.5px solid #94a3b8;border-radius:6px;font:inherit;font-size:.95rem}
+.rate{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px 14px;margin:12px 0 4px}
+.rate h3{font-size:.95rem;color:var(--navy);margin-bottom:2px}
+.rate .hint{font-size:.82rem;color:var(--dim);margin-bottom:8px}
+.ri{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:8px 0;border-top:1px solid #e2e8f0}
+.hint+.ri{border-top:none}
+.ri .lbl{flex:0 0 230px;font-size:.92rem;font-weight:600}
+.ri .opts{display:flex;flex-wrap:wrap;gap:6px}
+.ri input{position:absolute;opacity:0;pointer-events:none}
+.ri .pill{display:inline-block;padding:5px 11px;border:1.5px solid #cbd5e1;border-radius:999px;font-size:.82rem;cursor:pointer;background:#fff;color:#334155;user-select:none}
+.ri .pill:hover{border-color:var(--accent)}
+.ri input:checked+.pill{background:var(--accent);border-color:var(--accent-deep);color:#fff;font-weight:700}
+.ri input:focus-visible+.pill{box-shadow:0 0 0 3px rgba(37,99,235,.25)}
+@media (max-width:640px){.ri .lbl{flex-basis:100%}}
+@media print{.rate{background:#fff;break-inside:avoid}.ri input:checked+.pill{background:#fff;color:#000;border:2px solid #000}}
 .actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:24px;padding-top:18px;border-top:2px solid var(--accent-soft)}
 .btn{background:var(--accent);color:#fff;border:1px solid var(--accent-deep);padding:11px 20px;border-radius:6px;font-weight:800;font-size:.95rem;cursor:pointer}
 .btn:hover{background:var(--accent-deep)}
@@ -60,7 +74,7 @@ footer{text-align:center;margin-top:24px;color:var(--dim);font-size:.82rem;paddi
   </header>
   <main>
     <div class="instructions">
-      Answer each question in a few sentences. Specific examples are the most helpful. Your answers save in this browser as you type, so you can come back and finish later. When you're done, click <b>Submit to Dr. Park</b>.
+      Rate yourself honestly on each skill, then answer each question in a few sentences. Specific examples are the most helpful. Your answers save in this browser as you type, so you can come back and finish later. When you're done, click <b>Submit to Dr. Park</b>.
     </div>
 
     <div class="info">
@@ -84,15 +98,21 @@ footer{text-align:center;margin-top:24px;color:var(--dim);font-size:.82rem;paddi
 
     <form id="profile" onsubmit="return false">
       <h2>Academics</h2>
+      <div class="rate" data-grid="english"></div>
       <div class="q"><label for="q1"><b>1. Reading and writing.</b> What do you like to read? How would you describe your strengths in reading, writing, and speaking? Have you written anything you're proud of, such as a story, essay, or project?</label><textarea id="q1"></textarea></div>
+      <div class="rate" data-grid="math"></div>
       <div class="q"><label for="q2"><b>2. Math.</b> How do you approach learning a new math concept? Which topics come easily to you, and which are harder? What do you do when you get stuck?</label><textarea id="q2"></textarea></div>
       <div class="q"><label for="q3"><b>3. Curiosity and creativity.</b> What topics do you explore on your own, outside of assignments? Describe a project where you used your creativity.</label><textarea id="q3"></textarea></div>
       <div class="q"><label for="q4"><b>4. Effort and perseverance.</b> Describe a time you kept working on something difficult until you got it.</label><textarea id="q4"></textarea></div>
       <div class="q"><label for="q5"><b>5. Taking risks.</b> Describe a time you tried something new or challenging even though you might fail.</label><textarea id="q5"></textarea></div>
       <div class="q"><label for="q6"><b>6. Organization and study skills.</b> How do you keep track of assignments and prepare for tests?</label><textarea id="q6"></textarea></div>
 
+      <div class="rate" data-grid="academic"></div>
+
       <h2>Work Habits and Personal Qualities</h2>
+      <div class="rate" data-grid="work"></div>
       <div class="q"><label for="q7"><b>7. Work habits.</b> Do you work best on your own, in small groups, or in whole-class discussion? How do you manage deadlines? When do you ask for help, and from whom? Describe a time you took initiative without being asked.</label><textarea id="q7"></textarea></div>
+      <div class="rate" data-grid="social"></div>
       <div class="q"><label for="q8"><b>8. Resilience.</b> Describe a setback or a piece of criticism you received and how you responded.</label><textarea id="q8"></textarea></div>
       <div class="q"><label for="q9"><b>9. Concern for others.</b> Describe a time you helped a classmate or someone in need.</label><textarea id="q9"></textarea></div>
       <div class="q"><label for="q10"><b>10. Responsibility.</b> What responsibilities do you have at school, at home, or in your activities?</label><textarea id="q10"></textarea></div>
@@ -128,6 +148,57 @@ footer{text-align:center;margin-top:24px;color:var(--dim);font-size:.82rem;paddi
 </div>
 
 <script>
+const A5 = ['Excellent','Above Average','Average','Below Average','N/A'];
+const EGFP = ['Excellent','Good','Fair','Poor'];
+const GRIDS = {
+  english:{title:'Rate yourself: English / Language Arts', items:[
+    ['Reading comprehension',A5],['Verbal expression',A5],['Written expression: Composition',A5],['Written expression: Grammar',A5]]},
+  math:{title:'Rate yourself: Math', items:[
+    ['Ability to grasp new concepts',A5],['Analytical ability',A5],['Knowledge of basic skills',A5]]},
+  academic:{title:'Rate yourself: Academic skills', items:[
+    'Academic potential','Application of skills','Creativity','Critical/abstract thinking','Effort/determination','Intellectual curiosity',
+    'Motivation','Oral expression','Organizational skills','Perseverance','Study skills','Willingness to take risks'].map(x=>[x,A5])},
+  work:{title:'Rate yourself: Work skills', items:[
+    ['Working in the whole class',['Thrives','Works well','Has some difficulty','Needs support']],
+    ['Working in small groups',['Thrives','Works well','Has some difficulty','Needs support']],
+    ['Working independently',['Thrives','Works well','Has some difficulty','Needs support']],
+    ['Attention span',['Highly focused','Attentive','Variable attention','Requires redirection']],
+    ['Completes assignments on time',['Consistently','Usually','Needs additional time','Has difficulty']],
+    ['Quality of work',EGFP],
+    ['Follows directions',['Easily and accurately','Usually','Has some difficulty','Needs support']],
+    ['Takes initiative',['Consistently','Usually','Sometimes','Rarely']],
+    ['Makes transitions easily',['Consistently','Usually','Sometimes','Rarely']],
+    ['Seeks help when needed',['Consistently','Usually','Sometimes','Rarely']]]},
+  social:{title:'Rate yourself: Social skills and personal qualities', items:[
+    ['Attitude toward school',EGFP],['Citizenship',EGFP],['Resilience',EGFP],['Self-control',EGFP],['Self-esteem',EGFP],['Reaction to criticism/setbacks',EGFP],
+    ['Concern for others/empathy',['Very considerate','Considerate','Occasionally considerate','Rarely considerate']],
+    ['Appropriate conduct',['Excellent conduct','Good conduct','Occasional misconduct','Frequent misconduct']],
+    ['Emotional maturity',['Very mature','Age appropriate','Sometimes immature','Very immature']],
+    ['Relationships with adults',['Very respectful','Respectful','Sometimes respectful','Shows little respect']],
+    ['Relationships with peers',['Role model','Healthy relationships','Occasional problems','Relates poorly']],
+    ['Responsibility',['Very responsible','Responsible','Sometimes responsible','Rarely responsible']],
+    ['Sense of humor',['Highly developed','Good','Fair','Poorly developed']],
+    ['Spirit of cooperation',['Very cooperative','Cooperative','Occasionally cooperative','Rarely cooperative']],
+    ['Warmth of personality',['Very friendly','Friendly','Occasionally friendly','Rarely friendly']]]}
+};
+document.querySelectorAll('.rate[data-grid]').forEach(box => {
+  const key = box.dataset.grid, g = GRIDS[key];
+  let h = '<h3>'+g.title+'</h3><div class="hint">Click one choice for each.</div>';
+  g.items.forEach(([lbl,opts],i) => {
+    const nm = 'r-'+key+'-'+i;
+    h += '<div class="ri" role="radiogroup" aria-label="'+lbl+'"><span class="lbl">'+lbl+'</span><span class="opts">' +
+      opts.map((o,j) => '<label><input type="radio" name="'+nm+'" value="'+o+'"><span class="pill">'+o+'</span></label>').join('') +
+      '</span></div>';
+  });
+  box.innerHTML = h;
+});
+function ratingsText(){
+  return Object.entries(GRIDS).map(([key,g]) =>
+    g.title.replace('Rate yourself: ','') + '\n' +
+    g.items.map(([lbl],i) => { const c = document.querySelector('input[name="r-'+key+'-'+i+'"]:checked'); return '  ' + lbl + ': ' + (c ? c.value : '—'); }).join('\n')
+  ).join('\n\n');
+}
+
 const KEY = 'msos-rec-request-v1';
 const textIds = ['student-name','student-class','student-email','due-date','other-school',
   'q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','w1','e1','w2','e2','w3','e3','q19'];
@@ -137,6 +208,8 @@ function collect(){
   const d = {};
   textIds.forEach(id => d[id] = $(id).value);
   d.schools = [...document.querySelectorAll('input[name=school]:checked')].map(c => c.value);
+  d.ratings = {};
+  document.querySelectorAll('.ri input:checked').forEach(r => d.ratings[r.name] = r.value);
   return d;
 }
 function save(){
@@ -147,12 +220,13 @@ function load(){
   try{ d = JSON.parse(localStorage.getItem(KEY) || 'null'); }catch(e){}
   if(!d) return;
   textIds.forEach(id => { if(d[id] != null) $(id).value = d[id]; });
+  Object.entries(d.ratings || {}).forEach(([n,v]) => { const r = document.querySelector('input[name="'+n+'"][value="'+v+'"]'); if(r) r.checked = true; });
   (d.schools || []).forEach(v => { const c = document.querySelector('input[name=school][value="'+v+'"]'); if(c) c.checked = true; });
 }
 function clearForm(){
   if(!confirm('Clear all your answers on this device?')) return;
   textIds.forEach(id => $(id).value = '');
-  document.querySelectorAll('input[name=school]').forEach(c => c.checked = false);
+  document.querySelectorAll('input[name=school], .ri input').forEach(c => c.checked = false);
   try{ localStorage.removeItem(KEY); }catch(e){}
   $('saved').textContent = '';
 }
@@ -183,6 +257,12 @@ Class: ${d['student-class'] || '(not selected)'}
 Email: ${d['student-email'].trim() || '(not given)'}
 Schools: ${schools.join(', ') || '(none selected)'}
 Application deadline: ${d['due-date'].trim() || '(not given)'}
+
+SELF-ASSESSMENT
+
+${ratingsText()}
+
+QUESTIONS
 
 ${parts.join('\n\n')}
 
