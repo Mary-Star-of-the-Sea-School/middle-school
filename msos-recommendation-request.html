@@ -81,7 +81,6 @@ footer{text-align:center;margin-top:24px;color:var(--dim);font-size:.82rem;paddi
       <div><label for="student-name">Name</label><input type="text" id="student-name" autocomplete="name"></div>
       <div><label for="student-class">Class</label>
         <select id="student-class"><option value="">Select…</option><option>8A</option><option>8B</option><option>Other</option></select></div>
-      <div><label for="student-email">School email</label><input type="email" id="student-email" placeholder="@starofthesea.org"></div>
       <div><label for="due-date">Application deadline</label><input type="text" id="due-date" placeholder="e.g. Dec 1"></div>
       <div class="schools"><label>Schools applying to</label>
         <div class="opts">
@@ -200,7 +199,7 @@ function ratingsText(){
 }
 
 const KEY = 'msos-rec-request-v1';
-const textIds = ['student-name','student-class','student-email','due-date','other-school',
+const textIds = ['student-name','student-class','due-date','other-school',
   'q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','w1','e1','w2','e2','w3','e3','q19'];
 const $ = id => document.getElementById(id);
 
@@ -254,7 +253,6 @@ function buildBody(d){
   const body =
 `Student: ${name}
 Class: ${d['student-class'] || '(not selected)'}
-Email: ${d['student-email'].trim() || '(not given)'}
 Schools: ${schools.join(', ') || '(none selected)'}
 Application deadline: ${d['due-date'].trim() || '(not given)'}
 
