@@ -114,10 +114,11 @@ footer{text-align:center;margin-top:24px;color:var(--dim);font-size:.82rem;paddi
 
     <div class="actions">
       <button class="btn" onclick="submitProfile()">📧 Submit to Dr. Park</button>
+      <button class="btn alt" onclick="saveCopy()">💾 Save a Copy</button>
       <button class="btn alt" onclick="window.print()">🖨️ Print</button>
       <button class="btn alt" onclick="clearForm()">Clear</button>
       <span class="saved" id="saved"></span>
-      <span class="note">Submit opens Gmail with your answers addressed to <b>ppark@starofthesea.org</b>. Sign in with your school account, then click Send.</span>
+      <span class="note">Submit opens Gmail with your answers addressed to <b>ppark@starofthesea.org</b>. Sign in with your school account, then click Send. Save a Copy downloads your answers as a text file.</span>
     </div>
   </main>
   <footer>Mary, Star of the Sea School · Math 8 · Dr. Park</footer>
@@ -162,10 +163,8 @@ function labelText(id){
   return l ? l.textContent.trim().replace(/\s+/g,' ') : id;
 }
 
-async function submitProfile(){
-  const d = collect();
+function buildBody(d){
   const name = d['student-name'].trim();
-  if(!name){ alert('Please enter your name first.'); $('student-name').focus(); return; }
   const schools = d.schools.map(s => s === 'Other' ? ('Other: ' + (d['other-school'].trim() || '—')) : s);
   const blank = v => v.trim() || '(blank)';
   const parts = [];
@@ -186,7 +185,31 @@ ${parts.join('\n\n')}
 
 —
 Submitted from ${location.href}`;
+  return body;
+}
 
+function needName(d){
+  if(d['student-name'].trim()) return false;
+  alert('Please enter your name first.'); $('student-name').focus(); return true;
+}
+
+function saveCopy(){
+  const d = collect();
+  if(needName(d)) return;
+  const text = buildBody(d).replace(/\n—\nSubmitted from .*$/,'').replace(/\n/g,'\r\n');
+  const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Recommendation Request - ' + d['student-name'].trim().replace(/[\\/:*?"<>|]/g,'') + '.txt';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+async function submitProfile(){
+  const d = collect();
+  if(needName(d)) return;
+  const name = d['student-name'].trim();
+  const body = buildBody(d);
   const subject = 'Recommendation Request — ' + name;
   const base = 'https://mail.google.com/mail/?view=cm&fs=1&to=ppark@starofthesea.org&su=' + encodeURIComponent(subject);
   let url = base + '&body=' + encodeURIComponent(body);
