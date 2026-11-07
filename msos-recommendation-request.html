@@ -191,13 +191,6 @@ document.querySelectorAll('.rate[data-grid]').forEach(box => {
   });
   box.innerHTML = h;
 });
-function ratingsText(){
-  return Object.entries(GRIDS).map(([key,g]) =>
-    g.title.replace('Rate yourself: ','') + '\n' +
-    g.items.map(([lbl],i) => { const c = document.querySelector('input[name="r-'+key+'-'+i+'"]:checked'); return '  ' + lbl + ': ' + (c ? c.value : '—'); }).join('\n')
-  ).join('\n\n');
-}
-
 const KEY = 'msos-rec-request-v1';
 const textIds = ['student-name','student-class','due-date','other-school',
   'q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','w1','e1','w2','e2','w3','e3','q19'];
@@ -242,30 +235,43 @@ function labelText(id){
 function buildBody(d){
   const name = d['student-name'].trim();
   const schools = d.schools.map(s => s === 'Other' ? ('Other: ' + (d['other-school'].trim() || '—')) : s);
-  const blank = v => v.trim() || '(blank)';
-  const parts = [];
-  ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17'].forEach(id => {
-    parts.push(labelText(id) + '\n' + blank(d[id]));
-  });
-  parts.push('18. Three words.\n' + [1,2,3].map(i => '  ' + (d['w'+i].trim() || '(blank)') + ': ' + (d['e'+i].trim() || '')).join('\n'));
-  parts.push(labelText('q19') + '\n' + blank(d.q19));
+  const ans = id => {
+    const v = (d[id] || '').trim();
+    return v ? v.split(/\n+/).map(l => '    ' + l.trim()).join('\n') : '    (no answer)';
+  };
+  const rate = key => GRIDS[key].items.map(([lbl],i) => {
+    const c = document.querySelector('input[name="r-'+key+'-'+i+'"]:checked');
+    return '  • ' + lbl + ': ' + (c ? c.value.toUpperCase() : '—');
+  }).join('\n');
+  const q = (label, id) => '▸ ' + label + '\n' + ans(id);
+  const head = t => '\n' + t + '\n' + '─'.repeat(32);
+  const words = [1,2,3].map(i => {
+    const w = d['w'+i].trim(), e = d['e'+i].trim();
+    return w || e ? '  ' + i + '. ' + (w || '(word)').toUpperCase() + (e ? ' — ' + e : '') : '  ' + i + '. (no answer)';
+  }).join('\n');
 
-  const body =
-`Student: ${name}
-Class: ${d['student-class'] || '(not selected)'}
-Schools: ${schools.join(', ') || '(none selected)'}
-Application deadline: ${d['due-date'].trim() || '(not given)'}
-
-SELF-ASSESSMENT
-
-${ratingsText()}
-
-QUESTIONS
-
-${parts.join('\n\n')}
-
-—
-Submitted from ${location.href}`;
+  const body = [
+`RECOMMENDATION REQUEST — ${name}
+Class: ${d['student-class'] || '—'}   |   Deadline: ${d['due-date'].trim() || '—'}
+Schools: ${schools.join(', ') || '—'}`,
+    head('1. ENGLISH / LANGUAGE ARTS'), rate('english'), '', q('Reading & writing', 'q1'),
+    head('2. MATH'), rate('math'), '', q('Math', 'q2'),
+    head('3. ACADEMIC SKILLS'), rate('academic'), '',
+      q('Curiosity & creativity', 'q3'), '', q('Effort & perseverance', 'q4'), '',
+      q('Taking risks', 'q5'), '', q('Organization & study skills', 'q6'),
+    head('4. WORK SKILLS'), rate('work'), '', q('Work habits', 'q7'),
+    head('5. SOCIAL SKILLS & PERSONAL QUALITIES'), rate('social'), '',
+      q('Resilience', 'q8'), '', q('Concern for others', 'q9'), '',
+      q('Responsibility', 'q10'), '', q('Teamwork', 'q11'),
+    head('6. GREATEST STRENGTHS'), ans('q12'),
+    head('7. GREATEST NEEDS'), ans('q13'),
+    head('8. INTEGRITY & CHARACTER'), ans('q14'),
+    head('9. SELF-ADVOCACY'), ans('q15'),
+    head('10. CITIZENSHIP & SCHOOL COMMUNITY'), q('School community & service', 'q16'), '', q('Activities & interests', 'q17'),
+    head('11. THREE WORDS'), words,
+    head('12. ADDITIONAL COMMENTS'), ans('q19'),
+    '\n—\nSubmitted from ' + location.href
+  ].join('\n');
   return body;
 }
 
