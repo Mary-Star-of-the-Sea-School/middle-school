@@ -132,6 +132,13 @@ footer{text-align:center;margin-top:24px;color:var(--dim);font-size:.82rem;paddi
         </div>
       </div>
       <div class="q"><label for="q19"><b>19. Anything else.</b> Is there anything else you would like the schools to know about you?</label><textarea id="q19"></textarea></div>
+
+      <h2>Family Engagement</h2>
+      <div class="instructions" style="margin:8px 0 4px">Complete this section with a parent or guardian.</div>
+      <div class="rate" data-grid="family"></div>
+      <div class="q"><label for="q20"><b>20. Family comments.</b> Anything your family would like to add about how you work together with the school?</label><textarea id="q20"></textarea></div>
+      <div class="rate" data-grid="attend"></div>
+      <div class="q"><label for="q21"><b>21. Attendance comments.</b> If you answered Yes to either question, please explain.</label><textarea id="q21"></textarea></div>
     </form>
 
     <div class="actions">
@@ -178,7 +185,12 @@ const GRIDS = {
     ['Responsibility',['Very responsible','Responsible','Sometimes responsible','Rarely responsible']],
     ['Sense of humor',['Highly developed','Good','Fair','Poorly developed']],
     ['Spirit of cooperation',['Very cooperative','Cooperative','Occasionally cooperative','Rarely cooperative']],
-    ['Warmth of personality',['Very friendly','Friendly','Occasionally friendly','Rarely friendly']]]}
+    ['Warmth of personality',['Very friendly','Friendly','Occasionally friendly','Rarely friendly']]]},
+  family:{title:'Family engagement', items:[
+    'Cooperates with classroom teachers',"Respectful of teachers' time",'Communicates with the school','Follows through with the school recommendations',
+    'Follows rules and policies of the school','Family has realistic expectations of the child','Is punctual with drop-off and pick-up procedures','Participates in school activities'
+  ].map(x=>[x,['Consistently','Usually','Sometimes','Rarely']])},
+  attend:{title:'Attendance', items:[['Are absences excessive?',['Yes','No']],['Are tardies excessive?',['Yes','No']]]}
 };
 document.querySelectorAll('.rate[data-grid]').forEach(box => {
   const key = box.dataset.grid, g = GRIDS[key];
@@ -196,7 +208,7 @@ document.querySelectorAll('.rate[data-grid]').forEach(box => {
 const MAILER_URL = 'https://script.google.com/macros/s/AKfycbxFcWYwl_9P-QyNKro7cisZ3pS-54rUwPqoLfiEcrOgTyuqfRd3Sz1hw8470CuU1Lk7/exec';
 const KEY = 'msos-rec-request-v1';
 const textIds = ['student-name','student-class','due-date','other-school',
-  'q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','w1','e1','w2','e2','w3','e3','q19'];
+  'q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','w1','e1','w2','e2','w3','e3','q19','q20','q21'];
 const $ = id => document.getElementById(id);
 
 function collect(){
@@ -273,6 +285,8 @@ Schools: ${schools.join(', ') || '—'}`,
     head('10. CITIZENSHIP & SCHOOL COMMUNITY'), q('School community & service', 'q16'), '', q('Activities & interests', 'q17'),
     head('11. THREE WORDS'), words,
     head('12. ADDITIONAL COMMENTS'), ans('q19'),
+    head('13. FAMILY ENGAGEMENT'), rate('family'), '', q('Comments', 'q20'),
+    head('14. ATTENDANCE'), rate('attend'), '', q('Comments', 'q21'),
     '\n—\nSubmitted from ' + location.href
   ].join('\n');
   return body;
