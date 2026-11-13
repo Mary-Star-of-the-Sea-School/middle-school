@@ -29,6 +29,7 @@ ol.qlist{list-style:none;counter-reset:q;padding:0;margin-top:8px}
 ol.qlist>li{counter-increment:q;position:relative;padding:9px 0 9px 42px;border-bottom:1px dashed #d1d5db}
 ol.qlist>li:last-child{border-bottom:none}
 ol.qlist>li::before{content:counter(q);position:absolute;left:0;top:9px;width:30px;height:30px;background:var(--accent);color:#fff;border-radius:50%;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center}
+.unit{font-weight:700;color:#475569;margin-left:4px}
 .answer-line{display:inline-block;min-width:120px;border-bottom:1.5px solid #64748b;margin-left:6px}
 .answer-line-lg{display:inline-block;min-width:200px;border-bottom:1.5px solid #64748b;margin-left:6px}
 .reveal-btn{display:inline-block;background:var(--gold);color:var(--navy);border:1px solid var(--gold-deep);padding:8px 14px;border-radius:6px;font-weight:800;font-size:.9rem;cursor:pointer;margin:6px 0}
@@ -110,22 +111,22 @@ body, input, button, textarea, select { font-family: 'GreekMath', 'Segoe UI', Ta
 <div class="intro">Tectonic plates move slowly — a few centimeters per year (cm/yr). Distance = rate × time.</div>
 <h3>Practice:</h3>
 <ol class="qlist">
-<li>At 5 cm/yr, how far in 1 million years? <input class="ans" data-a="50" size="6"></li>
-<li>At 3 cm/yr, distance in 500 years? <input class="ans" data-a="15" size="6"></li>
-<li>Convert 5 cm/yr to m/yr and km/yr. <input class="ans" data-a="0.05 m/yr, 0.00005 km/yr" size="22"></li>
+<li>At 5 cm/yr, how far does a plate move in 1 million years? Answer in <strong>km</strong>. <input class="ans" data-a="50" size="6"> <span class="unit">km</span></li>
+<li>At 3 cm/yr, how far does a plate move in 500 years? Answer in <strong>m</strong>. <input class="ans" data-a="15" size="6"> <span class="unit">m</span></li>
+<li>Convert 5 cm/yr to <strong>m/yr</strong> and to <strong>km/yr</strong>. <input class="ans" data-a="0.05" size="8"> <span class="unit">m/yr</span> &nbsp; <input class="ans" data-a="0.00005" size="10"> <span class="unit">km/yr</span></li>
 </ol>
 <button class="check-btn" onclick="checkSection('wsec1')">✓ Check Answers</button><button type="button" onclick="saveAnswersToFile()" class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #047857; background:#059669; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0;">💾 Save</button><label class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #0369a1; background:#0284c7; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0; display:inline-block;">📁 Load<input type="file" accept=".json" style="display:none;" onchange="loadAnswersFromFile(event)"></label><button class="reset-btn" onclick="resetSection('wsec1')">↺ Clear</button><span class="score" id="score-wsec1">—</span> <button class="reveal-btn" onclick="toggle('ak1')">Show / Hide Answer Key</button>
-<div id="ak1" class="ak"><h4>Answer Key — Section 1</h4>(1) 5,000,000 cm = 50 km (2) 1500 cm = 15 m (3) 0.05 m/yr, 0.00005 km/yr</div>
+<div id="ak1" class="ak"><h4>Answer Key — Section 1</h4>(1) 5,000,000 cm = 50 km (2) 1,500 cm = 15 m (3) 0.05 m/yr; 0.00005 km/yr</div>
 </section>
 <section class="card" id="wsec2">
 <h2>2️⃣ Rate Conversions</h2>
 <div class="intro">Convert between cm/yr, mm/yr, m/century, km/million yr.</div>
 <h3>Practice:</h3>
 <ol class="qlist">
-<li>4 cm/yr = ? mm/yr <input class="ans" data-a="40 mm/yr" size="11"></li>
-<li>2 cm/yr = ? m per century (100 yr) <input class="ans" data-a="2 m/century" size="14"></li>
-<li>10 cm/yr = ? km per million yr <input class="ans" data-a="100 km/Myr" size="13"></li>
-<li>1 cm/yr for 1 million yr = ? km <input class="ans" data-a="10" size="6"></li>
+<li>4 cm/yr = ? <strong>mm/yr</strong> <input class="ans" data-a="40" size="6"> <span class="unit">mm/yr</span></li>
+<li>2 cm/yr = ? <strong>m per century</strong> (100 yr) <input class="ans" data-a="2" size="6"> <span class="unit">m/century</span></li>
+<li>10 cm/yr = ? <strong>km per million years</strong> <input class="ans" data-a="100" size="6"> <span class="unit">km/million yr</span></li>
+<li>1 cm/yr for 1 million years = ? <strong>km</strong> <input class="ans" data-a="10" size="6"> <span class="unit">km</span></li>
 </ol>
 <button class="check-btn" onclick="checkSection('wsec2')">✓ Check Answers</button><button type="button" onclick="saveAnswersToFile()" class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #047857; background:#059669; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0;">💾 Save</button><label class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #0369a1; background:#0284c7; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0; display:inline-block;">📁 Load<input type="file" accept=".json" style="display:none;" onchange="loadAnswersFromFile(event)"></label><button class="reset-btn" onclick="resetSection('wsec2')">↺ Clear</button><span class="score" id="score-wsec2">—</span> <button class="reveal-btn" onclick="toggle('ak2')">Show / Hide Answer Key</button>
 <div id="ak2" class="ak"><h4>Answer Key — Section 2</h4>(1) 40 mm/yr (2) 2 m/century (3) 100 km/Myr (4) 10 km</div>
@@ -135,21 +136,21 @@ body, input, button, textarea, select { font-family: 'GreekMath', 'Segoe UI', Ta
 <div class="intro">The Pacific plate moves ~10 cm/yr; the North American plate ~2 cm/yr; the African plate ~2.5 cm/yr.</div>
 <h3>Practice:</h3>
 <ol class="qlist">
-<li>How far will Hawaii travel with the Pacific plate in 50 million years? <input class="ans" data-a="5000" size="7"></li>
-<li>How long does it take for a plate at 5 cm/yr to travel 100 km? <input class="ans" data-a="2 million years" size="18"></li>
-<li>How far in 10,000 years at 8 cm/yr? <input class="ans" data-a="800" size="6"></li>
+<li>How far will Hawaii travel with the Pacific plate (10 cm/yr) in 50 million years? Answer in <strong>km</strong>. <input class="ans" data-a="5000" size="7"> <span class="unit">km</span></li>
+<li>How long does it take a plate at 5 cm/yr to travel 100 km? Answer in <strong>millions of years</strong>. <input class="ans" data-a="2" size="6"> <span class="unit">million years</span></li>
+<li>How far does a plate move in 10,000 years at 8 cm/yr? Answer in <strong>m</strong>. <input class="ans" data-a="800" size="6"> <span class="unit">m</span></li>
 </ol>
 <button class="check-btn" onclick="checkSection('wsec3')">✓ Check Answers</button><button type="button" onclick="saveAnswersToFile()" class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #047857; background:#059669; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0;">💾 Save</button><label class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #0369a1; background:#0284c7; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0; display:inline-block;">📁 Load<input type="file" accept=".json" style="display:none;" onchange="loadAnswersFromFile(event)"></label><button class="reset-btn" onclick="resetSection('wsec3')">↺ Clear</button><span class="score" id="score-wsec3">—</span> <button class="reveal-btn" onclick="toggle('ak3')">Show / Hide Answer Key</button>
-<div id="ak3" class="ak"><h4>Answer Key — Section 3</h4>(1) 5000 km (2) 2 million years (3) 80,000 cm = 800 m</div>
+<div id="ak3" class="ak"><h4>Answer Key — Section 3</h4>(1) 500,000,000 cm = 5,000 km (2) 10,000,000 cm ÷ 5 = 2 million years (3) 80,000 cm = 800 m</div>
 </section>
 <section class="card" id="wsec4">
 <h2>4️⃣ Word Problems</h2>
 <div class="intro">Use d = rt logic.</div>
 <h3>Practice:</h3>
 <ol class="qlist">
-<li>Continent A moved 200 km in 4 million years. Rate cm/yr? <input class="ans" data-a="5 cm/yr" size="10"></li>
-<li>At 3 cm/yr, how long to move 60 km? <input class="ans" data-a="2 million years" size="18"></li>
-<li>If Africa and South America separated at 5 cm/yr, how long ago (assuming 4000 km apart)? <input class="ans" data-a="80 million years" size="19"></li>
+<li>Continent A moved 200 km in 4 million years. What is its rate in <strong>cm/yr</strong>? <input class="ans" data-a="5" size="6"> <span class="unit">cm/yr</span></li>
+<li>At 3 cm/yr, how long does it take to move 60 km? Answer in <strong>millions of years</strong>. <input class="ans" data-a="2" size="6"> <span class="unit">million years</span></li>
+<li>Africa and South America are 4,000 km apart and separated at 5 cm/yr. How long ago did they start separating? Answer in <strong>millions of years</strong>. <input class="ans" data-a="80" size="6"> <span class="unit">million years</span></li>
 </ol>
 <button class="check-btn" onclick="checkSection('wsec4')">✓ Check Answers</button><button type="button" onclick="saveAnswersToFile()" class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #047857; background:#059669; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0;">💾 Save</button><label class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #0369a1; background:#0284c7; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0; display:inline-block;">📁 Load<input type="file" accept=".json" style="display:none;" onchange="loadAnswersFromFile(event)"></label><button class="reset-btn" onclick="resetSection('wsec4')">↺ Clear</button><span class="score" id="score-wsec4">—</span> <button class="reveal-btn" onclick="toggle('ak4')">Show / Hide Answer Key</button>
 <div id="ak4" class="ak"><h4>Answer Key — Section 4</h4>(1) 5 cm/yr (2) 2 million years (3) 80 million years</div>
@@ -175,7 +176,8 @@ function toNumber(s){const c=normalizeAns(s);if(!c)return null;
   const f=c.match(/^(-?\d+(\.\d+)?)\/(-?\d+(\.\d+)?)$/);if(f)return Number(f[1])/Number(f[3]);
   const pw=c.match(/^(-?\d+(?:\.\d+)?)\^(-?\d+(?:\.\d+)?)$/);if(pw)return Math.pow(Number(pw[1]),Number(pw[2]));
   const ipw=c.match(/^1\/(-?\d+(?:\.\d+)?)\^(-?\d+(?:\.\d+)?)$/);if(ipw){const v=Math.pow(Number(ipw[1]),Number(ipw[2]));return v!==0?1/v:null;}
-  const n=Number(c);return isFinite(n)?n:null;}
+  const n=Number(c);if(isFinite(n))return n;
+  const u=c.match(/^(-?\d+(?:\.\d+)?)(?:[a-z\/]+)$/);return u?Number(u[1]):null;}
 function isCorrect(student, expected) {
   if (!expected) return null; // uncheckable
   const ns = toNumber(student);
