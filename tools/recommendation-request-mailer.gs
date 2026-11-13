@@ -10,11 +10,18 @@
  *      Click Deploy, then Authorize access and allow it to send email as you.
  *   4. Copy the Web app URL (ends in /exec) and give it to Claude to add to the page.
  *
+ * To update after editing: Deploy > Manage deployments > pencil icon > Version: New version > Deploy.
+ *   The /exec URL stays the same.
+ *
  * Each submission arrives as ONE email from yourself, subject
  * "Recommendation Request — <student name>".
  */
 
-const TO = 'ppark@starofthesea.org';
+// Teachers this mailer may send to. The page passes teacher: 'park' (Math 8) or 'eachus' (STEM 8).
+const TEACHERS = {
+  park:   'ppark@starofthesea.org',
+  eachus: 'deachus@starofthesea.org'
+};
 const MAX_CHARS = 60000;      // a full profile is ~10,000–20,000 characters
 const DAILY_LIMIT = 60;       // stops runaway or spam submissions
 
@@ -23,6 +30,8 @@ function doPost(e) {
     const data = JSON.parse((e && e.postData && e.postData.contents) || '{}');
     const name = String(data.name || '').trim().slice(0, 80);
     const body = String(data.body || '');
+    const to = TEACHERS[String(data.teacher || 'park').toLowerCase()];
+    if (!to) return reply_(false, 'Unknown teacher.');
     if (data.website) return reply_(true);                 // hidden spam trap field
     if (!name || body.length < 20) return reply_(false, 'Missing name or answers.');
     if (body.length > MAX_CHARS) return reply_(false, 'Submission is too long.');
@@ -35,7 +44,7 @@ function doPost(e) {
     props.setProperty(key, String(count + 1));
 
     MailApp.sendEmail({
-      to: TO,
+      to: to,
       subject: 'Recommendation Request — ' + name,
       body: body,
       name: 'Recommendation Request Form'
@@ -47,7 +56,9 @@ function doPost(e) {
 }
 
 function doGet() {
-  return ContentService.createTextOutput('Recommendation Request mailer is running.');
+  return ContentService
+    .createTextOutput(JSON.stringify({ ok: true, teachers: Object.keys(TEACHERS) }))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 function reply_(ok, error) {
