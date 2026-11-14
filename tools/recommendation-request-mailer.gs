@@ -10,11 +10,16 @@
  *      Click Deploy, then Authorize access and allow it to send email as you.
  *   4. Copy the Web app URL (ends in /exec) and give it to Claude to add to the page.
  *
- * Each submission arrives as ONE email from yourself, subject
+ * To update after editing: Deploy > Manage deployments > pencil icon > Version: New version > Deploy.
+ *   The /exec URL stays the same.
+ *
+ * Each submission arrives as ONE email from yourself, addressed to every checked teacher, subject
  * "Recommendation Request — <student name>".
  */
 
-const TO = 'ppark@starofthesea.org';
+const DEFAULT_TO = 'ppark@starofthesea.org';
+const DOMAIN = '@starofthesea.org';   // only school addresses can receive mail from this script
+const MAX_RECIPIENTS = 8;
 const MAX_CHARS = 60000;      // a full profile is ~10,000–20,000 characters
 const DAILY_LIMIT = 60;       // stops runaway or spam submissions
 
@@ -23,6 +28,10 @@ function doPost(e) {
     const data = JSON.parse((e && e.postData && e.postData.contents) || '{}');
     const name = String(data.name || '').trim().slice(0, 80);
     const body = String(data.body || '');
+    let to = Array.isArray(data.to) ? data.to.map(x => String(x).trim().toLowerCase()) : [DEFAULT_TO];
+    to = to.filter((x, i) => to.indexOf(x) === i);
+    if (!to.length || to.length > MAX_RECIPIENTS) return reply_(false, 'Choose 1 to ' + MAX_RECIPIENTS + ' teachers.');
+    if (to.some(x => !/^[a-z0-9._%+-]+@starofthesea\.org$/.test(x))) return reply_(false, 'Teacher emails must end in ' + DOMAIN + '.');
     if (data.website) return reply_(true);                 // hidden spam trap field
     if (!name || body.length < 20) return reply_(false, 'Missing name or answers.');
     if (body.length > MAX_CHARS) return reply_(false, 'Submission is too long.');
@@ -35,7 +44,7 @@ function doPost(e) {
     props.setProperty(key, String(count + 1));
 
     MailApp.sendEmail({
-      to: TO,
+      to: to.join(','),
       subject: 'Recommendation Request — ' + name,
       body: body,
       name: 'Recommendation Request Form'
@@ -47,7 +56,9 @@ function doPost(e) {
 }
 
 function doGet() {
-  return ContentService.createTextOutput('Recommendation Request mailer is running.');
+  return ContentService
+    .createTextOutput(JSON.stringify({ ok: true, multi: true }))
+    .setMimeType(ContentService.MimeType.JSON);
 }
 
 function reply_(ok, error) {

@@ -22,6 +22,9 @@ main{background:#fff;border-radius:14px;padding:22px 26px;box-shadow:0 4px 14px 
 .schools .opts{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
 .schools .opts label{font-weight:500;display:flex;align-items:center;gap:6px;margin:0}
 .schools #other-school{width:220px}
+.teachers .opts label{min-width:250px}
+.teachers .other-t{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.teachers .other-t input{width:240px}
 h2{color:var(--accent-deep);font-size:1.25rem;font-weight:800;margin:26px 0 6px;padding-bottom:4px;border-bottom:2px solid var(--accent-soft)}
 .q{padding:12px 0;border-bottom:1px dashed #d1d5db}
 .q:last-child{border-bottom:none}
@@ -70,11 +73,11 @@ footer{text-align:center;margin-top:24px;color:var(--dim);font-size:.82rem;paddi
   <header>
     <span class="eyebrow">High School Applications</span>
     <h1>Recommendation Request</h1>
-    <p class="tagline">Student profile for Dr. Park's teacher recommendation</p>
+    <p class="tagline">Student profile for teacher recommendations</p>
   </header>
   <main>
     <div class="instructions">
-      Rate yourself honestly on each skill, then answer each question in a few sentences. Specific examples are the most helpful. Dr. Park will review your ratings and answers alongside his own classroom observations and adjust them as needed when writing your recommendation. Your answers save in this browser as you type, so you can come back and finish later. When you're done, click <b>Submit to Dr. Park</b>.
+      Rate yourself honestly on each skill, then answer each question in a few sentences. Specific examples are the most helpful. Your teachers will review your ratings and answers alongside their own classroom observations and adjust them as needed when writing your recommendation. Your answers save in this browser as you type, so you can come back and finish later. When you're done, check the teachers who should receive it and click <b>Submit</b>.
     </div>
 
     <div class="info">
@@ -82,6 +85,21 @@ footer{text-align:center;margin-top:24px;color:var(--dim);font-size:.82rem;paddi
       <div><label for="student-class">Class</label>
         <select id="student-class"><option value="">Select…</option><option>8A</option><option>8B</option><option>Other</option></select></div>
       <div><label for="due-date">Application deadline</label><input type="text" id="due-date" placeholder="e.g. Dec 1"></div>
+      <div class="schools teachers"><label>Send to these teachers <span style="font-weight:500;color:var(--dim)">(check all that apply)</span></label>
+        <div class="opts">
+          <label><input type="checkbox" name="teacher" value="deachus@starofthesea.org" data-name="Mr. David Eachus"> Mr. David Eachus</label>
+          <label><input type="checkbox" name="teacher" value="ppark@starofthesea.org" data-name="Dr. Peter Park"> Dr. Peter Park</label>
+          <label><input type="checkbox" name="teacher" value="caczon@starofthesea.org" data-name="Mrs. Cora Aczon"> Mrs. Cora Aczon</label>
+          <label><input type="checkbox" name="teacher" value="lvasquez@starofthesea.org" data-name="Dr. Lacey Vasquez"> Dr. Lacey Vasquez</label>
+          <label><input type="checkbox" name="teacher" value="sharrison@starofthesea.org" data-name="Mrs. Sara Harrison"> Mrs. Sara Harrison</label>
+          <label><input type="checkbox" name="teacher" value="bfreitas@starofthesea.org" data-name="Dr. Brittany Freitas"> Dr. Brittany Freitas</label>
+          <label><input type="checkbox" name="teacher" value="other" id="teacher-other"> Other:</label>
+        </div>
+        <div class="other-t">
+          <input type="text" id="other-teacher-name" placeholder="Teacher's name" aria-label="Other teacher's name">
+          <input type="email" id="other-teacher-email" placeholder="Teacher's school email" aria-label="Other teacher's email">
+        </div>
+      </div>
       <div class="schools"><label>Schools applying to <span style="font-weight:500;color:var(--dim)">(check all that apply)</span></label>
         <div class="opts">
           <label><input type="checkbox" name="school" value="Punahou School"> Punahou</label>
@@ -142,12 +160,12 @@ footer{text-align:center;margin-top:24px;color:var(--dim);font-size:.82rem;paddi
     </form>
 
     <div class="actions">
-      <button class="btn" onclick="submitProfile()">📧 Submit to Dr. Park</button>
+      <button class="btn" onclick="submitProfile()">📧 Submit</button>
       <button class="btn alt" onclick="saveCopy()">💾 Save a Copy</button>
       <button class="btn alt" onclick="window.print()">🖨️ Print</button>
       <button class="btn alt" onclick="clearForm()">Clear</button>
       <span class="saved" id="saved"></span>
-      <span class="note" id="submitNote">Submit opens Gmail with your answers addressed to <b>ppark@starofthesea.org</b>. Sign in with your school account, then click Send. Save a Copy downloads your answers as a text file.</span>
+      <span class="note" id="submitNote">Submit opens Gmail with your answers addressed to the teachers you checked. Sign in with your school account, then click Send. Save a Copy downloads your answers as a text file.</span>
     </div>
   </main>
   <footer>Mary, Star of the Sea School · Math 8 · Dr. Park</footer>
@@ -203,11 +221,11 @@ document.querySelectorAll('.rate[data-grid]').forEach(box => {
   });
   box.innerHTML = h;
 });
-// Google Apps Script web app that emails the whole profile to Dr. Park in one message.
+// Google Apps Script web app that emails the whole profile to the checked teachers in one message.
 // Leave empty to use the Gmail fallback. Source: tools/recommendation-request-mailer.gs
 const MAILER_URL = 'https://script.google.com/macros/s/AKfycbxFcWYwl_9P-QyNKro7cisZ3pS-54rUwPqoLfiEcrOgTyuqfRd3Sz1hw8470CuU1Lk7/exec';
 const KEY = 'msos-rec-request-v1';
-const textIds = ['student-name','student-class','due-date','other-school',
+const textIds = ['student-name','student-class','due-date','other-school','other-teacher-name','other-teacher-email',
   'q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','w1','e1','w2','e2','w3','e3','q19','q20','q21'];
 const $ = id => document.getElementById(id);
 
@@ -215,6 +233,7 @@ function collect(){
   const d = {};
   textIds.forEach(id => d[id] = $(id).value);
   d.schools = [...document.querySelectorAll('input[name=school]:checked')].map(c => c.value);
+  d.teachers = [...document.querySelectorAll('input[name=teacher]:checked')].map(c => c.value);
   d.ratings = {};
   document.querySelectorAll('.ri input:checked').forEach(r => d.ratings[r.name] = r.value);
   return d;
@@ -229,11 +248,12 @@ function load(){
   textIds.forEach(id => { if(d[id] != null) $(id).value = d[id]; });
   Object.entries(d.ratings || {}).forEach(([n,v]) => { const r = document.querySelector('input[name="'+n+'"][value="'+v+'"]'); if(r) r.checked = true; });
   (d.schools || []).forEach(v => { const c = document.querySelector('input[name=school][value="'+v+'"]'); if(c) c.checked = true; });
+  (d.teachers || []).forEach(v => { const c = document.querySelector('input[name=teacher][value="'+v+'"]'); if(c) c.checked = true; });
 }
 function clearForm(){
   if(!confirm('Clear all your answers on this device?')) return;
   textIds.forEach(id => $(id).value = '');
-  document.querySelectorAll('input[name=school], .ri input').forEach(c => c.checked = false);
+  document.querySelectorAll('input[name=school], input[name=teacher], .ri input').forEach(c => c.checked = false);
   try{ localStorage.removeItem(KEY); }catch(e){}
   $('saved').textContent = '';
 }
@@ -268,7 +288,8 @@ function buildBody(d){
   const body = [
 `RECOMMENDATION REQUEST — ${name}
 Class: ${d['student-class'] || '—'}   |   Deadline: ${d['due-date'].trim() || '—'}
-Schools: ${schools.join(', ') || '—'}`,
+Schools: ${schools.join(', ') || '—'}
+Sent to: ${namesOf(recipients(d)) || '—'}`,
     head('1. ENGLISH / LANGUAGE ARTS'), rate('english'), '', q('Reading & writing', 'q1'),
     head('2. MATH'), rate('math'), '', q('Math', 'q2'),
     head('3. ACADEMIC SKILLS'), rate('academic'), '',
@@ -291,6 +312,30 @@ Schools: ${schools.join(', ') || '—'}`,
   ].join('\n');
   return body;
 }
+
+// Checked teachers as [{name, email}]; the Other box adds the typed name and email.
+function recipients(d){
+  const list = [];
+  document.querySelectorAll('input[name=teacher]:checked').forEach(c => {
+    if(c.value === 'other'){
+      const em = d['other-teacher-email'].trim();
+      if(em) list.push({name: d['other-teacher-name'].trim() || em, email: em});
+    } else list.push({name: c.dataset.name, email: c.value});
+  });
+  return list;
+}
+function needTeachers(d){
+  const other = $('teacher-other').checked;
+  const em = d['other-teacher-email'].trim();
+  if(other && !/^[^\s@]+@starofthesea\.org$/i.test(em)){
+    alert('For Other, type the teacher\'s name and @starofthesea.org email address.'); $('other-teacher-email').focus(); return true;
+  }
+  if(!recipients(d).length){
+    alert('Check at least one teacher to send your request to.'); document.querySelector('input[name=teacher]').focus(); return true;
+  }
+  return false;
+}
+const namesOf = list => list.map(t => t.name).join(', ');
 
 function needName(d){
   if(d['student-name'].trim()) return false;
@@ -329,11 +374,12 @@ function splitBody(body, base, subject, maxLen){
 
 function submitViaGmail(){
   const d = collect();
-  if(needName(d)) return;
+  if(needName(d) || needTeachers(d)) return;
   const name = d['student-name'].trim();
   const body = buildBody(d);
   const subject = 'Recommendation Request — ' + name;
-  const gmail = su => 'https://mail.google.com/mail/?view=cm&fs=1&to=ppark@starofthesea.org&su=' + encodeURIComponent(su);
+  const to = recipients(d).map(t => t.email).join(',');
+  const gmail = su => 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(to) + '&su=' + encodeURIComponent(su);
   const MAX = 7000;
   if ((gmail(subject) + '&body=' + encodeURIComponent(body)).length <= MAX){
     window.open(gmail(subject) + '&body=' + encodeURIComponent(body), '_blank');
@@ -359,10 +405,18 @@ function submitViaGmail(){
   document.getElementById('partsClose').onclick = () => box.remove();
 }
 
+// The mailer can send to several teachers only after its updated script is deployed;
+// until then Submit uses Gmail so nobody's request goes only to Dr. Park by mistake.
+async function mailerSupportsList(){
+  try{ const info = await (await fetch(MAILER_URL)).json(); return info.multi === true; }
+  catch(e){ return false; }
+}
+
 async function submitProfile(){
   const d = collect();
-  if(needName(d)) return;
-  if(!MAILER_URL) return submitViaGmail();
+  if(needName(d) || needTeachers(d)) return;
+  const list = recipients(d);
+  if(!MAILER_URL || !(await mailerSupportsList())) return submitViaGmail();
   const btn = document.querySelector('button[onclick="submitProfile()"]');
   const label = btn.textContent;
   btn.disabled = true; btn.textContent = '⏳ Sending…';
@@ -370,27 +424,27 @@ async function submitProfile(){
     const res = await fetch(MAILER_URL, {
       method: 'POST',
       headers: {'Content-Type': 'text/plain;charset=utf-8'},
-      body: JSON.stringify({ name: d['student-name'].trim(), body: buildBody(d), website: '' })
+      body: JSON.stringify({ name: d['student-name'].trim(), body: buildBody(d), to: list.map(t => t.email), website: '' })
     });
     const out = await res.json();
     if(!out.ok) throw new Error(out.error || 'not sent');
-    btn.textContent = '✅ Sent to Dr. Park';
-    showSent(true, d['student-name'].trim());
+    btn.textContent = '✅ Sent';
+    showSent(true, d['student-name'].trim(), '', namesOf(list));
   }catch(err){
     btn.disabled = false; btn.textContent = label;
     showSent(false, '', String(err.message || err));
   }
 }
 
-if(MAILER_URL){ const n=document.getElementById('submitNote'); if(n) n.innerHTML='Submit emails all your answers to <b>Dr. Park</b> in one message. Save a Copy downloads your answers as a text file.'; }
+if(MAILER_URL){ const n=document.getElementById('submitNote'); if(n) n.innerHTML='Submit emails all your answers to the teachers you checked. Save a Copy downloads your answers as a text file.'; }
 
-function showSent(ok, name, err){
+function showSent(ok, name, err, who){
   let box = document.getElementById('sentBox');
   if(!box){ box = document.createElement('div'); box.id = 'sentBox'; document.body.appendChild(box); }
   box.setAttribute('style','position:fixed;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px');
   box.innerHTML = '<div style="background:#fff;border-radius:14px;max-width:440px;width:100%;padding:20px 22px;box-shadow:0 10px 30px rgba(0,0,0,.25)">'
     + (ok
-      ? '<h3 style="margin:0 0 8px;color:#15803d">✅ Sent!</h3><p style="margin:0 0 14px;line-height:1.45">Thank you, ' + name.replace(/[<>&]/g,'') + '. Your recommendation request was emailed to Dr. Park. Your answers are still saved on this computer.</p>'
+      ? '<h3 style="margin:0 0 8px;color:#15803d">✅ Sent!</h3><p style="margin:0 0 14px;line-height:1.45">Thank you, ' + name.replace(/[<>&]/g,'') + '. Your recommendation request was emailed to ' + (who||'').replace(/[<>&]/g,'') + '. Your answers are still saved on this computer.</p>'
       : '<h3 style="margin:0 0 8px;color:#b91c1c">It didn\'t send</h3><p style="margin:0 0 14px;line-height:1.45">Something went wrong (' + (err||'').replace(/[<>&]/g,'') + '). Check your internet connection and try again, or send it through Gmail instead.</p>'
         + '<button type="button" class="btn" id="sentGmail" style="display:block;width:100%;margin-bottom:8px">📧 Send through Gmail instead</button>')
     + '<button type="button" class="btn alt" id="sentClose" style="display:block;width:100%">Close</button></div>';
