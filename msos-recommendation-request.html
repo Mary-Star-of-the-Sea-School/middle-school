@@ -96,8 +96,8 @@ footer{text-align:center;margin-top:24px;color:var(--dim);font-size:.82rem;paddi
           <label><input type="checkbox" name="teacher" value="other" id="teacher-other"> Other:</label>
         </div>
         <div class="other-t">
-          <input type="text" id="other-teacher-name" placeholder="Teacher's name" aria-label="Other teacher's name">
-          <input type="email" id="other-teacher-email" placeholder="Teacher's email" aria-label="Other teacher's email">
+          <input type="text" id="other-teacher-name" placeholder="Name" aria-label="Other: name">
+          <input type="email" id="other-teacher-email" placeholder="Email address" aria-label="Other: email address">
         </div>
       </div>
       <div class="schools"><label>Schools applying to <span style="font-weight:500;color:var(--dim)">(check all that apply)</span></label>
@@ -328,7 +328,7 @@ function needTeachers(d){
   const other = $('teacher-other').checked;
   const em = d['other-teacher-email'].trim();
   if(other && !/^[^\s@,;]+@[^\s@,;]+\.[a-z]{2,}$/i.test(em)){
-    alert('For Other, type the teacher\'s name and a valid email address.'); $('other-teacher-email').focus(); return true;
+    alert('For Other, type a name and a valid email address.'); $('other-teacher-email').focus(); return true;
   }
   if(!recipients(d).length){
     alert('Check at least one teacher to send your request to.'); document.querySelector('input[name=teacher]').focus(); return true;
