@@ -3158,7 +3158,7 @@ function emailResults() {
   const body = lines.join('\n');
   const to = 'ppark@starofthesea.org';
 
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&tf=1`
+  const gmailUrl = `https://mail.google.com/a/starofthesea.org/?view=cm&fs=1&tf=1`
     + `&to=${encodeURIComponent(to)}`
     + `&su=${encodeURIComponent(subject)}`
     + `&body=${encodeURIComponent(body)}`;
@@ -4156,7 +4156,7 @@ function ssatEmail(){
   let body='Student: '+nm.trim()+'\nClass: '+cl.trim()+'\nCourse: Math 8\nSSAT Prep unit: '+title+'\nScore: '+SSAT_STATE.score+' / '+n+'  ('+pct+'%)\nTime: '+dur+'\nSubmitted: '+new Date().toLocaleString('en-US')+'\n\n';
   (SSAT_STATE.log||[]).forEach(r=>{ body+=r.n+'. '+r.q+'\n    Answer: '+r.your+(r.ok?' \u2713':' \u2717 (correct: '+r.right+')')+'\n\n'; });
   const subject='SSAT Prep \u2014 '+title+' \u2014 '+nm.trim();
-  window.open('https://mail.google.com/mail/?view=cm&fs=1&to=ppark@starofthesea.org&su='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body),'_blank');
+  window.open('https://mail.google.com/a/starofthesea.org/?view=cm&fs=1&to=ppark@starofthesea.org&su='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body),'_blank');
 }
 
 </script>

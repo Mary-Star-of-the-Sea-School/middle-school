@@ -277,7 +277,7 @@ function submitToTeacher(){
   body += `\nSubmitted from Math 6 Mid-Quarter Test.`;
   const subject = encodeURIComponent(`Math 6 Mid-Quarter Test — ${name}`);
   const bodyEnc = encodeURIComponent(body);
-  const gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1&to=ppark@starofthesea.org&su=' + subject + '&body=' + bodyEnc;
+  const gmailUrl = 'https://mail.google.com/a/starofthesea.org/?view=cm&fs=1&to=ppark@starofthesea.org&su=' + subject + '&body=' + bodyEnc;
   // Open Gmail compose directly (no mailto: — bypasses OS security prompts)
   const w = window.open(gmailUrl, '_blank', 'noopener,noreferrer');
   if (!w) {

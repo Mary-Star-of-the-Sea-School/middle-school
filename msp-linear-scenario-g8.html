@@ -238,7 +238,7 @@
     lock(); showResult(r, now.toLocaleString('en-US'));
     var subject='Unit 8 Real-World Scenario Worksheet — '+name;
     var body='Student: '+name+'\nClass: '+cls+'\nScore: '+r.score+' / 22\nSubmitted: '+now.toLocaleString('en-US')+'\n\n'+r.lines.join('\n')+'\n\n—\nSubmitted from '+location.href;
-    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=ppark@starofthesea.org&su='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body),'_blank');
+    window.open('https://mail.google.com/a/starofthesea.org/?view=cm&fs=1&to=ppark@starofthesea.org&su='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body),'_blank');
   };
   try{ var sub=JSON.parse(localStorage.getItem(SUBKEY)||'null'); if(sub){ var r0=grade(); lock(); showResult(r0, new Date(sub.at).toLocaleString('en-US')); } }catch(e){}
 

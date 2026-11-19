@@ -493,7 +493,7 @@ function submitToTeacher() {
   const bodyEnc = encodeURIComponent(body);
   // Open Gmail compose directly in a new tab (bypasses default mail app prompt).
   // If the student is signed in with their school Gmail, this opens compose right in Gmail.
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=ppark@starofthesea.org&su=${subject}&body=${bodyEnc}`;
+  const gmailUrl = `https://mail.google.com/a/starofthesea.org/?view=cm&fs=1&to=ppark@starofthesea.org&su=${subject}&body=${bodyEnc}`;
   window.open(gmailUrl, '_blank');
 }
 </script>

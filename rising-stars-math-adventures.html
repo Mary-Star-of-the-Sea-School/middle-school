@@ -6290,7 +6290,7 @@ function emailTeacher() {
   const subject = `Rising Stars Adventure — Week ${lesson.week} Day ${lesson.day} 10/10 Perfect! (${name || 'Explorer'})`;
   const body = lines.join('\n');
   const to = 'lglavan@starofthesea.org,ppark@starofthesea.org';
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const gmailUrl = `https://mail.google.com/a/starofthesea.org/?view=cm&fs=1&tf=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   window.open(gmailUrl, '_blank');
 }
 
