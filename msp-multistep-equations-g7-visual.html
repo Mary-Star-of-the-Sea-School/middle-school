@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-Step Equations Visual — Math 7</title>
+<style>
+:root { --navy:#1a2a4a; --gold:#b8860b; --green:#059669; --orange:#d97706; --red:#dc2626; --blue:#1d4ed8; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI', Tahoma, sans-serif; background:linear-gradient(135deg,#dbeafe 0%,#fef3c7 50%,#f5e6ff 100%); color:#1f2937; min-height:100vh; padding:20px 14px; line-height:1.55; }
+.container { max-width:980px; margin:0 auto; }
+.back-link { display:inline-block; background:var(--gold); color:var(--navy); padding:9px 18px; border-radius:8px; text-decoration:none; font-weight:800; font-size:.9rem; margin-bottom:14px; }
+header { text-align:center; margin-bottom:18px; }
+.eyebrow { display:inline-block; background:var(--navy); color:#fff; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.14em; padding:5px 14px; border-radius:999px; margin-bottom:10px; }
+h1 { font-size:1.9rem; font-weight:900; color:var(--navy); margin-bottom:6px; }
+.tagline { color:#475569; font-size:1.05rem; }
+.legend { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:10px; font-weight:700; color:#334155; font-size:.95rem; }
+.legend span { display:inline-flex; align-items:center; gap:6px; }
+.card { background:#fff; border-radius:14px; padding:22px 24px; box-shadow:0 4px 14px rgba(0,0,0,0.08); margin:20px 0; border-top:5px solid var(--green); }
+.card h2 { font-size:1.35rem; font-weight:900; color:var(--navy); margin-bottom:6px; }
+.card p.lead { font-size:1rem; color:#334155; margin-bottom:10px; }
+.choices { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:12px 0 14px; }
+.choice { padding:9px 14px; background:#f1f5f9; color:var(--navy); border:2px solid #cbd5e1; border-radius:10px; font-weight:800; cursor:pointer; font-size:1rem; font-family:'Courier New',monospace; }
+.choice.on { background:var(--navy); color:#fff; border-color:var(--navy); }
+.choice.rand { font-family:inherit; background:#fef3c7; border-color:var(--gold); }
+.eq { text-align:center; font-size:1.7rem; font-weight:900; color:var(--navy); font-family:'Courier New',monospace; margin:4px 0 2px; min-height:2.4rem; }
+.doing { text-align:center; font-size:1.1rem; font-weight:800; color:#0369a1; min-height:1.8rem; }
+.why { text-align:center; color:#475569; font-size:.95rem; min-height:1.5rem; margin-bottom:6px; }
+
+/* balance */
+.scale { margin:14px auto 6px; max-width:900px; }
+.pans { display:grid; grid-template-columns:1fr 46px 1fr; align-items:end; }
+.pan { min-height:120px; border:3px solid #94a3b8; border-top:none; border-radius:0 0 18px 18px; background:#f8fafc; padding:10px; display:flex; flex-direction:column; gap:6px; justify-content:flex-end; }
+.pan .lbl { text-align:center; font-weight:900; color:#64748b; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; }
+.eqsign { text-align:center; font-size:2rem; font-weight:900; color:var(--navy); padding-bottom:40px; }
+.beam { height:10px; background:var(--navy); border-radius:6px; }
+.post { width:0; height:0; margin:0 auto; border-left:26px solid transparent; border-right:26px solid transparent; border-bottom:40px solid var(--navy); }
+.balanced { text-align:center; font-weight:800; color:var(--green); font-size:.9rem; margin-top:4px; }
+.row { display:flex; flex-wrap:wrap; gap:4px; align-items:center; justify-content:center; }
+.grp { display:flex; flex-wrap:wrap; gap:4px; align-items:center; justify-content:center; border:2px dashed #94a3b8; border-radius:10px; padding:5px 7px; position:relative; }
+.grp.one { border:3px solid var(--blue); background:#eff6ff; }
+.grp .tag { position:absolute; top:-10px; left:8px; background:#fff; font-size:.7rem; font-weight:800; color:#475569; padding:0 4px; }
+.grp.one .tag { color:var(--blue); }
+.tile { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:7px; color:#fff; font-weight:900; font-size:1rem; font-family:'Courier New',monospace; position:relative; transition:opacity .3s; }
+.tile.x { background:var(--green); }
+.tile.p { background:var(--orange); width:26px; height:26px; font-size:.85rem; }
+.tile.m { background:var(--red); width:26px; height:26px; font-size:.8rem; }
+.tile.part { width:44px; font-size:.85rem; background:repeating-linear-gradient(45deg,#059669,#059669 6px,#10b981 6px,#10b981 12px); }
+.tile.gone { opacity:.28; }
+.tile.gone::after { content:'✕'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#7f1d1d; font-size:1.6rem; }
+.tile.new { outline:3px solid var(--blue); outline-offset:1px; }
+.zero { font-size:.75rem; font-weight:800; color:#7f1d1d; }
+
+.nav { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:12px 0 4px; }
+.nav button { padding:10px 20px; border-radius:9px; border:none; font-weight:900; font-size:1rem; cursor:pointer; }
+.btn-next { background:var(--green); color:#fff; }
+.btn-back { background:#e2e8f0; color:var(--navy); }
+.nav button:disabled { opacity:.4; cursor:default; }
+.steps { margin:12px auto 0; max-width:620px; font-family:'Courier New',monospace; font-size:1.05rem; }
+.steps li { list-style:none; padding:5px 10px; border-left:4px solid #cbd5e1; margin:3px 0; color:#334155; }
+.steps li b { font-family:'Segoe UI',sans-serif; font-size:.85rem; color:#0369a1; margin-left:8px; }
+.steps li.done { border-left-color:var(--green); background:#f0fdf4; color:#065f46; font-weight:800; }
+.try { display:flex; gap:8px; align-items:center; justify-content:center; flex-wrap:wrap; margin:6px 0 2px; font-weight:800; color:var(--navy); }
+.try input { width:80px; padding:7px 9px; font-size:1.1rem; border:2px solid #cbd5e1; border-radius:8px; text-align:center; font-weight:800; }
+.try button { padding:8px 14px; border-radius:8px; border:none; background:var(--navy); color:#fff; font-weight:800; cursor:pointer; }
+.fb { text-align:center; font-weight:800; min-height:1.4rem; }
+.fb.ok { color:var(--green); } .fb.no { color:var(--red); }
+.tip { background:#ecfeff; border-left:5px solid #0891b2; padding:10px 14px; border-radius:6px; margin:14px 0 0; color:#0c4a6e; font-size:.95rem; }
+footer { text-align:center; margin-top:22px; color:#64748b; font-size:.82rem; padding-top:14px; border-top:1px dashed #cbd5e1; }
+@media (max-width:640px){ .tile{width:30px;height:30px} .tile.p,.tile.m{width:22px;height:22px} .eq{font-size:1.3rem} }
+</style>
+</head>
+<body>
+<div class="container">
+<a href="msos-math-7.html#unit=equations" class="back-link" onclick="if(window.opener||window.history.length<=1){window.close();return false;}history.back();return false;">← Back to Unit</a>
+
+<header>
+  <div class="eyebrow">Math 7 · Equations · Visual</div>
+  <h1>⚖ Multi-Step Equations on a Balance</h1>
+  <p class="tagline">The scale stays balanced only if you do the same thing to both sides.</p>
+  <div class="legend">
+    <span><i class="tile x">x</i> one x</span>
+    <span><i class="tile p">1</i> +1</span>
+    <span><i class="tile m">−1</i> −1</span>
+    <span><i class="tile p">1</i><i class="tile m">−1</i> = 0 (zero pair)</span>
+  </div>
+</header>
+
+<section class="card">
+  <h2>Solve it step by step</h2>
+  <p class="lead">Pick an equation. Try it on paper first, then press <b>Next step</b> to watch each move on the balance.</p>
+  <div class="choices" id="choices"></div>
+  <div class="try">My answer: x = <input id="guess" inputmode="decimal" aria-label="Your answer for x"><button type="button" id="checkBtn">Check</button></div>
+  <div class="fb" id="fb"></div>
+  <div class="eq" id="eq"></div>
+  <div class="doing" id="doing"></div>
+  <div class="why" id="why"></div>
+  <div class="scale">
+    <div class="pans">
+      <div class="pan" id="panL"></div>
+      <div class="eqsign">=</div>
+      <div class="pan" id="panR"></div>
+    </div>
+    <div class="beam"></div>
+    <div class="post"></div>
+    <div class="balanced">Balanced ✓</div>
+  </div>
+  <div class="nav">
+    <button type="button" class="btn-back" id="backBtn">← Back</button>
+    <button type="button" class="btn-next" id="nextBtn">Next step →</button>
+  </div>
+  <ol class="steps" id="steps"></ol>
+  <div class="tip"><b>Order of moves:</b> 1) distribute any parentheses, 2) get all the x tiles on one side, 3) clear the plain numbers from the x side, 4) divide into equal groups. Then check by putting your answer back into the original equation.</div>
+</section>
+
+<footer>Mary, Star of the Sea School · 7th Grade Math · Dr. Park · Multi-Step Equations Visual</footer>
+</div>
+
+<script>
+(function(){
+  // A side is {x, n} or, before distributing, {g:a, gx:1, gn:b} meaning a(x + b).
+  var PRESETS = [
+    {t:'3x + 5 = 20',        L:{x:3,n:5},         R:{x:0,n:20}},
+    {t:'x/3 + 2 = 5',        L:{x:1,n:2,d:3},     R:{x:0,n:5}},
+    {t:'3(x + 2) = 21',      L:{g:3,gn:2},        R:{x:0,n:21}},
+    {t:'2x + 3 = x + 7',     L:{x:2,n:3},         R:{x:1,n:7}},
+    {t:'4x − 3 = 2x + 7',    L:{x:4,n:-3},        R:{x:2,n:7}},
+    {t:'5x + 2 = 2x + 14',   L:{x:5,n:2},         R:{x:2,n:14}},
+    {t:'2(x + 4) = x + 13',  L:{g:2,gn:4},        R:{x:1,n:13}}
+  ];
+
+  function term(a){ return a===1?'x':(a===-1?'−x':a+'x'); }
+  function sideText(s){
+    if(s.g) return s.g+'(x + '+s.gn+')';
+    if(s.d) return 'x/'+s.d+(s.n? (s.n>0?' + '+s.n:' − '+(-s.n)) : '');
+    var out='';
+    if(s.x) out=term(s.x);
+    if(s.n){ out += out ? (s.n>0?' + '+s.n:' − '+(-s.n)) : (s.n<0?'−'+(-s.n):String(s.n)); }
+    return out||'0';
+  }
+  function clone(o){ return JSON.parse(JSON.stringify(o)); }
+
+  // Build the list of moves for an equation. Each move: {say, why, kind, ...}
+  function plan(L0,R0){
+    var L=clone(L0), R=clone(R0), moves=[];
+    if(L.g){ moves.push({kind:'dist', say:'Distribute '+L.g+'(x + '+L.gn+')', why:L.g+' copies of (x + '+L.gn+') = '+L.g+'x + '+(L.g*L.gn)}); L={x:L.g,n:L.g*L.gn}; }
+    if(L.d){ // x/d + n = R : clear the number first, then multiply
+      if(L.n){ moves.push({kind:'sub', x:0, n:L.n, say:'Subtract '+L.n+' from both sides', why:'Undo the “+ '+L.n+'” first — last thing done is first undone.'}); R.n-=L.n; L.n=0; }
+      moves.push({kind:'mul', k:L.d, say:'Multiply both sides by '+L.d, why:'x/'+L.d+' is one of '+L.d+' equal groups. '+L.d+' groups make the whole x.'});
+      R.n*=L.d; L={x:1,n:0}; return {moves:moves, ans:R.n};
+    }
+    if(R.x){ moves.push({kind:'sub', x:R.x, n:0, say:'Subtract '+term(R.x)+' from both sides', why:'Get all the x tiles on one side.'}); L.x-=R.x; R.x=0; }
+    if(L.n>0){ moves.push({kind:'sub', x:0, n:L.n, say:'Subtract '+L.n+' from both sides', why:'Clear the plain numbers from the x side.'}); R.n-=L.n; L.n=0; }
+    else if(L.n<0){ var a=-L.n; moves.push({kind:'add', n:a, say:'Add '+a+' to both sides', why:'Each +1 cancels a −1 on the left (zero pairs).'}); R.n+=a; L.n=0; }
+    if(L.x!==1){ moves.push({kind:'div', k:L.x, say:'Divide both sides by '+L.x, why:'Split each side into '+L.x+' equal groups. One x matches one group.'}); R.n/=L.x; L.x=1; }
+    return {moves:moves, ans:R.n};
+  }
+  // Apply one move to a state
+  function apply(st, m){
+    var L=clone(st.L), R=clone(st.R);
+    if(m.kind==='dist'){ L={x:L.g,n:L.g*L.gn}; }
+    else if(m.kind==='sub'){ L.x-=m.x; R.x-=m.x; L.n-=m.n; R.n-=m.n; }
+    else if(m.kind==='add'){ L.n+=m.n; R.n+=m.n; }
+    else if(m.kind==='div'){ L.x/=m.k; L.n/=m.k; R.x/=m.k; R.n/=m.k; }
+    else if(m.kind==='mul'){ L={x:1,n:0}; R={x:R.x*m.k,n:R.n*m.k}; }
+    return {L:L,R:R};
+  }
+
+  // ---------- drawing ----------
+  function el(tag, cls, txt){ var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; }
+  function tiles(box, kind, count, goneFrom, isNew){
+    for(var i=0;i<count;i++){
+      var t=el('i','tile '+kind, kind==='x'?'x':(kind==='p'?'1':'−1'));
+      if(goneFrom!=null && i>=goneFrom) t.classList.add('gone');
+      if(isNew) t.classList.add('new');
+      box.appendChild(t);
+    }
+  }
+  // mark: what is happening to this side during the move
+  function drawSide(pan, s, m){
+    pan.innerHTML='';
+    pan.appendChild(el('div','lbl', pan.id==='panL'?'left side':'right side'));
+    var body=el('div','row'); pan.appendChild(body);
+    if(s.g){ // a(x + b) as a groups
+      for(var g=0; g<s.g; g++){ var b=el('div','grp'); b.appendChild(el('span','tag','(x + '+s.gn+')')); tiles(b,'x',1); tiles(b,'p',s.gn); body.appendChild(b); }
+      return;
+    }
+    if(s.d){ // x/d drawn as a thin "part of x" tile
+      var reps = (m && m.kind==='mul') ? m.k : 1;
+      for(var q2=0;q2<reps;q2++){ var b2=el('div','grp'+(reps>1?'':' one')); b2.appendChild(el('span','tag', reps>1?'part '+(q2+1)+' of '+s.d:'one part of x'));
+        var xt=el('i','tile x part','x/'+s.d); b2.appendChild(xt); body.appendChild(b2); }
+      if(reps>1){ body.appendChild(el('span','zero','= one whole x')); return; }
+      tiles(body,'p',Math.max(s.n,0), m&&m.kind==='sub'? s.n-m.n : null); return; }
+    var X=s.x, N=s.n;
+    if(m && m.kind==='div'){
+      var k=m.k;
+      for(var q=0;q<k;q++){ var gb=el('div','grp'+(q===0?' one':'')); gb.appendChild(el('span','tag', q===0?'one group':'group '+(q+1)));
+        tiles(gb,'x',X/k); tiles(gb, N<0?'m':'p', Math.abs(N)/k); body.appendChild(gb); }
+      return;
+    }
+    if(m && m.kind==='mul'){
+      for(var r=0;r<m.k;r++){ var mb=el('div','grp'+(r===0?' one':'')); mb.appendChild(el('span','tag', r===0?'what we had':'copy '+(r+1))); tiles(mb,'p',N); body.appendChild(mb); }
+      return;
+    }
+    var gx=null, gn=null;
+    if(m && m.kind==='sub'){ gx = X - m.x; gn = N - m.n; }
+    tiles(body,'x',X, m&&m.kind==='sub'&&m.x? gx : null);
+    if(m && m.kind==='add'){
+      if(N<0){ // zero pairs
+        var pairs=Math.min(-N, m.n);
+        for(var z=0; z<pairs; z++){ var zp=el('span','grp'); var a=el('i','tile m','−1'); a.classList.add('gone'); var c=el('i','tile p new','1'); c.classList.add('gone'); zp.appendChild(a); zp.appendChild(c); body.appendChild(zp); }
+        tiles(body,'m',-N-pairs); tiles(body,'p',m.n-pairs,null,true);
+      } else { tiles(body,'p',N); tiles(body,'p',m.n,null,true); }
+      return;
+    }
+    if(N>=0) tiles(body,'p',N, m&&m.kind==='sub'&&m.n? gn : null);
+    else tiles(body,'m',-N);
+  }
+
+  // ---------- state machine ----------
+  var cur=0, P=null, states=[], phase=0; // phase: 0..2*moves; even = show state, odd = doing a move
+  var ch=document.getElementById('choices');
+  function load(p){
+    P={t:p.t, L:p.L, R:p.R}; var pl=plan(p.L,p.R); P.moves=pl.moves; P.ans=pl.ans;
+    states=[{L:clone(p.L),R:clone(p.R)}];
+    P.moves.forEach(function(m){ states.push(apply(states[states.length-1], m)); });
+    phase=0; document.getElementById('guess').value=''; document.getElementById('fb').textContent=''; render();
+  }
+  function render(){
+    [].forEach.call(ch.children,function(b,i){ b.classList.toggle('on', i===cur); });
+    var si=Math.floor((phase+1)/2), doingMove = phase%2===1 ? P.moves[(phase-1)/2] : null;
+    var st = doingMove ? states[(phase-1)/2] : states[si];
+    var eq=document.getElementById('eq'), doing=document.getElementById('doing'), why=document.getElementById('why');
+    if(doingMove){
+      var nxt=states[(phase+1)/2];
+      eq.textContent = sideText(st.L)+' = '+sideText(st.R);
+      doing.textContent = '➜ '+doingMove.say; why.textContent = doingMove.why;
+    } else {
+      eq.textContent = sideText(st.L)+' = '+sideText(st.R);
+      var last = si===P.moves.length;
+      doing.textContent = phase===0 ? 'Start' : (last ? '🎉 Solved: x = '+P.ans : 'Result after: '+P.moves[si-1].say.toLowerCase());
+      why.textContent = last ? 'Check: '+checkText() : '';
+    }
+    drawSide(document.getElementById('panL'), st.L, doingMove);
+    drawSide(document.getElementById('panR'), st.R, doingMove);
+    document.getElementById('backBtn').disabled = phase===0;
+    document.getElementById('nextBtn').disabled = phase===2*P.moves.length;
+    document.getElementById('nextBtn').textContent = phase%2===0 ? 'Next step →' : 'Show result →';
+    var ul=document.getElementById('steps'); ul.innerHTML='';
+    var shown=Math.floor(phase/2);
+    for(var i=0;i<=shown;i++){
+      var li=el('li', i===P.moves.length?'done':'', sideText(states[i].L)+' = '+sideText(states[i].R));
+      if(i<shown){ var b=el('b',null,'↓ '+P.moves[i].say); li.appendChild(b); }
+      ul.appendChild(li);
+    }
+  }
+  function sub(s,x){ // evaluate original side text with x substituted
+    if(s.g) return {t:s.g+'('+x+' + '+s.gn+')', v:s.g*(x+s.gn)};
+    if(s.d) return {t:x+'/'+s.d+(s.n?' + '+s.n:''), v:x/s.d+s.n};
+    var parts=[]; if(s.x) parts.push(s.x===1? String(x) : s.x+'('+x+')'); if(s.n) parts.push(String(s.n));
+    return {t: parts.join(' + ').replace('+ -','− ') || '0', v:s.x*x+s.n};
+  }
+  function checkText(){
+    var a=sub(P.L,P.ans), b=sub(P.R,P.ans);
+    return a.t+' = '+a.v+'  and  '+b.t+' = '+b.v+(a.v===b.v?'  ✓ both sides match':'');
+  }
+
+  PRESETS.forEach(function(p,i){ var b=el('button','choice',p.t); b.type='button'; b.onclick=function(){cur=i;load(p);}; ch.appendChild(b); });
+  var rb=el('button','choice rand','🎲 New problem'); rb.type='button'; ch.appendChild(rb);
+  rb.onclick=function(){
+    var x=1+Math.floor(Math.random()*6), c=Math.floor(Math.random()*3), a=c+2+Math.floor(Math.random()*3);
+    var b=Math.floor(Math.random()*9)-3, d=(a-c)*x+b;
+    if(d<0||d>24||a*x>40){ return rb.onclick(); }
+    var p={t:'', L:{x:a,n:b}, R:{x:c,n:d}}; p.t=sideText(p.L)+' = '+sideText(p.R);
+    cur=PRESETS.length; load(p);
+  };
+  document.getElementById('nextBtn').onclick=function(){ if(phase<2*P.moves.length){ phase++; render(); } };
+  document.getElementById('backBtn').onclick=function(){ if(phase>0){ phase--; render(); } };
+  document.getElementById('checkBtn').onclick=function(){
+    var g=parseFloat(document.getElementById('guess').value.replace('−','-')), fb=document.getElementById('fb');
+    if(isNaN(g)){ fb.className='fb no'; fb.textContent='Type a number for x.'; return; }
+    if(Math.abs(g-P.ans)<1e-9){ fb.className='fb ok'; fb.textContent='✓ Correct! Step through to see why.'; }
+    else { var a=sub(P.L,g), b=sub(P.R,g); fb.className='fb no'; fb.textContent='Not quite: with x = '+g+', the left side is '+a.v+' but the right side is '+b.v+'. Try again or step through.'; }
+  };
+  document.getElementById('guess').addEventListener('keydown',function(e){ if(e.key==='Enter') document.getElementById('checkBtn').click(); });
+  load(PRESETS[0]);
+})();
+</script>
+</body>
+</html>
