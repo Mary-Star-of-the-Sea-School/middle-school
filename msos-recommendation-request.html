@@ -384,7 +384,7 @@ function submitViaGmail(){
   const body = buildBody(d);
   const subject = 'Recommendation Request — ' + name;
   const to = recipients(d).map(t => t.email).join(',');
-  const gmail = su => 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(to) + '&su=' + encodeURIComponent(su);
+  const gmail = su => 'https://mail.google.com/a/starofthesea.org/?view=cm&fs=1&to=' + encodeURIComponent(to) + '&su=' + encodeURIComponent(su);
   const MAX = 7000;
   if ((gmail(subject) + '&body=' + encodeURIComponent(body)).length <= MAX){
     window.open(gmail(subject) + '&body=' + encodeURIComponent(body), '_blank');
