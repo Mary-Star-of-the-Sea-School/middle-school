@@ -51,6 +51,15 @@ input.ans {
 input.ans:focus { outline:none; border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.15); }
 input.ans.correct { background:#dcfce7; border-color:#16a34a; color:#14532d; }
 input.ans.wrong { background:#fee2e2; border-color:#dc2626; color:#7f1d1d; }
+.plot-wrap{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.plot-wrap ol.qlist{flex:1 1 300px}
+.cgraph{flex:0 0 auto;margin:6px auto}
+.cgraph svg{display:block;width:380px;max-width:100%;height:auto;cursor:crosshair;background:#fff;border:1px solid #cbd5e1;border-radius:8px}
+.plot-pick{padding:4px 9px;border-radius:6px;border:2px solid #cbd5e1;background:#f8fafc;font-weight:800;cursor:pointer;margin:0 4px}
+.plot-pick.on{border-color:#2563eb;background:#dbeafe;color:#1e3a8a}
+input.ans.plot{width:86px;text-align:center;background:#f8fafc}
+.plot-how{font-size:.85rem;color:#64748b;margin:4px 0 0}
+@media print{.plot-pick,.plot-how{display:none}}
 input.ans.nocheck { background:#f8fafc; border-color:#cbd5e1; color:#334155; }
 .check-btn {
   display:inline-block; background:#2563eb; color:#fff;
@@ -124,37 +133,43 @@ body, input, button, textarea, select { font-family: 'GreekMath', 'Segoe UI', Ta
 <h2>2️⃣ Plotting Points</h2>
 <div class="intro">An ordered pair (x, y): first number is the horizontal move from origin, second is the vertical.</div>
 <h3>Practice:</h3>
-<ol class="qlist">
-<li>Plot (3, 4) <input class="ans" data-a="" size="11"></li>
-<li>Plot (-2, 1) <input class="ans" data-a="" size="11"></li>
-<li>Plot (0, -3) <input class="ans" data-a="" size="11"></li>
-<li>Plot (5, -2) <input class="ans" data-a="" size="11"></li>
+<div class="plot-wrap"><ol class="qlist">
+<li>Plot (3, 4) <button type="button" class="plot-pick" data-g="g2" title="Click, then click the graph">📍 1</button><input class="ans plot" data-g="g2" data-label="1" data-a="(3,4)" readonly size="8" placeholder="not plotted"></li>
+<li>Plot (-2, 1) <button type="button" class="plot-pick" data-g="g2" title="Click, then click the graph">📍 2</button><input class="ans plot" data-g="g2" data-label="2" data-a="(-2,1)" readonly size="8" placeholder="not plotted"></li>
+<li>Plot (0, -3) <button type="button" class="plot-pick" data-g="g2" title="Click, then click the graph">📍 3</button><input class="ans plot" data-g="g2" data-label="3" data-a="(0,-3)" readonly size="8" placeholder="not plotted"></li>
+<li>Plot (5, -2) <button type="button" class="plot-pick" data-g="g2" title="Click, then click the graph">📍 4</button><input class="ans plot" data-g="g2" data-label="4" data-a="(5,-2)" readonly size="8" placeholder="not plotted"></li>
 </ol>
+<div class="cgraph" id="g2"></div></div>
+<p class="plot-how">Click 📍, then click the graph where the point goes. Click again to move it.</p>
 <button class="check-btn" onclick="checkSection('wsec2')">✓ Check Answers</button><button type="button" onclick="saveAnswersToFile()" class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #047857; background:#059669; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0;">💾 Save</button><label class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #0369a1; background:#0284c7; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0; display:inline-block;">📁 Load<input type="file" accept=".json" style="display:none;" onchange="loadAnswersFromFile(event)"></label><button class="reset-btn" onclick="resetSection('wsec2')">↺ Clear</button><span class="score" id="score-wsec2">—</span> <button class="reveal-btn" onclick="toggle('ak2')">Show / Hide Answer Key</button>
-<div id="ak2" class="ak"><h4>Answer Key — Section 2</h4>[Plot each on grid.]</div>
+<div id="ak2" class="ak"><h4>Answer Key — Section 2</h4>(1) (3, 4): 3 right, 4 up, Quadrant I (2) (−2, 1): 2 left, 1 up, Quadrant II (3) (0, −3): 3 down on the y-axis (4) (5, −2): 5 right, 2 down, Quadrant IV</div>
 </section>
 <section class="card" id="wsec3">
 <h2>3️⃣ Reading Coordinates</h2>
-<div class="intro">Given a point on a grid, write its (x, y) coordinates.</div>
+<div class="intro">Plot each point from its directions, then write its (x, y) coordinates. Right and up are positive; left and down are negative.</div>
 <h3>Practice:</h3>
-<ol class="qlist">
-<li>Point A is 4 right, 2 up. Coordinates =  <input class="ans" data-a="" size="11"></li>
-<li>Point B is 3 left, 5 up. Coordinates =  <input class="ans" data-a="" size="11"></li>
-<li>Point C is 6 left, 4 down. Coordinates =  <input class="ans" data-a="" size="11"></li>
-<li>Point D is at origin. Coordinates =  <input class="ans" data-a="" size="11"></li>
+<div class="plot-wrap"><ol class="qlist">
+<li>Point A is 4 right, 2 up. <button type="button" class="plot-pick" data-g="g3" title="Click, then click the graph">📍 A</button><input class="ans plot" data-g="g3" data-label="A" data-a="(4,2)" readonly size="8" placeholder="not plotted"><br>Coordinates = <input class="ans" data-a="(4,2)" size="9"></li>
+<li>Point B is 3 left, 5 up. <button type="button" class="plot-pick" data-g="g3" title="Click, then click the graph">📍 B</button><input class="ans plot" data-g="g3" data-label="B" data-a="(-3,5)" readonly size="8" placeholder="not plotted"><br>Coordinates = <input class="ans" data-a="(-3,5)" size="9"></li>
+<li>Point C is 6 left, 4 down. <button type="button" class="plot-pick" data-g="g3" title="Click, then click the graph">📍 C</button><input class="ans plot" data-g="g3" data-label="C" data-a="(-6,-4)" readonly size="8" placeholder="not plotted"><br>Coordinates = <input class="ans" data-a="(-6,-4)" size="9"></li>
+<li>Point D is at the origin. <button type="button" class="plot-pick" data-g="g3" title="Click, then click the graph">📍 D</button><input class="ans plot" data-g="g3" data-label="D" data-a="(0,0)" readonly size="8" placeholder="not plotted"><br>Coordinates = <input class="ans" data-a="(0,0)" size="9"></li>
 </ol>
+<div class="cgraph" id="g3"></div></div>
+<p class="plot-how">Click 📍, then click the graph where the point goes. Click again to move it.</p>
 <button class="check-btn" onclick="checkSection('wsec3')">✓ Check Answers</button><button type="button" onclick="saveAnswersToFile()" class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #047857; background:#059669; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0;">💾 Save</button><label class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #0369a1; background:#0284c7; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0; display:inline-block;">📁 Load<input type="file" accept=".json" style="display:none;" onchange="loadAnswersFromFile(event)"></label><button class="reset-btn" onclick="resetSection('wsec3')">↺ Clear</button><span class="score" id="score-wsec3">—</span> <button class="reveal-btn" onclick="toggle('ak3')">Show / Hide Answer Key</button>
 <div id="ak3" class="ak"><h4>Answer Key — Section 3</h4>(1) (4,2) (2) (-3,5) (3) (-6,-4) (4) (0,0)</div>
 </section>
 <section class="card" id="wsec4">
 <h2>4️⃣ Distance Between Points</h2>
-<div class="intro">If two points share an x-coordinate OR a y-coordinate, count the difference to find the distance.</div>
+<div class="intro">If two points share an x-coordinate OR a y-coordinate, count the difference to find the distance. Plot both points, then count the units along the line between them.</div>
 <h3>Practice:</h3>
-<ol class="qlist">
-<li>Distance from (2,3) to (2,8) =  <input class="ans" data-a="5" size="6"></li>
-<li>Distance from (-4,1) to (6,1) =  <input class="ans" data-a="10" size="6"></li>
-<li>Distance from (0,-3) to (0,5) =  <input class="ans" data-a="8" size="6"></li>
+<div class="plot-wrap"><ol class="qlist">
+<li>Distance from (2,3) to (2,8)<br><button type="button" class="plot-pick" data-g="g4" title="Click, then click the graph">📍 1a</button><input class="ans plot" data-g="g4" data-label="1a" data-a="(2,3)" readonly size="8" placeholder="not plotted" data-pair="1"> <button type="button" class="plot-pick" data-g="g4" title="Click, then click the graph">📍 1b</button><input class="ans plot" data-g="g4" data-label="1b" data-a="(2,8)" readonly size="8" placeholder="not plotted" data-pair="1"><br>Distance = <input class="ans" data-a="5" size="6"></li>
+<li>Distance from (-4,1) to (6,1)<br><button type="button" class="plot-pick" data-g="g4" title="Click, then click the graph">📍 2a</button><input class="ans plot" data-g="g4" data-label="2a" data-a="(-4,1)" readonly size="8" placeholder="not plotted" data-pair="2"> <button type="button" class="plot-pick" data-g="g4" title="Click, then click the graph">📍 2b</button><input class="ans plot" data-g="g4" data-label="2b" data-a="(6,1)" readonly size="8" placeholder="not plotted" data-pair="2"><br>Distance = <input class="ans" data-a="10" size="6"></li>
+<li>Distance from (0,-3) to (0,5)<br><button type="button" class="plot-pick" data-g="g4" title="Click, then click the graph">📍 3a</button><input class="ans plot" data-g="g4" data-label="3a" data-a="(0,-3)" readonly size="8" placeholder="not plotted" data-pair="3"> <button type="button" class="plot-pick" data-g="g4" title="Click, then click the graph">📍 3b</button><input class="ans plot" data-g="g4" data-label="3b" data-a="(0,5)" readonly size="8" placeholder="not plotted" data-pair="3"><br>Distance = <input class="ans" data-a="8" size="6"></li>
 </ol>
+<div class="cgraph" id="g4"></div></div>
+<p class="plot-how">Click 📍, then click the graph where the point goes. When both points of a problem are plotted, a line joins them.</p>
 <button class="check-btn" onclick="checkSection('wsec4')">✓ Check Answers</button><button type="button" onclick="saveAnswersToFile()" class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #047857; background:#059669; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0;">💾 Save</button><label class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #0369a1; background:#0284c7; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0; display:inline-block;">📁 Load<input type="file" accept=".json" style="display:none;" onchange="loadAnswersFromFile(event)"></label><button class="reset-btn" onclick="resetSection('wsec4')">↺ Clear</button><span class="score" id="score-wsec4">—</span> <button class="reveal-btn" onclick="toggle('ak4')">Show / Hide Answer Key</button>
 <div id="ak4" class="ak"><h4>Answer Key — Section 4</h4>(1) 5 (2) 10 (3) 8</div>
 </section>
@@ -180,8 +195,11 @@ function toNumber(s){const c=normalizeAns(s);if(!c)return null;
   const pw=c.match(/^(-?\d+(?:\.\d+)?)\^(-?\d+(?:\.\d+)?)$/);if(pw)return Math.pow(Number(pw[1]),Number(pw[2]));
   const ipw=c.match(/^1\/(-?\d+(?:\.\d+)?)\^(-?\d+(?:\.\d+)?)$/);if(ipw){const v=Math.pow(Number(ipw[1]),Number(ipw[2]));return v!==0?1/v:null;}
   const n=Number(c);return isFinite(n)?n:null;}
+function parsePair(v){const m=String(v||'').replace(/−/g,'-').match(/^\s*\(?\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\)?\s*$/);return m?[Number(m[1]),Number(m[2])]:null;}
 function isCorrect(student, expected) {
   if (!expected) return null; // uncheckable
+  const pe = parsePair(expected);
+  if (pe) { const ps = parsePair(student); return !!ps && ps[0]===pe[0] && ps[1]===pe[1]; }
   const ns = toNumber(student);
   const ne = toNumber(expected);
   if (ns !== null && ne !== null) {
@@ -526,4 +544,66 @@ document.addEventListener('keydown', function(e){
 })();
 </script>
 <!--/CHECK-ONE-->
+<script>
+/* Clickable coordinate graphs for sections 2-4. Plotted points live in the readonly
+   input.ans.plot boxes, so Check / Clear / Save / auto-save all work unchanged. */
+(function(){
+  var MIN=-8, MAX=8, U=22, PAD=26, SIZE=(MAX-MIN)*U+2*PAD;
+  var COLORS=['#2563eb','#d97706','#7c3aed','#059669','#db2777','#0891b2'];
+  var active={};
+  function inputs(g){ return [].slice.call(document.querySelectorAll('input.ans.plot[data-g="'+g+'"]')); }
+  function px(x){ return PAD+(x-MIN)*U; } function py(y){ return PAD+(MAX-y)*U; }
+  function pair(v){ var m=String(v||'').match(/^\((-?\d+), ?(-?\d+)\)$/); return m?[+m[1],+m[2]]:null; }
+  function draw(g){
+    var box=document.getElementById(g); if(!box) return;
+    var h='<svg viewBox="0 0 '+SIZE+' '+SIZE+'" xmlns="http://www.w3.org/2000/svg" font-family="Arial">';
+    for(var i=MIN;i<=MAX;i++){
+      h+='<line x1="'+px(i)+'" y1="'+py(MIN)+'" x2="'+px(i)+'" y2="'+py(MAX)+'" stroke="#e2e8f0"/>';
+      h+='<line x1="'+px(MIN)+'" y1="'+py(i)+'" x2="'+px(MAX)+'" y2="'+py(i)+'" stroke="#e2e8f0"/>';
+      if(i!==0 && i%2===0){
+        h+='<text x="'+px(i)+'" y="'+(py(0)+15)+'" text-anchor="middle" font-size="10" fill="#475569">'+i+'</text>';
+        h+='<text x="'+(px(0)-6)+'" y="'+(py(i)+3)+'" text-anchor="end" font-size="10" fill="#475569">'+i+'</text>';
+      }
+    }
+    h+='<line x1="'+(px(MIN)-8)+'" y1="'+py(0)+'" x2="'+(px(MAX)+8)+'" y2="'+py(0)+'" stroke="#1e293b" stroke-width="2"/>';
+    h+='<line x1="'+px(0)+'" y1="'+(py(MIN)+8)+'" x2="'+px(0)+'" y2="'+(py(MAX)-8)+'" stroke="#1e293b" stroke-width="2"/>';
+    h+='<text x="'+(px(MAX)+4)+'" y="'+(py(0)-6)+'" font-size="12" font-weight="700" fill="#1e293b">x</text>';
+    h+='<text x="'+(px(0)+6)+'" y="'+(py(MAX)-6)+'" font-size="12" font-weight="700" fill="#1e293b">y</text>';
+    h+='<text x="'+(px(0)-6)+'" y="'+(py(0)+15)+'" text-anchor="end" font-size="10" fill="#475569">0</text>';
+    var ins=inputs(g), byPair={};
+    ins.forEach(function(inp){ var p=pair(inp.value), k=inp.dataset.pair; if(p&&k){ (byPair[k]=byPair[k]||[]).push(p); } });
+    Object.keys(byPair).forEach(function(k){ var a=byPair[k]; if(a.length===2){
+      h+='<line x1="'+px(a[0][0])+'" y1="'+py(a[0][1])+'" x2="'+px(a[1][0])+'" y2="'+py(a[1][1])+'" stroke="'+COLORS[(+k-1)%COLORS.length]+'" stroke-width="3" stroke-dasharray="6 4"/>'; } });
+    ins.forEach(function(inp,i){ var p=pair(inp.value); if(!p) return;
+      var col = inp.classList.contains('correct')?'#16a34a':inp.classList.contains('wrong')?'#dc2626':COLORS[(inp.dataset.pair? +inp.dataset.pair-1 : i)%COLORS.length];
+      h+='<circle cx="'+px(p[0])+'" cy="'+py(p[1])+'" r="6" fill="'+col+'" stroke="#fff" stroke-width="2"/>';
+      h+='<text x="'+(px(p[0])+8)+'" y="'+(py(p[1])-8)+'" font-size="13" font-weight="800" fill="'+col+'">'+inp.dataset.label+'</text>'; });
+    h+='</svg>';
+    box.innerHTML=h;
+    box.querySelector('svg').addEventListener('click', function(e){ place(g, e); });
+    document.querySelectorAll('.plot-pick[data-g="'+g+'"]').forEach(function(b,i){ b.classList.toggle('on', i===active[g]); });
+  }
+  function place(g, e){
+    var svg=document.getElementById(g).querySelector('svg'), r=svg.getBoundingClientRect(), k=SIZE/r.width;
+    var x=Math.round(((e.clientX-r.left)*k-PAD)/U+MIN), y=Math.round(MAX-((e.clientY-r.top)*k-PAD)/U);
+    if(x<MIN||x>MAX||y<MIN||y>MAX) return;
+    var ins=inputs(g), inp=ins[active[g]||0]; if(!inp) return;
+    inp.value='('+x+', '+y+')'; inp.classList.remove('correct','wrong');
+    inp.dispatchEvent(new Event('input',{bubbles:true}));
+    var next=ins.findIndex(function(n){ return !n.value; }); if(next>=0) active[g]=next;
+    draw(g);
+  }
+  function drawAll(){ ['g2','g3','g4'].forEach(draw); }
+  document.addEventListener('click', function(e){
+    var b=e.target.closest && e.target.closest('.plot-pick'); if(!b) return;
+    var g=b.dataset.g; active[g]=[].indexOf.call(document.querySelectorAll('.plot-pick[data-g="'+g+'"]'), b); draw(g);
+  });
+  ['checkSection','resetSection','clearAllAnswers','loadAnswersFromFile'].forEach(function(fn){
+    var orig=window[fn]; if(typeof orig!=='function') return;
+    window[fn]=function(){ var r=orig.apply(this, arguments); drawAll(); setTimeout(drawAll, 400); return r; };
+  });
+  ['g2','g3','g4'].forEach(function(g){ active[g]=0; });
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(drawAll, 50); }); else drawAll();
+})();
+</script>
 </body></html>
