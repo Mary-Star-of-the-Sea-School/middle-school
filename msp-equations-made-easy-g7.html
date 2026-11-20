@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equations Made Easy — Math 7</title>
+<style>
+:root { --navy:#1a2a4a; --gold:#b8860b; --green:#059669; --red:#dc2626; --blue:#1d4ed8; --purple:#7c3aed; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI', Tahoma, sans-serif; background:linear-gradient(135deg,#dbeafe 0%,#fef3c7 50%,#f5e6ff 100%); color:#1f2937; line-height:1.6; padding:20px 14px; }
+.container { max-width:900px; margin:0 auto; }
+.back-link { display:inline-block; background:var(--gold); color:var(--navy); padding:9px 18px; border-radius:8px; text-decoration:none; font-weight:800; font-size:.9rem; margin-bottom:14px; }
+header { text-align:center; margin-bottom:14px; }
+.eyebrow { display:inline-block; background:var(--navy); color:#fff; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.14em; padding:5px 14px; border-radius:999px; margin-bottom:10px; }
+h1 { font-size:2rem; font-weight:900; color:var(--navy); }
+.tagline { color:#475569; font-size:1.05rem; }
+.tabs { display:flex; gap:8px; justify-content:center; margin:14px 0; flex-wrap:wrap; }
+.tabs a { padding:9px 18px; border-radius:10px; background:#fff; color:var(--navy); font-weight:800; text-decoration:none; border:2px solid #cbd5e1; }
+.card { background:#fff; border-radius:14px; padding:20px 24px; box-shadow:0 4px 14px rgba(0,0,0,.08); margin:18px 0; border-top:5px solid var(--blue); }
+.card h2 { font-size:1.4rem; font-weight:900; color:var(--navy); margin-bottom:8px; }
+.card h3 { font-size:1.1rem; color:var(--navy); margin:12px 0 4px; }
+.card p { margin:6px 0; }
+.big { font-size:1.15rem; }
+.math { font-family:'Courier New', monospace; font-weight:800; font-size:1.15rem; color:var(--navy); }
+.steps { margin:8px 0 8px; padding:10px 14px; background:#f8fafc; border-radius:10px; border:1px solid #e2e8f0; font-family:'Courier New', monospace; font-size:1.12rem; }
+.steps div { padding:2px 0; }
+.steps .note { font-family:'Segoe UI', sans-serif; font-size:.9rem; color:#0369a1; font-weight:700; margin-left:10px; }
+.steps .ans { color:var(--green); font-weight:900; }
+.jump { color:var(--red); font-weight:900; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.two > div { border-radius:10px; padding:10px 12px; }
+.two .a { background:#eff6ff; border:2px solid #bfdbfe; }
+.two .b { background:#fef3c7; border:2px solid #fde68a; }
+.two h4 { font-size:.95rem; color:var(--navy); margin-bottom:4px; }
+table.flip { border-collapse:collapse; margin:8px auto; font-size:1.05rem; }
+.flip th, .flip td { border:2px solid #cbd5e1; padding:6px 16px; text-align:center; }
+.flip th { background:var(--navy); color:#fff; }
+.flip td.m { font-family:'Courier New', monospace; font-weight:900; font-size:1.2rem; }
+.rule { background:#ecfdf5; border-left:6px solid var(--green); padding:10px 14px; border-radius:8px; margin:10px 0; font-weight:700; color:#065f46; }
+.warn { background:#fef2f2; border-left:6px solid var(--red); padding:10px 14px; border-radius:8px; margin:10px 0; color:#7f1d1d; }
+.tip { background:#ecfeff; border-left:6px solid #0891b2; padding:10px 14px; border-radius:8px; margin:10px 0; color:#0c4a6e; }
+.groups { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:8px 0; }
+.grp { border:2px dashed var(--purple); border-radius:10px; padding:4px 10px; font-family:'Courier New', monospace; font-weight:900; color:var(--purple); background:#f5f3ff; }
+.ok { color:var(--green); font-weight:900; } .bad { color:var(--red); font-weight:900; text-decoration:line-through; }
+
+/* worksheet */
+.ws h2 { border-bottom:3px solid var(--gold); padding-bottom:4px; }
+.part { margin:16px 0 6px; padding:8px 12px; background:var(--navy); color:#fff; border-radius:8px; font-weight:800; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; }
+.part small { font-weight:600; opacity:.85; }
+ol.qs { list-style:none; counter-reset:q var(--start); }
+ol.qs li { counter-increment:q; display:grid; grid-template-columns:38px 1fr; gap:10px; padding:10px 4px; border-bottom:1px dashed #e2e8f0; align-items:start; }
+ol.qs li::before { content:counter(q); background:var(--blue); color:#fff; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-weight:900; }
+.q-eq { font-family:'Courier New', monospace; font-weight:900; font-size:1.2rem; color:var(--navy); }
+.q-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:4px; }
+.work { width:100%; min-height:44px; border:1.5px solid #cbd5e1; border-radius:8px; padding:6px 8px; font-family:'Courier New', monospace; font-size:1rem; resize:vertical; margin-top:4px; }
+.q-row label { font-weight:800; color:var(--navy); }
+input.a { width:90px; padding:6px 8px; font-size:1.05rem; border:2px solid #cbd5e1; border-radius:8px; text-align:center; font-weight:800; }
+input.a.correct { border-color:var(--green); background:#ecfdf5; }
+input.a.wrong { border-color:var(--red); background:#fef2f2; }
+.fb { font-weight:800; font-size:.95rem; }
+.fb.y { color:var(--green); } .fb.n { color:var(--red); }
+.hint-btn { background:none; border:1.5px solid #cbd5e1; border-radius:6px; padding:3px 8px; cursor:pointer; font-size:.85rem; color:#475569; }
+.hint { display:none; font-size:.92rem; color:#0369a1; margin-top:4px; }
+.hint.show { display:block; }
+.key { display:none; font-family:'Courier New', monospace; font-size:.95rem; color:#065f46; background:#ecfdf5; border-radius:6px; padding:4px 8px; margin-top:4px; }
+.show-key .key { display:block; }
+.bar { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:16px 0 4px; }
+.bar button { padding:10px 16px; border:none; border-radius:9px; font-weight:900; cursor:pointer; font-size:.95rem; }
+.b-check { background:var(--green); color:#fff; } .b-key { background:#fde68a; color:var(--navy); } .b-clear { background:#e2e8f0; color:var(--navy); } .b-print { background:var(--navy); color:#fff; }
+.score { text-align:center; font-weight:900; font-size:1.1rem; color:var(--navy); min-height:1.6rem; }
+footer { text-align:center; margin-top:20px; color:#64748b; font-size:.82rem; padding-top:12px; border-top:1px dashed #cbd5e1; }
+@media (max-width:640px){ .two{grid-template-columns:1fr} h1{font-size:1.6rem} }
+@media print {
+  body{background:#fff;padding:0} .back-link,.tabs,.bar,.hint-btn,.fb,.score{display:none!important}
+  .card{box-shadow:none;border:1px solid #cbd5e1;break-inside:avoid-page} .ws{break-before:page}
+  ol.qs li{break-inside:avoid} .work{min-height:60px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="msos-math-7.html#unit=equations" class="back-link" onclick="if(window.opener||window.history.length<=1){window.close();return false;}history.back();return false;">← Back to Unit</a>
+
+<header>
+  <div class="eyebrow">Math 7 · Unit 10 · Equations</div>
+  <h1>🧭 Equations Made Easy</h1>
+  <p class="tagline">One-step, two-step, distributive, and variables on both sides</p>
+</header>
+<nav class="tabs"><a href="#learn">📖 Tutorial</a><a href="#practice">✏️ Worksheet (20 problems)</a></nav>
+
+<div id="learn"></div>
+<section class="card">
+  <h2>1. What does "solve" mean?</h2>
+  <p class="big">An equation is a <b>balance</b>: the left side equals the right side. To solve it, get <b>x alone</b> on one side. Whatever is left on the other side is the answer.</p>
+  <p class="big">Example: <span class="math">x + 1 = 2</span>. What number plus 1 makes 2? The answer is <span class="math">x = 1</span>.</p>
+</section>
+
+<section class="card">
+  <h2>2. The big idea: move it across, flip its sign</h2>
+  <p class="big">When a number or a variable <b>moves to the other side</b> of the equal sign, it does the <b>opposite</b>.</p>
+  <table class="flip">
+    <tr><th>On this side it is…</th><th>On the other side it becomes…</th></tr>
+    <tr><td class="m">+ 5</td><td class="m">− 5</td></tr>
+    <tr><td class="m">− 5</td><td class="m">+ 5</td></tr>
+    <tr><td class="m">× 3 &nbsp;(like 3x)</td><td class="m">÷ 3</td></tr>
+    <tr><td class="m">÷ 4 &nbsp;(like x/4)</td><td class="m">× 4</td></tr>
+  </table>
+  <p>Why does this work? Moving is a shortcut for <b>doing the same thing to both sides</b>, which keeps the balance even. Here is <span class="math">x + 1 = 2</span> both ways:</p>
+  <div class="two">
+    <div class="a"><h4>Do the same to both sides</h4>
+      <div class="steps"><div>x + 1 = 2</div><div>x + 1 <span class="jump">− 1</span> = 2 <span class="jump">− 1</span></div><div class="ans">x = 1</div></div>
+      <p style="font-size:.92rem">+1 and −1 cancel on the left, so x is alone.</p></div>
+    <div class="b"><h4>Shortcut: move it across</h4>
+      <div class="steps"><div>x <span class="jump">+ 1</span> = 2</div><div>x = 2 <span class="jump">− 1</span> <span class="note">← +1 jumped over, became −1</span></div><div class="ans">x = 1</div></div>
+      <p style="font-size:.92rem">Same answer, fewer steps.</p></div>
+  </div>
+  <div class="warn"><b>Careful with multiplying.</b> In <span class="math">3x = 12</span>, the 3 is <b>multiplied</b> by x. When it moves it becomes <b>÷ 3</b>, not −3: <span class="math">x = 12 ÷ 3 = 4</span>. And it keeps its own sign: in <span class="math">−2x = 10</span>, <span class="math">x = 10 ÷ (−2) = −5</span>.</div>
+</section>
+
+<section class="card">
+  <h2>3. One-step equations</h2>
+  <p>Only one number is attached to x. Move it across and flip it.</p>
+  <div class="two">
+    <div class="a"><div class="steps"><div>x + 5 = 12</div><div>x = 12 − 5</div><div class="ans">x = 7</div></div></div>
+    <div class="a"><div class="steps"><div>x − 3 = 7</div><div>x = 7 + 3</div><div class="ans">x = 10</div></div></div>
+    <div class="b"><div class="steps"><div>4x = 20</div><div>x = 20 ÷ 4</div><div class="ans">x = 5</div></div></div>
+    <div class="b"><div class="steps"><div>x/3 = 6</div><div>x = 6 × 3</div><div class="ans">x = 18</div></div></div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>4. Two-step equations</h2>
+  <p class="big">Two numbers are attached to x. Move the <b>+ or − number first</b>, then the <b>× or ÷ number</b>.</p>
+  <div class="steps">
+    <div>3x + 4 = 19</div>
+    <div>3x = 19 − 4 <span class="note">← +4 moves, becomes −4</span></div>
+    <div>3x = 15</div>
+    <div>x = 15 ÷ 3 <span class="note">← ×3 moves, becomes ÷3</span></div>
+    <div class="ans">x = 5</div>
+  </div>
+  <div class="tip"><b>Why that order?</b> Think of x as a present: it was put in a box (× 3), then wrapped (+ 4). To get it out, take off the wrapping first, then open the box. You undo things in the reverse order they were done.</div>
+  <p><b>Check:</b> put 5 back in: <span class="math">3(5) + 4 = 15 + 4 = 19</span> ✓</p>
+</section>
+
+<section class="card">
+  <h2>5. Distributive property: why multiply into the parentheses?</h2>
+  <p class="big"><span class="math">3(x + 2)</span> means <b>3 groups</b> of <span class="math">(x + 2)</span>. The 3 multiplies <b>everything</b> inside, not just the x.</p>
+  <div class="groups"><span class="grp">x + 2</span><span class="grp">x + 2</span><span class="grp">x + 2</span> <span class="math">= 3x + 6</span></div>
+  <p>Count them: three x's and three 2's. So <span class="math">3(x + 2) = 3x + 6</span>, <span class="bad">not 3x + 2</span>.</p>
+  <div class="tip"><b>Test it with a number.</b> Let x = 4. Then <span class="math">3(4 + 2) = 3 × 6 = 18</span>. <span class="ok">3x + 6 = 12 + 6 = 18 ✓</span> &nbsp; <span class="bad">3x + 2 = 12 + 2 = 14</span> ✗</div>
+  <p><b>Why we have to distribute:</b> the +2 is locked inside the parentheses with the x. You can't move it across until the parentheses are gone. Distributing opens the parentheses so each piece is free to move.</p>
+  <div class="steps">
+    <div>2(x + 3) = 14</div>
+    <div>2x + 6 = 14 <span class="note">← 2·x and 2·3</span></div>
+    <div>2x = 14 − 6</div>
+    <div>2x = 8</div>
+    <div>x = 8 ÷ 2</div>
+    <div class="ans">x = 4</div>
+  </div>
+  <div class="warn"><b>Watch the minus sign:</b> <span class="math">4(x − 3) = 4x − 12</span>, because 4 × (−3) = −12.</div>
+</section>
+
+<section class="card">
+  <h2>6. Variables on both sides</h2>
+  <p class="big">Move all the <b>x terms to one side</b> and all the <b>plain numbers to the other</b>. Every term that crosses the equal sign flips its sign.</p>
+  <div class="steps">
+    <div>5x + 2 = 2x + 14</div>
+    <div>5x <span class="jump">− 2x</span> = 14 <span class="jump">− 2</span> <span class="note">← +2x moved left, +2 moved right</span></div>
+    <div>3x = 12</div>
+    <div>x = 12 ÷ 3</div>
+    <div class="ans">x = 4</div>
+  </div>
+  <div class="tip"><b>Tip:</b> move the <b>smaller</b> x term so the x's stay positive. In <span class="math">2x + 9 = 5x</span>, move 2x to the right: <span class="math">9 = 5x − 2x</span>, so <span class="math">9 = 3x</span> and <span class="math">x = 3</span>.</div>
+</section>
+
+<section class="card">
+  <h2>7. The 4-step plan for any equation</h2>
+  <div class="rule">1) Distribute any parentheses.<br>2) Move x terms to one side and numbers to the other. Flip the sign of anything that crosses.<br>3) Combine like terms.<br>4) Divide by the number in front of x. Then check your answer in the original equation.</div>
+</section>
+
+<div id="practice"></div>
+<section class="card ws" id="ws">
+  <h2>✏️ Worksheet: 20 problems</h2>
+  <p>Show your work in the box, then type x. Press <b>Check</b> to see ✓ Correct or ✗ Try again. Stuck? Click 💡 for the first move.</p>
+  <p style="margin-top:6px">Name: ______________________ &nbsp; Class: ______</p>
+  <div id="qarea"></div>
+  <div class="bar">
+    <button class="b-check" type="button" onclick="checkAll()">✓ Check</button>
+    <button class="b-key" type="button" onclick="document.getElementById('ws').classList.toggle('show-key')">🔑 Show / Hide Answer Key</button>
+    <button class="b-clear" type="button" onclick="clearAll()">↺ Clear</button>
+    <button class="b-print" type="button" onclick="window.print()">🖨️ Print</button>
+  </div>
+  <div class="score" id="score"></div>
+</section>
+
+<footer>Mary, Star of the Sea School · 7th Grade Math · Dr. Park · Equations Made Easy</footer>
+</div>
+
+<script>
+var PARTS = [
+  {title:'Part A — One-step', sub:'move one number across', qs:[
+    {q:'x + 1 = 2',  a:1,  h:'+1 moves right and becomes −1.', k:'x = 2 − 1 = 1'},
+    {q:'x − 4 = 9',  a:13, h:'−4 moves right and becomes +4.', k:'x = 9 + 4 = 13'},
+    {q:'x + 7 = 3',  a:-4, h:'+7 moves right and becomes −7.', k:'x = 3 − 7 = −4'},
+    {q:'5x = 35',    a:7,  h:'×5 moves right and becomes ÷5.', k:'x = 35 ÷ 5 = 7'},
+    {q:'x/4 = 6',    a:24, h:'÷4 moves right and becomes ×4.', k:'x = 6 × 4 = 24'}]},
+  {title:'Part B — Two-step', sub:'move the + or − number first, then the × or ÷', qs:[
+    {q:'2x + 3 = 11',  a:4,  h:'Move +3 first: 2x = 11 − 3.', k:'2x = 8 → x = 8 ÷ 2 = 4'},
+    {q:'3x − 5 = 10',  a:5,  h:'Move −5 first: 3x = 10 + 5.', k:'3x = 15 → x = 15 ÷ 3 = 5'},
+    {q:'x/2 + 4 = 9',  a:10, h:'Move +4 first: x/2 = 9 − 4.', k:'x/2 = 5 → x = 5 × 2 = 10'},
+    {q:'4x + 7 = −5',  a:-3, h:'Move +7 first: 4x = −5 − 7.', k:'4x = −12 → x = −12 ÷ 4 = −3'},
+    {q:'7 + 2x = 15',  a:4,  h:'The +7 is in front but still moves: 2x = 15 − 7.', k:'2x = 8 → x = 4'}]},
+  {title:'Part C — Distributive', sub:'open the parentheses first', qs:[
+    {q:'2(x + 3) = 14',  a:4, h:'Distribute: 2x + 6 = 14.', k:'2x + 6 = 14 → 2x = 8 → x = 4'},
+    {q:'3(x − 2) = 12',  a:6, h:'Distribute: 3x − 6 = 12.', k:'3x − 6 = 12 → 3x = 18 → x = 6'},
+    {q:'4(x + 1) = 28',  a:6, h:'Distribute: 4x + 4 = 28.', k:'4x + 4 = 28 → 4x = 24 → x = 6'},
+    {q:'5(x − 3) = −10', a:1, h:'Distribute: 5x − 15 = −10.', k:'5x − 15 = −10 → 5x = 5 → x = 1'},
+    {q:'2(3x + 1) = 26', a:4, h:'Distribute: 6x + 2 = 26.', k:'6x + 2 = 26 → 6x = 24 → x = 4'}]},
+  {title:'Part D — Variables on both sides', sub:'x terms to one side, numbers to the other', qs:[
+    {q:'3x + 2 = x + 10',   a:4, h:'Move +x left and +2 right: 3x − x = 10 − 2.', k:'2x = 8 → x = 4'},
+    {q:'5x − 4 = 2x + 11',  a:5, h:'Move +2x left and −4 right: 5x − 2x = 11 + 4.', k:'3x = 15 → x = 5'},
+    {q:'6x − 5 = 4x + 9',   a:7, h:'Move +4x left and −5 right: 6x − 4x = 9 + 5.', k:'2x = 14 → x = 7'},
+    {q:'2x + 9 = 5x',       a:3, h:'Move the smaller x term: 9 = 5x − 2x.', k:'9 = 3x → x = 3'},
+    {q:'4(x + 2) = 2x + 18', a:5, h:'Distribute first: 4x + 8 = 2x + 18.', k:'4x + 8 = 2x + 18 → 2x = 10 → x = 5'}]}
+];
+var KEY='msp-eq-made-easy-g7';
+function minus(t){ return String(t).replace(/-/g,'−'); }
+(function build(){
+  var area=document.getElementById('qarea'), n=0, h='';
+  PARTS.forEach(function(p){
+    h+='<div class="part">'+p.title+' <small>'+p.sub+'</small></div><ol class="qs" style="--start:'+n+'">';
+    p.qs.forEach(function(q){ var i=n++;
+      h+='<li><div><div class="q-eq">'+minus(q.q)+'</div>'+
+        '<textarea class="work" id="w'+i+'" aria-label="Work for problem '+(i+1)+'"></textarea>'+
+        '<div class="q-row"><label for="a'+i+'">x =</label><input class="a" id="a'+i+'" inputmode="decimal" autocomplete="off">'+
+        '<span class="fb" id="f'+i+'"></span><button type="button" class="hint-btn" onclick="this.parentNode.nextElementSibling.classList.toggle(\'show\')">💡 Hint</button></div>'+
+        '<div class="hint">'+minus(q.h)+'</div><div class="key">'+minus(q.q)+' → '+minus(q.k)+'</div></div></li>';
+    });
+    h+='</ol>';
+  });
+  area.innerHTML=h;
+})();
+var ALL=[]; PARTS.forEach(function(p){ ALL=ALL.concat(p.qs); });
+function val(s){ s=String(s||'').replace(/\s/g,'').replace(/[−–]/g,'-').replace(/^x=/i,''); if(!/^-?\d+(\.\d+)?$/.test(s)) return null; return Number(s); }
+function checkOne(i){
+  var inp=document.getElementById('a'+i), fb=document.getElementById('f'+i);
+  if(!inp.value.trim()){ fb.textContent=''; fb.className='fb'; inp.className='a'; return null; }
+  var ok = val(inp.value)===ALL[i].a;
+  inp.className='a '+(ok?'correct':'wrong'); fb.className='fb '+(ok?'y':'n'); fb.textContent= ok?'✓ Correct!':'✗ Try again';
+  return ok;
+}
+function checkAll(){
+  var right=0, tried=0;
+  ALL.forEach(function(_,i){ var r=checkOne(i); if(r!==null){ tried++; if(r) right++; } });
+  document.getElementById('score').textContent = tried ? right+' / 20 correct' + (tried<20 ? '  ('+(20-tried)+' blank)' : '') : 'Type your answers first.';
+}
+function clearAll(){
+  if(!confirm('Clear all answers and work?')) return;
+  ALL.forEach(function(_,i){ document.getElementById('a'+i).value=''; document.getElementById('w'+i).value=''; checkOne(i); });
+  document.getElementById('score').textContent=''; save();
+}
+function save(){ try{ var d={}; ALL.forEach(function(_,i){ d['a'+i]=document.getElementById('a'+i).value; d['w'+i]=document.getElementById('w'+i).value; }); localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){} }
+(function load(){ try{ var d=JSON.parse(localStorage.getItem(KEY)||'{}'); Object.keys(d).forEach(function(k){ var e=document.getElementById(k); if(e) e.value=d[k]; }); }catch(e){} })();
+document.addEventListener('input', function(e){ if(e.target.matches('input.a, textarea.work')){ if(e.target.matches('input.a')){ var i=+e.target.id.slice(1); document.getElementById('f'+i).textContent=''; e.target.className='a'; } save(); } });
+document.addEventListener('keydown', function(e){ if(e.key==='Enter' && e.target.matches('input.a')){ e.preventDefault(); checkOne(+e.target.id.slice(1)); } });
+</script>
+</body>
+</html>
