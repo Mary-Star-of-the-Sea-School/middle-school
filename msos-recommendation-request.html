@@ -77,7 +77,7 @@ footer{text-align:center;margin-top:24px;color:var(--dim);font-size:.82rem;paddi
   </header>
   <main>
     <div class="instructions">
-      Rate yourself honestly on each skill, then answer each question in a few sentences. Specific examples are the most helpful. Your teachers will review your ratings and answers alongside their own classroom observations and adjust them as needed when writing your recommendation. Your answers save in this browser as you type, so you can come back and finish later. When you're done, check the teachers who should receive it and click <b>Submit</b>.
+      Rate yourself honestly on each skill, then answer each question in a few sentences. Specific examples are the most helpful. Your teachers will review your ratings and answers alongside their own classroom observations and adjust them as needed when writing your recommendation. Your answers save automatically on this computer, even if you refresh or close the page, so you can come back and finish later. When you're done, check the teachers who should receive it and click <b>Submit</b>.
     </div>
 
     <div class="info">
@@ -163,11 +163,12 @@ footer{text-align:center;margin-top:24px;color:var(--dim);font-size:.82rem;paddi
 
     <div class="actions">
       <button class="btn" onclick="submitProfile()">📧 Submit</button>
-      <button class="btn alt" onclick="saveCopy()">💾 Save a Copy</button>
+      <button class="btn alt" onclick="saveNow()">💾 Save Answers</button>
+      <button class="btn alt" onclick="saveCopy()">⬇️ Download a Copy</button>
       <button class="btn alt" onclick="window.print()">🖨️ Print</button>
       <button class="btn alt" onclick="clearForm()">Clear</button>
       <span class="saved" id="saved"></span>
-      <span class="note" id="submitNote">Submit opens Gmail with your answers addressed to the teachers you checked. Sign in with your school account, then click Send. Save a Copy downloads your answers as a text file.</span>
+      <span class="note" id="submitNote">Submit opens Gmail with your answers addressed to the teachers you checked. Sign in with your school account, then click Send. Your answers save automatically as you type and stay after you refresh. Save Answers saves right away. Download a Copy saves a text file of your answers.</span>
     </div>
   </main>
   <footer>Mary, Star of the Sea School · Math 8 · Dr. Park</footer>
@@ -242,8 +243,24 @@ function collect(){
   document.querySelectorAll('.ri input:checked').forEach(r => d.ratings[r.name] = r.value);
   return d;
 }
+let storageOK = true;
 function save(){
-  try{ localStorage.setItem(KEY, JSON.stringify(collect())); $('saved').textContent = 'Saved ' + new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}); }catch(e){}
+  try{
+    localStorage.setItem(KEY, JSON.stringify(collect()));
+    storageOK = true;
+    $('saved').textContent = '✓ Saved ' + new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+    $('saved').style.color = '#15803d';
+    return true;
+  }catch(e){
+    storageOK = false;
+    $('saved').textContent = '⚠ Not saving on this browser — use Download a Copy before you leave';
+    $('saved').style.color = '#b91c1c';
+    return false;
+  }
+}
+function saveNow(){
+  if(save()) alert('Your answers are saved on this computer. You can close or refresh the page and finish later.');
+  else alert('This browser is not allowing answers to be saved (for example, a guest or private window). Click Download a Copy to keep your answers, or switch to your regular school account.');
 }
 function load(){
   let d = null;
@@ -262,9 +279,14 @@ function clearForm(){
   $('saved').textContent = '';
 }
 let t;
-document.addEventListener('input', () => { clearTimeout(t); t = setTimeout(save, 400); });
+document.addEventListener('input', () => { clearTimeout(t); t = setTimeout(save, 150); });
 document.addEventListener('change', save);
+window.addEventListener('pagehide', save);
+window.addEventListener('beforeunload', save);
+document.addEventListener('visibilitychange', () => { if(document.visibilityState === 'hidden') save(); });
 load();
+try{ localStorage.setItem(KEY+'-test','1'); localStorage.removeItem(KEY+'-test'); }
+catch(e){ storageOK = false; $('saved').textContent = '⚠ Not saving on this browser — use Download a Copy before you leave'; $('saved').style.color = '#b91c1c'; }
 
 function labelText(id){
   const l = document.querySelector('label[for="'+id+'"]');
@@ -441,7 +463,7 @@ async function submitProfile(){
   }
 }
 
-if(MAILER_URL){ const n=document.getElementById('submitNote'); if(n) n.innerHTML='Submit emails all your answers to the teachers you checked. Save a Copy downloads your answers as a text file.'; }
+if(MAILER_URL){ const n=document.getElementById('submitNote'); if(n) n.innerHTML='Submit emails all your answers to the teachers you checked. Your answers save automatically as you type and stay after you refresh. Save Answers saves right away. Download a Copy saves a text file of your answers.'; }
 
 function showSent(ok, name, err, who){
   let box = document.getElementById('sentBox');
