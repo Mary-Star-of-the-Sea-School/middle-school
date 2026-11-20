@@ -1269,12 +1269,69 @@ At x = 0 miles you still owe $3 (the base fee). Each extra mile adds $2. The for
   <tr><td>Just want a visual check</td><td>Graphing</td></tr>
 </table>
 
-<h3>Three types of solutions</h3>
-<ul>
-  <li><strong>ONE solution</strong> — the lines intersect at one point. Most common case.</li>
-  <li><strong>NO solution</strong> — the lines are PARALLEL. They never cross. Algebra gives a contradiction like 3 = 5.</li>
-  <li><strong>INFINITE solutions</strong> — the two equations are actually the SAME line (multiples of each other). Algebra gives 0 = 0 (always true).</li>
-</ul>
+<h3>Three types of solutions — see them</h3>
+<p>Every system of two lines ends up as one of these three pictures. The <strong>slopes</strong> and <strong>y-intercepts</strong> tell you which one before you even graph.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:12px 0;">
+  <div style="border:3px solid #059669;border-radius:12px;padding:12px;background:#f0fdf4;">
+    <div style="font-weight:900;font-size:1.15rem;color:#065f46;text-align:center;">● ONE solution</div>
+    <div style="text-align:center;font-weight:700;color:#475569;font-size:.9rem;margin-bottom:6px;">The lines <u>cross</u> once</div>
+    <svg viewBox="0 0 244 244" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:250px;height:auto;background:#fff;border:1px solid #cbd5e1;border-radius:10px;display:block;margin:0 auto" font-family="Arial"><line x1="12" y1="232" x2="12" y2="12" stroke="#eef2f7"/><line x1="12" y1="232" x2="232" y2="232" stroke="#eef2f7"/><line x1="34" y1="232" x2="34" y2="12" stroke="#eef2f7"/><line x1="12" y1="210" x2="232" y2="210" stroke="#eef2f7"/><line x1="56" y1="232" x2="56" y2="12" stroke="#eef2f7"/><line x1="12" y1="188" x2="232" y2="188" stroke="#eef2f7"/><line x1="78" y1="232" x2="78" y2="12" stroke="#eef2f7"/><line x1="12" y1="166" x2="232" y2="166" stroke="#eef2f7"/><line x1="100" y1="232" x2="100" y2="12" stroke="#eef2f7"/><line x1="12" y1="144" x2="232" y2="144" stroke="#eef2f7"/><line x1="122" y1="232" x2="122" y2="12" stroke="#eef2f7"/><line x1="12" y1="122" x2="232" y2="122" stroke="#eef2f7"/><line x1="144" y1="232" x2="144" y2="12" stroke="#eef2f7"/><line x1="12" y1="100" x2="232" y2="100" stroke="#eef2f7"/><line x1="166" y1="232" x2="166" y2="12" stroke="#eef2f7"/><line x1="12" y1="78" x2="232" y2="78" stroke="#eef2f7"/><line x1="188" y1="232" x2="188" y2="12" stroke="#eef2f7"/><line x1="12" y1="56" x2="232" y2="56" stroke="#eef2f7"/><line x1="210" y1="232" x2="210" y2="12" stroke="#eef2f7"/><line x1="12" y1="34" x2="232" y2="34" stroke="#eef2f7"/><line x1="232" y1="232" x2="232" y2="12" stroke="#eef2f7"/><line x1="12" y1="12" x2="232" y2="12" stroke="#eef2f7"/><line x1="12" y1="122" x2="232" y2="122" stroke="#334155" stroke-width="1.6"/><line x1="122" y1="232" x2="122" y2="12" stroke="#334155" stroke-width="1.6"/><clipPath id="syg1"><rect x="12" y="12" width="220" height="220"/></clipPath><g clip-path="url(#syg1)"><line x1="12" y1="210" x2="232" y2="-10" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><line x1="12" y1="-98" x2="232" y2="122" stroke="#d97706" stroke-width="4" stroke-linecap="round"/></g><circle cx="166" cy="56" r="7" fill="#059669" stroke="#fff" stroke-width="2.5"/><text x="176" y="48" font-size="14" font-weight="800" fill="#059669">(2, 3)</text></svg>
+    <div style="font-family:Consolas,'Courier New',monospace;font-size:.95rem;margin-top:8px;"><span style="color:#2563eb;font-weight:800;">y = x + 1</span><br><span style="color:#d97706;font-weight:800;">y = −x + 5</span></div>
+    <ul style="margin:6px 0 0 18px;font-size:.92rem;"><li>Slopes: <strong>different</strong> (1 and −1)</li><li>Algebra: x + 1 = −x + 5 → 2x = 4 → <strong>x = 2</strong>, y = 3</li><li>Like two roads that meet at one intersection.</li></ul>
+  </div>
+  <div style="border:3px solid #dc2626;border-radius:12px;padding:12px;background:#fef2f2;">
+    <div style="font-weight:900;font-size:1.15rem;color:#991b1b;text-align:center;">✗ NO solution</div>
+    <div style="text-align:center;font-weight:700;color:#475569;font-size:.9rem;margin-bottom:6px;">The lines are <u>parallel</u></div>
+    <svg viewBox="0 0 244 244" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:250px;height:auto;background:#fff;border:1px solid #cbd5e1;border-radius:10px;display:block;margin:0 auto" font-family="Arial"><line x1="12" y1="232" x2="12" y2="12" stroke="#eef2f7"/><line x1="12" y1="232" x2="232" y2="232" stroke="#eef2f7"/><line x1="34" y1="232" x2="34" y2="12" stroke="#eef2f7"/><line x1="12" y1="210" x2="232" y2="210" stroke="#eef2f7"/><line x1="56" y1="232" x2="56" y2="12" stroke="#eef2f7"/><line x1="12" y1="188" x2="232" y2="188" stroke="#eef2f7"/><line x1="78" y1="232" x2="78" y2="12" stroke="#eef2f7"/><line x1="12" y1="166" x2="232" y2="166" stroke="#eef2f7"/><line x1="100" y1="232" x2="100" y2="12" stroke="#eef2f7"/><line x1="12" y1="144" x2="232" y2="144" stroke="#eef2f7"/><line x1="122" y1="232" x2="122" y2="12" stroke="#eef2f7"/><line x1="12" y1="122" x2="232" y2="122" stroke="#eef2f7"/><line x1="144" y1="232" x2="144" y2="12" stroke="#eef2f7"/><line x1="12" y1="100" x2="232" y2="100" stroke="#eef2f7"/><line x1="166" y1="232" x2="166" y2="12" stroke="#eef2f7"/><line x1="12" y1="78" x2="232" y2="78" stroke="#eef2f7"/><line x1="188" y1="232" x2="188" y2="12" stroke="#eef2f7"/><line x1="12" y1="56" x2="232" y2="56" stroke="#eef2f7"/><line x1="210" y1="232" x2="210" y2="12" stroke="#eef2f7"/><line x1="12" y1="34" x2="232" y2="34" stroke="#eef2f7"/><line x1="232" y1="232" x2="232" y2="12" stroke="#eef2f7"/><line x1="12" y1="12" x2="232" y2="12" stroke="#eef2f7"/><line x1="12" y1="122" x2="232" y2="122" stroke="#334155" stroke-width="1.6"/><line x1="122" y1="232" x2="122" y2="12" stroke="#334155" stroke-width="1.6"/><defs><marker id="syg2a" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker></defs><clipPath id="syg2"><rect x="12" y="12" width="220" height="220"/></clipPath><g clip-path="url(#syg2)"><line x1="12" y1="276" x2="232" y2="-164" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><line x1="12" y1="364" x2="232" y2="-76" stroke="#d97706" stroke-width="4" stroke-linecap="round"/><line x1="78" y1="149" x2="78" y2="227" stroke="#dc2626" stroke-width="2" marker-start="url(#syg2a)" marker-end="url(#syg2a)"/><line x1="144" y1="17" x2="144" y2="95" stroke="#dc2626" stroke-width="2" marker-start="url(#syg2a)" marker-end="url(#syg2a)"/></g></svg>
+    <div style="font-family:Consolas,'Courier New',monospace;font-size:.95rem;margin-top:8px;"><span style="color:#2563eb;font-weight:800;">y = 2x + 3</span><br><span style="color:#d97706;font-weight:800;">y = 2x − 1</span></div>
+    <ul style="margin:6px 0 0 18px;font-size:.92rem;"><li>Slopes: <strong>same</strong> (2); y-intercepts: <strong>different</strong> (3 and −1)</li><li>Algebra: 2x + 3 = 2x − 1 → <strong>3 = −1</strong> ✗ never true</li><li>Like railroad tracks: always 4 apart, never meet.</li></ul>
+  </div>
+  <div style="border:3px solid #7c3aed;border-radius:12px;padding:12px;background:#f5f3ff;">
+    <div style="font-weight:900;font-size:1.15rem;color:#5b21b6;text-align:center;">∞ INFINITE solutions</div>
+    <div style="text-align:center;font-weight:700;color:#475569;font-size:.9rem;margin-bottom:6px;">It is the <u>same line</u> twice</div>
+    <svg viewBox="0 0 244 244" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:250px;height:auto;background:#fff;border:1px solid #cbd5e1;border-radius:10px;display:block;margin:0 auto" font-family="Arial"><line x1="12" y1="232" x2="12" y2="12" stroke="#eef2f7"/><line x1="12" y1="232" x2="232" y2="232" stroke="#eef2f7"/><line x1="34" y1="232" x2="34" y2="12" stroke="#eef2f7"/><line x1="12" y1="210" x2="232" y2="210" stroke="#eef2f7"/><line x1="56" y1="232" x2="56" y2="12" stroke="#eef2f7"/><line x1="12" y1="188" x2="232" y2="188" stroke="#eef2f7"/><line x1="78" y1="232" x2="78" y2="12" stroke="#eef2f7"/><line x1="12" y1="166" x2="232" y2="166" stroke="#eef2f7"/><line x1="100" y1="232" x2="100" y2="12" stroke="#eef2f7"/><line x1="12" y1="144" x2="232" y2="144" stroke="#eef2f7"/><line x1="122" y1="232" x2="122" y2="12" stroke="#eef2f7"/><line x1="12" y1="122" x2="232" y2="122" stroke="#eef2f7"/><line x1="144" y1="232" x2="144" y2="12" stroke="#eef2f7"/><line x1="12" y1="100" x2="232" y2="100" stroke="#eef2f7"/><line x1="166" y1="232" x2="166" y2="12" stroke="#eef2f7"/><line x1="12" y1="78" x2="232" y2="78" stroke="#eef2f7"/><line x1="188" y1="232" x2="188" y2="12" stroke="#eef2f7"/><line x1="12" y1="56" x2="232" y2="56" stroke="#eef2f7"/><line x1="210" y1="232" x2="210" y2="12" stroke="#eef2f7"/><line x1="12" y1="34" x2="232" y2="34" stroke="#eef2f7"/><line x1="232" y1="232" x2="232" y2="12" stroke="#eef2f7"/><line x1="12" y1="12" x2="232" y2="12" stroke="#eef2f7"/><line x1="12" y1="122" x2="232" y2="122" stroke="#334155" stroke-width="1.6"/><line x1="122" y1="232" x2="122" y2="12" stroke="#334155" stroke-width="1.6"/><clipPath id="syg3"><rect x="12" y="12" width="220" height="220"/></clipPath><g clip-path="url(#syg3)"><line x1="12" y1="320" x2="232" y2="-120" stroke="#2563eb" stroke-width="10" stroke-linecap="round"/><line x1="12" y1="320" x2="232" y2="-120" stroke="#d97706" stroke-width="4" stroke-linecap="round" stroke-dasharray="9 7"/></g></svg>
+    <div style="font-family:Consolas,'Courier New',monospace;font-size:.95rem;margin-top:8px;"><span style="color:#2563eb;font-weight:800;">y = 2x + 1</span><br><span style="color:#d97706;font-weight:800;">2y = 4x + 2</span> <span style="color:#475569;">(÷2 → y = 2x + 1)</span></div>
+    <ul style="margin:6px 0 0 18px;font-size:.92rem;"><li>Slopes: <strong>same</strong>; y-intercepts: <strong>same</strong></li><li>Algebra: 2x + 1 = 2x + 1 → <strong>0 = 0</strong> ✓ always true</li><li>Every point on the line works, so there are endlessly many.</li></ul>
+  </div>
+</div>
+
+<h3>Quick check: compare slope and y-intercept</h3>
+<p>Write both equations as y = mx + b, then follow the arrows.</p>
+<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin:10px 0 14px;font-weight:800;text-align:center;font-size:.95rem;">
+  <div style="background:#1F3864;color:#fff;border-radius:10px;padding:10px 14px;">Are the slopes the same?</div>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div>NO → <span style="background:#059669;color:#fff;border-radius:8px;padding:6px 10px;">● ONE solution</span></div>
+    <div>YES → <span style="background:#1F3864;color:#fff;border-radius:8px;padding:6px 10px;">Same y-intercept?</span></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div>NO → <span style="background:#dc2626;color:#fff;border-radius:8px;padding:6px 10px;">✗ NO solution</span></div>
+    <div>YES → <span style="background:#7c3aed;color:#fff;border-radius:8px;padding:6px 10px;">∞ INFINITE</span></div>
+  </div>
+</div>
+<table class="sy-table">
+  <tr><th></th><th>Slopes</th><th>y-intercepts</th><th>Graph</th><th>Last line of the algebra</th></tr>
+  <tr><td><strong>One solution</strong></td><td>different</td><td>any</td><td>cross once</td><td>x = a number</td></tr>
+  <tr><td><strong>No solution</strong></td><td>same</td><td>different</td><td>parallel</td><td>false, like 3 = −1</td></tr>
+  <tr><td><strong>Infinite solutions</strong></td><td>same</td><td>same</td><td>one line on top of the other</td><td>true, like 0 = 0</td></tr>
+</table>
+
+<h3>Try it: move the orange line</h3>
+<p>The blue line stays <span style="color:#2563eb;font-weight:800;">y = x + 1</span>. Slide the orange line's slope and y-intercept and watch the answer change.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;align-items:center;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:14px;margin:10px 0;">
+  <div id="syGraph"><svg viewBox="0 0 316 316" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:340px;height:auto;background:#fff;border:1px solid #cbd5e1;border-radius:10px" font-family="Arial"><line x1="14" y1="302" x2="14" y2="14" stroke="#eef2f7"/><line x1="14" y1="302" x2="302" y2="302" stroke="#eef2f7"/><line x1="38" y1="302" x2="38" y2="14" stroke="#eef2f7"/><line x1="14" y1="278" x2="302" y2="278" stroke="#eef2f7"/><line x1="62" y1="302" x2="62" y2="14" stroke="#eef2f7"/><line x1="14" y1="254" x2="302" y2="254" stroke="#eef2f7"/><line x1="86" y1="302" x2="86" y2="14" stroke="#eef2f7"/><line x1="14" y1="230" x2="302" y2="230" stroke="#eef2f7"/><line x1="110" y1="302" x2="110" y2="14" stroke="#eef2f7"/><line x1="14" y1="206" x2="302" y2="206" stroke="#eef2f7"/><line x1="134" y1="302" x2="134" y2="14" stroke="#eef2f7"/><line x1="14" y1="182" x2="302" y2="182" stroke="#eef2f7"/><line x1="158" y1="302" x2="158" y2="14" stroke="#eef2f7"/><line x1="14" y1="158" x2="302" y2="158" stroke="#eef2f7"/><line x1="182" y1="302" x2="182" y2="14" stroke="#eef2f7"/><line x1="14" y1="134" x2="302" y2="134" stroke="#eef2f7"/><line x1="206" y1="302" x2="206" y2="14" stroke="#eef2f7"/><line x1="14" y1="110" x2="302" y2="110" stroke="#eef2f7"/><line x1="230" y1="302" x2="230" y2="14" stroke="#eef2f7"/><line x1="14" y1="86" x2="302" y2="86" stroke="#eef2f7"/><line x1="254" y1="302" x2="254" y2="14" stroke="#eef2f7"/><line x1="14" y1="62" x2="302" y2="62" stroke="#eef2f7"/><line x1="278" y1="302" x2="278" y2="14" stroke="#eef2f7"/><line x1="14" y1="38" x2="302" y2="38" stroke="#eef2f7"/><line x1="302" y1="302" x2="302" y2="14" stroke="#eef2f7"/><line x1="14" y1="14" x2="302" y2="14" stroke="#eef2f7"/><line x1="14" y1="158" x2="302" y2="158" stroke="#334155" stroke-width="1.6"/><line x1="158" y1="302" x2="158" y2="14" stroke="#334155" stroke-width="1.6"/><clipPath id="syc"><rect x="14" y="14" width="288" height="288"/></clipPath><g clip-path="url(#syc)"><line x1="14" y1="278" x2="302" y2="-10" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><line x1="14" y1="-106" x2="302" y2="182" stroke="#d97706" stroke-width="4" stroke-linecap="round"/><circle cx="206" cy="86" r="7" fill="#059669" stroke="#fff" stroke-width="2.5"/></g></svg></div>
+  <div>
+    <div style="font-family:Consolas,'Courier New',monospace;font-size:1.05rem;font-weight:800;margin-bottom:8px;"><span style="color:#2563eb;">y = x + 1</span><br><span style="color:#d97706;" id="syEq2">y = −x + 5</span></div>
+    <label style="display:block;font-weight:800;">Orange slope (m) <input id="syM2" type="range" min="-3" max="3" step="0.5" value="-1" oninput="syExplore()" style="width:100%;"></label>
+    <label style="display:block;font-weight:800;margin-top:6px;">Orange y-intercept (b) <input id="syB2" type="range" min="-5" max="5" step="1" value="5" oninput="syExplore()" style="width:100%;"></label>
+    <div id="syOut" style="margin-top:10px;color:#fff;background:#059669;border-radius:8px;padding:8px 12px;font-weight:900;">● ONE solution at (2, 3)</div>
+    <div id="syAlg" style="margin-top:6px;font-family:Consolas,'Courier New',monospace;font-size:.92rem;color:#334155;">x + 1 = −x + 5  →  x = 2, y = 3</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">
+      <button type="button" class="btn" onclick="syExplore('one')" style="padding:5px 10px;font-size:.85rem;">Make them cross</button>
+      <button type="button" class="btn" onclick="syExplore('par')" style="padding:5px 10px;font-size:.85rem;">Make them parallel</button>
+      <button type="button" class="btn" onclick="syExplore('same')" style="padding:5px 10px;font-size:.85rem;">Make the same line</button>
+    </div>
+  </div>
+</div>
 
 <h3>Real-world uses</h3>
 <ul>
@@ -2700,6 +2757,38 @@ const QUIZZES = {
 
 let completedUnits = {};
 let currentUnit = null;
+
+// Systems unit: line explorer (one / no / infinite solutions)
+function syExploreSVG(m1,b1,m2,b2){
+  var U=24,P=14,R=6,S=2*R*U+2*P;
+  function X(x){return P+(x+R)*U} function Y(y){return P+(R-y)*U}
+  var h='<svg viewBox="0 0 '+S+' '+S+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:340px;height:auto;background:#fff;border:1px solid #cbd5e1;border-radius:10px" font-family="Arial">';
+  for(var i=-R;i<=R;i++){h+='<line x1="'+X(i)+'" y1="'+Y(-R)+'" x2="'+X(i)+'" y2="'+Y(R)+'" stroke="#eef2f7"/><line x1="'+X(-R)+'" y1="'+Y(i)+'" x2="'+X(R)+'" y2="'+Y(i)+'" stroke="#eef2f7"/>';}
+  h+='<line x1="'+X(-R)+'" y1="'+Y(0)+'" x2="'+X(R)+'" y2="'+Y(0)+'" stroke="#334155" stroke-width="1.6"/><line x1="'+X(0)+'" y1="'+Y(-R)+'" x2="'+X(0)+'" y2="'+Y(R)+'" stroke="#334155" stroke-width="1.6"/>';
+  function ln(m,b,col,w,dash){return '<line x1="'+X(-R)+'" y1="'+Y(m*-R+b)+'" x2="'+X(R)+'" y2="'+Y(m*R+b)+'" stroke="'+col+'" stroke-width="'+w+'"'+(dash?' stroke-dasharray="9 7"':'')+' stroke-linecap="round"/>';}
+  var same=(m1===m2&&b1===b2), par=(m1===m2&&b1!==b2);
+  h+='<clipPath id="syc"><rect x="'+X(-R)+'" y="'+Y(R)+'" width="'+2*R*U+'" height="'+2*R*U+'"/></clipPath><g clip-path="url(#syc)">';
+  h+=ln(m1,b1,'#2563eb',same?9:4,false)+ln(m2,b2,'#d97706',4,same);
+  if(!same&&!par){var x=(b2-b1)/(m1-m2),y=m1*x+b1; if(Math.abs(x)<=R&&Math.abs(y)<=R) h+='<circle cx="'+X(x)+'" cy="'+Y(y)+'" r="7" fill="#059669" stroke="#fff" stroke-width="2.5"/>';}
+  h+='</g></svg>';
+  return h;
+}
+function syFmt(m,b){var mt=m===0?'':(m===1?'x':(m===-1?'−x':(String(m).replace('-','−')+'x')));var bt=b===0?'':(b>0?(mt?' + '+b:String(b)):(mt?' − '+(-b):'−'+(-b)));return 'y = '+((mt+bt)||'0');}
+function syNum(v){var r=Math.round(v*100)/100;return String(r).replace('-','−');}
+function syExplore(set){
+  var m2=document.getElementById('syM2'), b2=document.getElementById('syB2'); if(!m2) return;
+  if(set==='par'){ m2.value=1; b2.value=-3; } else if(set==='same'){ m2.value=1; b2.value=1; } else if(set==='one'){ m2.value=-1; b2.value=5; }
+  var M=Number(m2.value), B=Number(b2.value), m1=1, b1=1;
+  document.getElementById('syGraph').innerHTML=syExploreSVG(m1,b1,M,B);
+  document.getElementById('syEq2').textContent=syFmt(M,B);
+  var out=document.getElementById('syOut'), alg=document.getElementById('syAlg');
+  if(M===m1&&B===b1){ out.textContent='∞ INFINITE solutions — same line'; out.style.background='#7c3aed';
+    alg.textContent='x + 1 = '+syFmt(M,B).slice(4)+'  →  0 = 0  ✓ always true'; }
+  else if(M===m1){ out.textContent='✗ NO solution — parallel lines'; out.style.background='#dc2626';
+    alg.textContent='x + 1 = '+syFmt(M,B).slice(4)+'  →  1 = '+syNum(B)+'  ✗ never true'; }
+  else { var x=(B-b1)/(m1-M), y=x+1; out.textContent='● ONE solution at ('+syNum(x)+', '+syNum(y)+')'; out.style.background='#059669';
+    alg.textContent='x + 1 = '+syFmt(M,B).slice(4)+'  →  x = '+syNum(x)+', y = '+syNum(y); }
+}
 
 function resourceCardHTML(unit) {
   const phetBtn = unit.phetUrl ? `<a class="btn-phet" href="${unit.phetUrl}" target="_blank">🧪 PhET Simulation</a>` : '';
