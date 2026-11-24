@@ -152,6 +152,51 @@ body, input, button, textarea, select { font-family: 'GreekMath', 'Segoe UI', Ta
 <section class="card" id="wsec5">
 <h2>5️⃣ Temperature</h2>
 <div class="intro">F = 9/5 C + 32. Solve for C.</div>
+<div class="mini-calc" id="calc5" aria-label="Calculator">
+  <div class="mc-title">🧮 Calculator</div>
+  <input type="text" class="mc-disp" id="calc5-disp" inputmode="decimal" autocomplete="off" placeholder="0">
+  <div class="mc-keys">
+    <button type="button" data-k="C" class="mc-fn">C</button><button type="button" data-k="⌫" class="mc-fn">⌫</button><button type="button" data-k="(" class="mc-fn">(</button><button type="button" data-k=")" class="mc-fn">)</button>
+    <button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button><button type="button" data-k="÷" class="mc-op">÷</button>
+    <button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button><button type="button" data-k="×" class="mc-op">×</button>
+    <button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" data-k="−" class="mc-op">−</button>
+    <button type="button" data-k="0">0</button><button type="button" data-k=".">.</button><button type="button" data-k="=" class="mc-eq">=</button><button type="button" data-k="+" class="mc-op">+</button>
+  </div>
+</div>
+<style>
+.mini-calc{display:inline-block;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:10px;padding:10px;margin:8px 0 12px;width:220px;vertical-align:top}
+.mini-calc .mc-title{font-weight:800;font-size:.9rem;margin-bottom:6px;color:#1e3a8a}
+.mini-calc .mc-disp{width:100%;box-sizing:border-box;text-align:right;font-size:1.2rem;font-weight:700;padding:6px 8px;border:1.5px solid #94a3b8;border-radius:6px;margin-bottom:8px;font-family:inherit;background:#fff}
+.mini-calc .mc-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.mini-calc button{padding:9px 0;font-size:1rem;font-weight:700;border:1px solid #cbd5e1;border-radius:6px;background:#fff;cursor:pointer;font-family:inherit}
+.mini-calc button:active{transform:scale(.96)}
+.mini-calc .mc-op{background:#e0e7ff;color:#1e3a8a}.mini-calc .mc-fn{background:#f1f5f9}.mini-calc .mc-eq{background:#2563eb;color:#fff;border-color:#1d4ed8}
+@media print{.mini-calc{display:none}}
+</style>
+<script>
+(function(){
+  var d=document.getElementById('calc5-disp'), done=false;
+  function calc(){
+    var t=d.value.replace(/×/g,'*').replace(/÷/g,'/').replace(/[−–]/g,'-').replace(/\s+/g,'');
+    t=t.replace(/(\d|\))(?=\()/g,'$1*').replace(/\)(?=\d)/g,')*');
+    if(!t) return; if(!/^[0-9+\-*/().]+$/.test(t)){d.value='Error';done=true;return;}
+    try{var v=Function('return ('+t+')')(); if(!isFinite(v)) throw 0; d.value=String(Math.round(v*1e10)/1e10);}catch(e){d.value='Error';}
+    done=true;
+  }
+  document.querySelectorAll('#calc5 button').forEach(function(b){
+    b.addEventListener('click',function(){
+      var k=b.dataset.k;
+      if(k==='C'){d.value='';done=false;return;}
+      if(k==='⌫'){d.value=d.value.slice(0,-1);done=false;return;}
+      if(k==='='){calc();return;}
+      if(done){ if(/[0-9.(]/.test(k)||d.value==='Error') d.value=''; done=false; }
+      d.value+=k;
+    });
+  });
+  d.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key==='='){e.preventDefault();e.stopPropagation();calc();} });
+})();
+</script>
+
 <h3>Practice:</h3>
 <ol class="qlist">
 <li>F = 9/5 C + 32. Solve for C. <input class="ans" data-a="formC" size="22"><svg viewBox="0 0 320 156" width="320" style="max-width:100%;height:auto;display:block;margin:6px 0 10px;background:#fff;border:1px solid #e2e8f0;border-radius:8px" role="img" aria-label="thermometer"><rect x="60.0" y="16.0" width="24.0" height="110.0" rx="12" fill="#fff" stroke="#334155" stroke-width="2"/><circle cx="72.0" cy="130.0" r="16.0" fill="#ef4444" stroke="#334155" stroke-width="2"/><rect x="66.0" y="60.0" width="12.0" height="70.0" rx="0" fill="#ef4444" stroke="none" stroke-width="0"/><line x1="84.0" y1="112.0" x2="96.0" y2="112.0" stroke="#334155" stroke-width="1.5"/><text x="100.0" y="116.0" font-size="10" font-weight="800" fill="#334155" text-anchor="start" font-family="Segoe UI, Arial, sans-serif">32°F  =  0°C</text><text x="230.0" y="60.0" font-size="13" font-weight="800" fill="#1e3a8a" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">F = 9/5 C + 32</text><text x="230.0" y="84.0" font-size="13" font-weight="800" fill="#1e3a8a" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">C = 5/9 (F − 32)</text></svg></li>
