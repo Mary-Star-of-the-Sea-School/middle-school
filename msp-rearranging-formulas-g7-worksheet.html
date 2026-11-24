@@ -152,17 +152,7 @@ body, input, button, textarea, select { font-family: 'GreekMath', 'Segoe UI', Ta
 <section class="card" id="wsec5">
 <h2>5️⃣ Temperature</h2>
 <div class="intro">F = 9/5 C + 32. Solve for C.</div>
-<div class="mini-calc" id="calc5" aria-label="Calculator">
-  <div class="mc-title">🧮 Calculator</div>
-  <input type="text" class="mc-disp" id="calc5-disp" inputmode="decimal" autocomplete="off" placeholder="0">
-  <div class="mc-keys">
-    <button type="button" data-k="C" class="mc-fn">C</button><button type="button" data-k="⌫" class="mc-fn">⌫</button><button type="button" data-k="(" class="mc-fn">(</button><button type="button" data-k=")" class="mc-fn">)</button>
-    <button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button><button type="button" data-k="÷" class="mc-op">÷</button>
-    <button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button><button type="button" data-k="×" class="mc-op">×</button>
-    <button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" data-k="−" class="mc-op">−</button>
-    <button type="button" data-k="0">0</button><button type="button" data-k=".">.</button><button type="button" data-k="=" class="mc-eq">=</button><button type="button" data-k="+" class="mc-op">+</button>
-  </div>
-</div>
+
 <style>
 .mini-calc{display:inline-block;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:10px;padding:10px;margin:8px 0 12px;width:220px;vertical-align:top}
 .mini-calc .mc-title{font-weight:800;font-size:.9rem;margin-bottom:6px;color:#1e3a8a}
@@ -172,9 +162,10 @@ body, input, button, textarea, select { font-family: 'GreekMath', 'Segoe UI', Ta
 .mini-calc button:active{transform:scale(.96)}
 .mini-calc .mc-op{background:#e0e7ff;color:#1e3a8a}.mini-calc .mc-fn{background:#f1f5f9}.mini-calc .mc-eq{background:#2563eb;color:#fff;border-color:#1d4ed8}
 @media print{.mini-calc{display:none}}
+@media (max-width:700px){.mcalc-wrap .mini-calc{position:static!important;width:100%!important;flex:1 1 100%!important}}
 </style>
 <script>
-(function(){
+document.addEventListener('DOMContentLoaded',function(){
   var d=document.getElementById('calc5-disp'), done=false;
   function calc(){
     var t=d.value.replace(/×/g,'*').replace(/÷/g,'/').replace(/[−–]/g,'-').replace(/\s+/g,'');
@@ -194,16 +185,30 @@ body, input, button, textarea, select { font-family: 'GreekMath', 'Segoe UI', Ta
     });
   });
   d.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key==='='){e.preventDefault();e.stopPropagation();calc();} });
-})();
+});
 </script>
 
 <h3>Practice:</h3>
+<div class="mcalc-wrap" style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;"><div style="flex:1 1 380px;min-width:0;">
 <ol class="qlist">
 <li>F = 9/5 C + 32. Solve for C. <input class="ans" data-a="formC" size="22"><svg viewBox="0 0 320 156" width="320" style="max-width:100%;height:auto;display:block;margin:6px 0 10px;background:#fff;border:1px solid #e2e8f0;border-radius:8px" role="img" aria-label="thermometer"><rect x="60.0" y="16.0" width="24.0" height="110.0" rx="12" fill="#fff" stroke="#334155" stroke-width="2"/><circle cx="72.0" cy="130.0" r="16.0" fill="#ef4444" stroke="#334155" stroke-width="2"/><rect x="66.0" y="60.0" width="12.0" height="70.0" rx="0" fill="#ef4444" stroke="none" stroke-width="0"/><line x1="84.0" y1="112.0" x2="96.0" y2="112.0" stroke="#334155" stroke-width="1.5"/><text x="100.0" y="116.0" font-size="10" font-weight="800" fill="#334155" text-anchor="start" font-family="Segoe UI, Arial, sans-serif">32°F  =  0°C</text><text x="230.0" y="60.0" font-size="13" font-weight="800" fill="#1e3a8a" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">F = 9/5 C + 32</text><text x="230.0" y="84.0" font-size="13" font-weight="800" fill="#1e3a8a" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">C = 5/9 (F − 32)</text></svg></li>
 <li>Convert 68°F to °C. <input class="ans" data-a="last:20" size="10"><svg viewBox="0 0 320 156" width="320" style="max-width:100%;height:auto;display:block;margin:6px 0 10px;background:#fff;border:1px solid #e2e8f0;border-radius:8px" role="img" aria-label="thermometer"><rect x="60.0" y="16.0" width="24.0" height="110.0" rx="12" fill="#fff" stroke="#334155" stroke-width="2"/><circle cx="72.0" cy="130.0" r="16.0" fill="#ef4444" stroke="#334155" stroke-width="2"/><rect x="66.0" y="60.0" width="12.0" height="70.0" rx="0" fill="#ef4444" stroke="none" stroke-width="0"/><line x1="84.0" y1="112.0" x2="96.0" y2="112.0" stroke="#334155" stroke-width="1.5"/><text x="100.0" y="116.0" font-size="10" font-weight="800" fill="#334155" text-anchor="start" font-family="Segoe UI, Arial, sans-serif">32°F  =  0°C</text><text x="230.0" y="60.0" font-size="13" font-weight="800" fill="#1e3a8a" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">F = 9/5 C + 32</text><text x="230.0" y="84.0" font-size="13" font-weight="800" fill="#1e3a8a" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">C = 5/9 (F − 32)</text></svg></li>
 <li>Convert 25°C to °F. <input class="ans" data-a="last:77" size="10"><svg viewBox="0 0 320 156" width="320" style="max-width:100%;height:auto;display:block;margin:6px 0 10px;background:#fff;border:1px solid #e2e8f0;border-radius:8px" role="img" aria-label="thermometer"><rect x="60.0" y="16.0" width="24.0" height="110.0" rx="12" fill="#fff" stroke="#334155" stroke-width="2"/><circle cx="72.0" cy="130.0" r="16.0" fill="#ef4444" stroke="#334155" stroke-width="2"/><rect x="66.0" y="60.0" width="12.0" height="70.0" rx="0" fill="#ef4444" stroke="none" stroke-width="0"/><line x1="84.0" y1="112.0" x2="96.0" y2="112.0" stroke="#334155" stroke-width="1.5"/><text x="100.0" y="116.0" font-size="10" font-weight="800" fill="#334155" text-anchor="start" font-family="Segoe UI, Arial, sans-serif">32°F  =  0°C</text><text x="230.0" y="60.0" font-size="13" font-weight="800" fill="#1e3a8a" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">F = 9/5 C + 32</text><text x="230.0" y="84.0" font-size="13" font-weight="800" fill="#1e3a8a" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">C = 5/9 (F − 32)</text></svg></li>
 <li>Convert 100°C to °F. <input class="ans" data-a="last:212" size="10"><svg viewBox="0 0 320 156" width="320" style="max-width:100%;height:auto;display:block;margin:6px 0 10px;background:#fff;border:1px solid #e2e8f0;border-radius:8px" role="img" aria-label="thermometer"><rect x="60.0" y="16.0" width="24.0" height="110.0" rx="12" fill="#fff" stroke="#334155" stroke-width="2"/><circle cx="72.0" cy="130.0" r="16.0" fill="#ef4444" stroke="#334155" stroke-width="2"/><rect x="66.0" y="60.0" width="12.0" height="70.0" rx="0" fill="#ef4444" stroke="none" stroke-width="0"/><line x1="84.0" y1="112.0" x2="96.0" y2="112.0" stroke="#334155" stroke-width="1.5"/><text x="100.0" y="116.0" font-size="10" font-weight="800" fill="#334155" text-anchor="start" font-family="Segoe UI, Arial, sans-serif">32°F  =  0°C</text><text x="230.0" y="60.0" font-size="13" font-weight="800" fill="#1e3a8a" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">F = 9/5 C + 32</text><text x="230.0" y="84.0" font-size="13" font-weight="800" fill="#1e3a8a" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif">C = 5/9 (F − 32)</text></svg></li>
 </ol>
+</div>
+<div class="mini-calc" id="calc5" aria-label="Calculator" style="position:sticky;top:12px;flex:0 0 220px;margin-top:0">
+  <div class="mc-title">🧮 Calculator</div>
+  <input type="text" class="mc-disp" id="calc5-disp" inputmode="decimal" autocomplete="off" placeholder="0">
+  <div class="mc-keys">
+    <button type="button" data-k="C" class="mc-fn">C</button><button type="button" data-k="⌫" class="mc-fn">⌫</button><button type="button" data-k="(" class="mc-fn">(</button><button type="button" data-k=")" class="mc-fn">)</button>
+    <button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button><button type="button" data-k="÷" class="mc-op">÷</button>
+    <button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button><button type="button" data-k="×" class="mc-op">×</button>
+    <button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" data-k="−" class="mc-op">−</button>
+    <button type="button" data-k="0">0</button><button type="button" data-k=".">.</button><button type="button" data-k="=" class="mc-eq">=</button><button type="button" data-k="+" class="mc-op">+</button>
+  </div>
+</div>
+</div>
 <button class="check-btn" onclick="checkSection('wsec5')">✓ Check Answers</button><button type="button" onclick="saveAnswersToFile()" class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #047857; background:#059669; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0;">💾 Save</button><label class="save-btn" style="padding:7px 12px; border-radius:6px; border:1px solid #0369a1; background:#0284c7; color:#fff; font-weight:800; font-size:.85rem; cursor:pointer; margin:8px 4px 6px 0; display:inline-block;">📁 Load<input type="file" accept=".json" style="display:none;" onchange="loadAnswersFromFile(event)"></label><button class="reset-btn" onclick="resetSection('wsec5')">↺ Clear</button><span class="score" id="score-wsec5">—</span> <button class="reveal-btn" onclick="toggle('ak5')">Show / Hide Answer Key</button>
 <div id="ak5" class="ak"><h4>Answer Key — Section 5</h4>(1) C = 5/9 (F − 32) (2) 20°C (3) 77°F (4) 212°F</div>
 </section>
