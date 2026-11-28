@@ -262,6 +262,59 @@ body, input, button, textarea, select { font-family: 'GreekMath', 'Segoe UI', Ta
 </div>
 </section>
 
+<!--WS-SUBMIT-->
+<section class="card" id="ws-submit" style="border-top:5px solid #059669;">
+<h2>📨 Submit to Dr. Park</h2>
+<p style="margin:6px 0 10px;color:#475569;">When you have finished every section, type your name and class, then click <strong>Submit to Dr. Park</strong>. Your answers are checked and an email to Dr. Park opens in your school Gmail. Click <strong>Send</strong> there.</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px;">
+<label style="font-weight:800;color:#1a2a4a;">Name <input id="ws-student-name" type="text" autocomplete="off" placeholder="First and last name" style="padding:7px 10px;border:2px solid #94a3b8;border-radius:6px;font-size:1rem;min-width:220px;"></label>
+<label style="font-weight:800;color:#1a2a4a;">Class <input id="ws-student-class" type="text" autocomplete="off" placeholder="e.g. 7A" style="padding:7px 10px;border:2px solid #94a3b8;border-radius:6px;font-size:1rem;width:90px;"></label>
+</div>
+<button type="button" onclick="msosSubmitWorksheet()" style="background:#059669;color:#fff;border:2px solid #047857;border-radius:8px;padding:10px 22px;font-weight:900;font-size:1.05rem;cursor:pointer;">📨 Submit to Dr. Park</button>
+<div id="ws-submit-score" style="margin-top:10px;font-weight:800;color:#1a2a4a;"></div>
+</section>
+<script>
+(function(){ try { var n = localStorage.getItem('msos-student-name'), c = localStorage.getItem('msos-student-class');
+  if (n) document.getElementById('ws-student-name').value = n; if (c) document.getElementById('ws-student-class').value = c; } catch(e){} })();
+function msosSubmitWorksheet(){
+  var nameEl = document.getElementById('ws-student-name'), classEl = document.getElementById('ws-student-class');
+  var name = (nameEl.value || '').trim(), cls = (classEl.value || '').trim();
+  if (!name){ alert('Please type your name first, then click Submit again.'); nameEl.focus(); return; }
+  if (!cls){ alert('Please type your class (e.g. 7A) first, then click Submit again.'); classEl.focus(); return; }
+  try { localStorage.setItem('msos-student-name', name); localStorage.setItem('msos-student-class', cls); } catch(e){}
+  var sections = Array.prototype.filter.call(document.querySelectorAll('section.card'), function(s){ return s.id && s.id !== 'ws-submit' && s.querySelector('input.ans'); });
+  var tc = 0, tt = 0, blanks = 0, out = [];
+  sections.forEach(function(sec){
+    var r = (typeof checkSection === 'function') ? (checkSection(sec.id) || {}) : {};
+    tc += r.correct || 0; tt += (r.checkable || r.total || 0);
+    var h = sec.querySelector('h2'); out.push('== ' + (h ? h.textContent.trim() : sec.id) + (r.total != null ? '  (' + (r.correct||0) + '/' + (r.checkable || r.total) + ')' : '') + ' ==');
+    var qn = 0;
+    sec.querySelectorAll('li').forEach(function(li){
+      var ins = li.querySelectorAll(':scope > input.ans, :scope > * input.ans'); if (!ins.length) return;
+      qn++;
+      var clone = li.cloneNode(true); clone.querySelectorAll('input, svg, button, .ak, script, style').forEach(function(n){ n.remove(); });
+      var q = clone.textContent.trim().replace(/\s+/g, ' ').slice(0, 90);
+      var ans = Array.prototype.map.call(ins, function(inp){
+        var v = (inp.value || '').trim(); if (!v) blanks++;
+        var m = inp.classList.contains('correct') ? ' ✓' : (inp.classList.contains('wrong') ? ' ✗ (correct: ' + (inp.dataset.a || '').split('|')[0] + ')' : '');
+        return (v || '(blank)') + m; }).join('  |  ');
+      out.push(qn + '. ' + q + '\n    Answer: ' + ans);
+    });
+    out.push('');
+  });
+  var pct = tt ? Math.round(100 * tc / tt) : 0;
+  var scoreLine = tc + ' / ' + tt + ' (' + pct + '%)';
+  document.getElementById('ws-submit-score').textContent = 'Score: ' + scoreLine + (blanks ? ' · ' + blanks + ' blank' : '');
+  if (blanks && !confirm('You have ' + blanks + ' blank answer' + (blanks > 1 ? 's' : '') + '. Submit anyway?')) return;
+  var title = ((document.querySelector('h1') || {}).textContent || document.title || 'Worksheet').replace(/^[^A-Za-z0-9]+/, '').trim();
+  var subject = title + ' — Worksheet — ' + name;
+  var body = 'Student: ' + name + '\nClass: ' + cls + '\nScore: ' + scoreLine + '\nSubmitted: ' + new Date().toLocaleString('en-US') + '\n\n' + out.join('\n') + '\n—\nSubmitted from ' + location.href.split('#')[0];
+  var url = 'https://mail.google.com/a/starofthesea.org/?view=cm&fs=1&to=ppark@starofthesea.org&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  if (url.length > 7800){ body = body.slice(0, Math.max(500, body.length - (url.length - 7800) / 3)) + '\n…(trimmed)'; url = 'https://mail.google.com/a/starofthesea.org/?view=cm&fs=1&to=ppark@starofthesea.org&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body); }
+  window.open(url, '_blank');
+}
+</script>
+<!--/WS-SUBMIT-->
 </main>
 <footer>Mary, Star of the Sea School · Middle School Math · Decimal Operations · Dr. Park</footer>
 </div>
