@@ -3263,6 +3263,7 @@ function setTopbar() {
 }
 
 function showHome() {
+  try { if (/^#unit=/.test(window.location.hash)) history.replaceState(null, '', window.location.pathname + window.location.search); } catch(e) {}
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('home-screen').classList.add('active');
   currentUnit = null;
@@ -3543,6 +3544,7 @@ function initHill3D(){
 
 function showLesson(unitId) {
   currentUnit = unitId;
+  try { if (window.location.hash !== '#unit=' + unitId) history.replaceState(null, '', '#unit=' + unitId); } catch(e) {}
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('lesson-screen').classList.add('active');
   var sb = document.getElementById('syllabus-btn');
