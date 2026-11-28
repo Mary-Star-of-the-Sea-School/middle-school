@@ -2461,30 +2461,36 @@ const LESSONS = {
 
 <p>A topographic map shows the shape of Earth's surface using <strong>contour lines</strong> — lines that connect all points at the same elevation. By reading these lines, geographers and geologists can visualize mountains, valleys, and plains on a flat piece of paper.</p>
 
-<svg viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg" style="max-width:380px; width:100%; height:auto; background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:6px;">
-  <text x="95" y="16" font-size="11" font-weight="800" fill="#1a2a4a" text-anchor="middle">Steep hill (lines close)</text>
-  <text x="285" y="16" font-size="11" font-weight="800" fill="#1a2a4a" text-anchor="middle">Gentle hill (lines apart)</text>
-  <!-- Steep contours (close together) -->
-  <g fill="none" stroke="#78350f" stroke-width="1.5">
-    <ellipse cx="95" cy="110" rx="70" ry="45"/>
-    <ellipse cx="95" cy="110" rx="55" ry="34"/>
-    <ellipse cx="95" cy="110" rx="40" ry="24"/>
-    <ellipse cx="95" cy="110" rx="26" ry="14"/>
-    <ellipse cx="95" cy="110" rx="12" ry="6"/>
+<svg viewBox="0 0 760 370" xmlns="http://www.w3.org/2000/svg" style="display:block; max-width:760px; width:100%; height:auto; margin:10px auto; background:#f8fafc; border:1px solid #cbd5e1; border-radius:10px;">
+  <text x="190" y="36" font-size="22" font-weight="900" fill="#1a2a4a" text-anchor="middle">Steep hill (lines close)</text>
+  <text x="570" y="36" font-size="22" font-weight="900" fill="#1a2a4a" text-anchor="middle">Gentle hill (lines apart)</text>
+  <text x="380" y="58" font-size="14" font-weight="700" fill="#64748b" text-anchor="middle">Same width · contour interval = 100 m</text>
+  <g fill="none" stroke="#78350f" stroke-width="2.5">
+    <ellipse cx="190" cy="200" rx="160" ry="120"/>
+    <ellipse cx="190" cy="200" rx="128" ry="96"/>
+    <ellipse cx="190" cy="200" rx="96" ry="72"/>
+    <ellipse cx="190" cy="200" rx="64" ry="48"/>
+    <ellipse cx="190" cy="200" rx="32" ry="24"/>
   </g>
-  <text x="95" y="113" font-size="10" font-weight="800" fill="#78350f" text-anchor="middle">400m</text>
-  <text x="95" y="155" font-size="9" fill="#78350f" text-anchor="middle">300m</text>
-  <text x="95" y="175" font-size="9" fill="#78350f" text-anchor="middle">200m</text>
-  <text x="95" y="195" font-size="9" fill="#78350f" text-anchor="middle">100m</text>
-  <!-- Gentle contours (far apart) -->
-  <g fill="none" stroke="#0f766e" stroke-width="1.5">
-    <ellipse cx="285" cy="110" rx="80" ry="55"/>
-    <ellipse cx="285" cy="110" rx="55" ry="35"/>
-    <ellipse cx="285" cy="110" rx="25" ry="14"/>
+  <g font-size="15" font-weight="800" fill="#78350f" text-anchor="middle" paint-order="stroke" stroke="#f8fafc" stroke-width="5">
+    <text x="190" y="325">100 m</text>
+    <text x="190" y="301">200 m</text>
+    <text x="190" y="277">300 m</text>
+    <text x="190" y="253">400 m</text>
+    <text x="190" y="229">500 m</text>
+    <text x="190" y="206" font-size="16">▲ 550 m</text>
   </g>
-  <text x="285" y="113" font-size="10" font-weight="800" fill="#0f766e" text-anchor="middle">300m</text>
-  <text x="285" y="155" font-size="9" fill="#0f766e" text-anchor="middle">200m</text>
-  <text x="285" y="180" font-size="9" fill="#0f766e" text-anchor="middle">100m</text>
+  <g fill="none" stroke="#0f766e" stroke-width="2.5">
+    <ellipse cx="570" cy="200" rx="160" ry="120"/>
+    <ellipse cx="570" cy="200" rx="107" ry="80"/>
+    <ellipse cx="570" cy="200" rx="53" ry="40"/>
+  </g>
+  <g font-size="15" font-weight="800" fill="#0f766e" text-anchor="middle" paint-order="stroke" stroke="#f8fafc" stroke-width="5">
+    <text x="570" y="325">100 m</text>
+    <text x="570" y="285">200 m</text>
+    <text x="570" y="245">300 m</text>
+    <text x="570" y="206" font-size="16">▲ 350 m</text>
+  </g>
 </svg><h3>Reading Contour Lines</h3><p>The <strong>contour interval</strong> is the difference in elevation between two adjacent contour lines. If the interval is 20 meters, then each line you cross going up the hill means you've climbed 20 more meters.</p><ul><li><strong>Lines close together:</strong> Steep terrain — elevation changes quickly</li><li><strong>Lines far apart:</strong> Gentle terrain — elevation changes slowly</li><li><strong>Closed loops:</strong> A hilltop or basin (depression)</li></ul><h3>Calculating Slope</h3><p>Slope measures how steep a surface is. It is a ratio:</p><p style="text-align:center;padding:8px;background:#f0f4ff;border-radius:6px;"><strong>Slope = Rise ÷ Run = (vertical change) ÷ (horizontal distance)</strong></p><p>Slope can be written as a fraction, a decimal, or a percentage (called <em>grade</em> by road engineers).</p><ul><li><strong>Example:</strong> A trail rises 120 m over a horizontal distance of 800 m. Slope = 120/800 = 0.15 = <strong>15% grade</strong></li><li>Highway engineers require slopes under 6% (0.06) for safety</li><li>A 45° slope = slope of 1.0 = 100% — extremely steep</li></ul><h3>Map Scale & Distance</h3><p>A map scale is a ratio comparing map distance to real-world distance. A scale of 1:50,000 means 1 cm on the map = 50,000 cm = 500 m in real life.</p><p><strong>Example:</strong> Two mountains are 4.5 cm apart on a 1:50,000 map. Real distance = 4.5 × 50,000 = 225,000 cm = <strong>2.25 km</strong></p><h3>Cross Sections — Graphing Elevation</h3><p>Geographers draw <em>cross sections</em> by picking a line across a map and plotting elevation vs. horizontal distance. This turns contour data into a side-view graph — the x-axis is distance, the y-axis is elevation. The steepness of your graph line equals the slope!</p><table style="border-collapse:collapse;width:100%;font-size:0.93em;margin:8px 0;"><tr style="background:#1F3864;color:#fff;"><th style="padding:6px 10px;">Landform</th><th style="padding:6px 10px;">Typical Slope</th><th style="padding:6px 10px;">Description</th></tr><tr style="background:#f2f2f2;"><td style="padding:6px 10px;">Plains / valleys</td><td style="padding:6px 10px;">< 2%</td><td style="padding:6px 10px;">Nearly flat, contour lines very spread out</td></tr><tr><td style="padding:6px 10px;">Rolling hills</td><td style="padding:6px 10px;">2–15%</td><td style="padding:6px 10px;">Moderate slope, easy hiking</td></tr><tr style="background:#f2f2f2;"><td style="padding:6px 10px;">Mountain trails</td><td style="padding:6px 10px;">15–40%</td><td style="padding:6px 10px;">Steep — contour lines close together</td></tr><tr><td style="padding:6px 10px;">Cliff faces</td><td style="padding:6px 10px;">> 100%</td><td style="padding:6px 10px;">Overhanging — slope > 1.0</td></tr></table>
 <h3>🌺 Real World: A Topographic Map of Oʻahu, Hawaiʻi</h3>
 <p>Oʻahu is a great island for reading contour lines because it has tall peaks, steep cliffs, and a volcanic crater. It is made of two old volcanoes: the <strong>Waiʻanae Range</strong> on the west side and the <strong>Koʻolau Range</strong> on the east side.</p>
