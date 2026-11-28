@@ -2491,7 +2491,21 @@ const LESSONS = {
     <text x="570" y="245">300 m</text>
     <text x="570" y="206" font-size="16">▲ 350 m</text>
   </g>
-</svg><h3>Reading Contour Lines</h3><p>The <strong>contour interval</strong> is the difference in elevation between two adjacent contour lines. If the interval is 20 meters, then each line you cross going up the hill means you've climbed 20 more meters.</p><ul><li><strong>Lines close together:</strong> Steep terrain — elevation changes quickly</li><li><strong>Lines far apart:</strong> Gentle terrain — elevation changes slowly</li><li><strong>Closed loops:</strong> A hilltop or basin (depression)</li></ul><h3>Calculating Slope</h3><p>Slope measures how steep a surface is. It is a ratio:</p><p style="text-align:center;padding:8px;background:#f0f4ff;border-radius:6px;"><strong>Slope = Rise ÷ Run = (vertical change) ÷ (horizontal distance)</strong></p><p>Slope can be written as a fraction, a decimal, or a percentage (called <em>grade</em> by road engineers).</p><ul><li><strong>Example:</strong> A trail rises 120 m over a horizontal distance of 800 m. Slope = 120/800 = 0.15 = <strong>15% grade</strong></li><li>Highway engineers require slopes under 6% (0.06) for safety</li><li>A 45° slope = slope of 1.0 = 100% — extremely steep</li></ul><h3>Map Scale & Distance</h3><p>A map scale is a ratio comparing map distance to real-world distance. A scale of 1:50,000 means 1 cm on the map = 50,000 cm = 500 m in real life.</p><p><strong>Example:</strong> Two mountains are 4.5 cm apart on a 1:50,000 map. Real distance = 4.5 × 50,000 = 225,000 cm = <strong>2.25 km</strong></p><h3>Cross Sections — Graphing Elevation</h3><p>Geographers draw <em>cross sections</em> by picking a line across a map and plotting elevation vs. horizontal distance. This turns contour data into a side-view graph — the x-axis is distance, the y-axis is elevation. The steepness of your graph line equals the slope!</p><table style="border-collapse:collapse;width:100%;font-size:0.93em;margin:8px 0;"><tr style="background:#1F3864;color:#fff;"><th style="padding:6px 10px;">Landform</th><th style="padding:6px 10px;">Typical Slope</th><th style="padding:6px 10px;">Description</th></tr><tr style="background:#f2f2f2;"><td style="padding:6px 10px;">Plains / valleys</td><td style="padding:6px 10px;">< 2%</td><td style="padding:6px 10px;">Nearly flat, contour lines very spread out</td></tr><tr><td style="padding:6px 10px;">Rolling hills</td><td style="padding:6px 10px;">2–15%</td><td style="padding:6px 10px;">Moderate slope, easy hiking</td></tr><tr style="background:#f2f2f2;"><td style="padding:6px 10px;">Mountain trails</td><td style="padding:6px 10px;">15–40%</td><td style="padding:6px 10px;">Steep — contour lines close together</td></tr><tr><td style="padding:6px 10px;">Cliff faces</td><td style="padding:6px 10px;">> 100%</td><td style="padding:6px 10px;">Overhanging — slope > 1.0</td></tr></table>
+</svg><h3>Reading Contour Lines</h3><p>The <strong>contour interval</strong> is the difference in elevation between two adjacent contour lines. If the interval is 20 meters, then each line you cross going up the hill means you've climbed 20 more meters.</p><ul><li><strong>Lines close together:</strong> Steep terrain — elevation changes quickly</li><li><strong>Lines far apart:</strong> Gentle terrain — elevation changes slowly</li><li><strong>Closed loops:</strong> A hilltop or basin (depression)</li></ul>
+<h3>🏔️ See It in 3-D: Steep vs. Gentle</h3>
+<p>Each color band is one <strong>contour interval</strong> of height, and the same colors are on the 3-D hill and on its map. Drag the hill sideways to turn it, or up and down to tilt it.</p>
+<div style="text-align:center;margin:8px 0;">
+<button class="btn" data-h3d="mode:steep" style="padding:6px 12px;font-size:.9rem;margin:3px;border:2px solid #253a77;" onclick="hill3dSet('mode','steep')">⛰️ Steep hill</button>
+<button class="btn" data-h3d="mode:gentle" style="padding:6px 12px;font-size:.9rem;margin:3px;border:2px solid #253a77;" onclick="hill3dSet('mode','gentle')">🌄 Gentle hill</button>
+<button class="btn" data-h3d="mode:twosided" style="padding:6px 12px;font-size:.9rem;margin:3px;border:2px solid #253a77;" onclick="hill3dSet('mode','twosided')">🗻 One hill, two sides</button>
+<span style="display:inline-block;margin-left:10px;font-weight:800;color:#253a77;">Interval:</span>
+<button class="btn" data-h3d="interval:20" style="padding:6px 10px;font-size:.9rem;margin:3px;border:2px solid #253a77;" onclick="hill3dSet('interval',20)">20 m</button>
+<button class="btn" data-h3d="interval:50" style="padding:6px 10px;font-size:.9rem;margin:3px;border:2px solid #253a77;" onclick="hill3dSet('interval',50)">50 m</button>
+<button class="btn" data-h3d="interval:100" style="padding:6px 10px;font-size:.9rem;margin:3px;border:2px solid #253a77;" onclick="hill3dSet('interval',100)">100 m</button>
+</div>
+<canvas id="hill3dCanvas" style="display:block;width:100%;max-width:820px;height:500px;margin:6px auto;background:linear-gradient(#e0f2fe,#f8fafc);border:2px solid #78350f;border-radius:10px;cursor:grab;touch-action:none;"></canvas>
+<p id="hill3dInfo" style="text-align:center;font-weight:700;color:#1a2a4a;max-width:820px;margin:6px auto 14px;"></p>
+<h3>Calculating Slope</h3><p>Slope measures how steep a surface is. It is a ratio:</p><p style="text-align:center;padding:8px;background:#f0f4ff;border-radius:6px;"><strong>Slope = Rise ÷ Run = (vertical change) ÷ (horizontal distance)</strong></p><p>Slope can be written as a fraction, a decimal, or a percentage (called <em>grade</em> by road engineers).</p><ul><li><strong>Example:</strong> A trail rises 120 m over a horizontal distance of 800 m. Slope = 120/800 = 0.15 = <strong>15% grade</strong></li><li>Highway engineers require slopes under 6% (0.06) for safety</li><li>A 45° slope = slope of 1.0 = 100% — extremely steep</li></ul><h3>Map Scale & Distance</h3><p>A map scale is a ratio comparing map distance to real-world distance. A scale of 1:50,000 means 1 cm on the map = 50,000 cm = 500 m in real life.</p><p><strong>Example:</strong> Two mountains are 4.5 cm apart on a 1:50,000 map. Real distance = 4.5 × 50,000 = 225,000 cm = <strong>2.25 km</strong></p><h3>Cross Sections — Graphing Elevation</h3><p>Geographers draw <em>cross sections</em> by picking a line across a map and plotting elevation vs. horizontal distance. This turns contour data into a side-view graph — the x-axis is distance, the y-axis is elevation. The steepness of your graph line equals the slope!</p><table style="border-collapse:collapse;width:100%;font-size:0.93em;margin:8px 0;"><tr style="background:#1F3864;color:#fff;"><th style="padding:6px 10px;">Landform</th><th style="padding:6px 10px;">Typical Slope</th><th style="padding:6px 10px;">Description</th></tr><tr style="background:#f2f2f2;"><td style="padding:6px 10px;">Plains / valleys</td><td style="padding:6px 10px;">< 2%</td><td style="padding:6px 10px;">Nearly flat, contour lines very spread out</td></tr><tr><td style="padding:6px 10px;">Rolling hills</td><td style="padding:6px 10px;">2–15%</td><td style="padding:6px 10px;">Moderate slope, easy hiking</td></tr><tr style="background:#f2f2f2;"><td style="padding:6px 10px;">Mountain trails</td><td style="padding:6px 10px;">15–40%</td><td style="padding:6px 10px;">Steep — contour lines close together</td></tr><tr><td style="padding:6px 10px;">Cliff faces</td><td style="padding:6px 10px;">> 100%</td><td style="padding:6px 10px;">Overhanging — slope > 1.0</td></tr></table>
 <h3>🌺 Real World: A Topographic Map of Oʻahu, Hawaiʻi</h3>
 <p>Oʻahu is a great island for reading contour lines because it has tall peaks, steep cliffs, and a volcanic crater. It is made of two old volcanoes: the <strong>Waiʻanae Range</strong> on the west side and the <strong>Koʻolau Range</strong> on the east side.</p>
 <ul>
@@ -3398,6 +3412,134 @@ function initOahuMap(){
   });
 }
 function oahuGoTo(a,b,z){ if(__oahuMap) __oahuMap.setView([a,b],z); }
+// ---- 3D hill + contour map (Topographic Maps unit lesson) ----
+var __h3d = { mode:'steep', interval:50, az:-0.6, el:0.55, raf:0, spin:true };
+function __h3dHill(mode){
+  // returns {H, f(x,y)->meters}. x,y in [-1,1]
+  if (mode === 'steep')  return { H:500, f:function(x,y){ return 500*Math.exp(-(x*x+y*y)/(0.34*0.34)); } };
+  if (mode === 'gentle') return { H:200, f:function(x,y){ return 200*Math.exp(-(x*x+y*y)/(0.62*0.62)); } };
+  // one hill: steep west side, gentle east side
+  return { H:400, f:function(x,y){ var sx = x < -0.05 ? 0.28 : 0.75, dx = x + 0.05; return 400*Math.exp(-(dx*dx)/(sx*sx) - (y*y)/(0.42*0.42)); } };
+}
+function hill3dSet(k, v){
+  __h3d[k] = v;
+  document.querySelectorAll('[data-h3d]').forEach(function(b){
+    var on = b.getAttribute('data-h3d') === k + ':' + v;
+    if (b.getAttribute('data-h3d').split(':')[0] === k){ b.style.background = on ? '#253a77' : '#fff'; b.style.color = on ? '#fff' : '#253a77'; }
+  });
+  __h3dDraw();
+}
+function __h3dColor(z, shade){
+  // one color per contour band (by elevation), shared by the 3-D hill and the map
+  var t = Math.max(0, Math.min(1, z / 500));
+  var stops = [[86,150,90],[160,190,100],[222,204,134],[200,150,92],[150,100,66]];
+  var p = t*(stops.length-1), i = Math.min(stops.length-2, Math.floor(p)), u = p - i;
+  var c = stops[i].map(function(a, k){ return a + (stops[i+1][k]-a)*u; });
+  return c.map(function(a){ return Math.round(Math.max(0, Math.min(255, a*shade))); });
+}
+function __h3dBand(z, iv){ return z < iv ? iv*0.3 : Math.floor(z/iv)*iv + iv/2; }
+function __h3dDraw(){
+  var cv = document.getElementById('hill3dCanvas'); if (!cv) return;
+  var dpr = window.devicePixelRatio || 1, W = cv.clientWidth, Hh = cv.clientHeight;
+  if (cv.width !== Math.round(W*dpr) || cv.height !== Math.round(Hh*dpr)){ cv.width = Math.round(W*dpr); cv.height = Math.round(Hh*dpr); }
+  var ctx = cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,Hh);
+  var hill = __h3dHill(__h3d.mode), iv = __h3d.interval, N = 48, ZS = 0.0016, step = 2/N;
+  var levels = []; for (var e = iv; e < hill.H; e += iv) levels.push(e);
+  var stacked = W < 640;
+  // panels
+  var A = stacked ? { x:0, y:30, w:W, h:(Hh-60)*0.55 } : { x:0, y:30, w:W*0.58, h:Hh-40 };
+  var msz = stacked ? Math.min(W-40, (Hh-60)*0.45 - 10) : Math.min(W*0.38, Hh-80);
+  var M = stacked ? { x:(W-msz)/2, y:A.y + A.h + 26, s:msz } : { x:W*0.60 + (W*0.40 - msz)/2, y:(Hh - msz)/2 + 10, s:msz };
+  ctx.font = '800 16px Segoe UI, sans-serif'; ctx.fillStyle = '#1a2a4a'; ctx.textAlign = 'center';
+  ctx.fillText('The hill in 3-D', A.x + A.w/2, 22);
+  ctx.fillText('Its contour map (from above)', M.x + M.s/2, M.y - 10);
+  // heights
+  var g = [];
+  for (var i = 0; i <= N; i++){ g[i] = []; for (var j = 0; j <= N; j++) g[i][j] = hill.f(-1+i*step, -1+j*step); }
+  // contour segments per cell
+  var cellSegs = {}, allSegs = [];
+  levels.forEach(function(L){
+    for (var i = 0; i < N; i++) for (var j = 0; j < N; j++){
+      var a = g[i][j], b = g[i+1][j], c = g[i+1][j+1], d = g[i][j+1];
+      if ((a<L)===(b<L) && (b<L)===(c<L) && (c<L)===(d<L)) continue;
+      var pts = [], x0 = -1+i*step, y0 = -1+j*step, x1 = x0+step, y1 = y0+step;
+      var cut = function(v1, v2, xa, ya, xb, yb){ if ((v1 < L) !== (v2 < L)){ var t = (L - v1)/(v2 - v1); pts.push([xa + (xb-xa)*t, ya + (yb-ya)*t]); } };
+      cut(a,b,x0,y0,x1,y0); cut(b,c,x1,y0,x1,y1); cut(c,d,x1,y1,x0,y1); cut(d,a,x0,y1,x0,y0);
+      var key = i*1000 + j; cellSegs[key] = cellSegs[key] || [];
+      for (var k = 0; k + 1 < pts.length; k += 2){ var sg = [pts[k], pts[k+1], L]; cellSegs[key].push(sg); allSegs.push(sg); }
+    }
+  });
+  // ---- 3-D view ----
+  var ca = Math.cos(__h3d.az), sa = Math.sin(__h3d.az), ce = Math.cos(__h3d.el), se = Math.sin(__h3d.el);
+  var S = Math.min(A.w, A.h*1.5) * 0.42, cx = A.x + A.w/2, cy = A.y + A.h*0.62;
+  function P(x, y, z){ var xr = x*ca - y*sa, yr = x*sa + y*ca; return { x: cx + xr*S, y: cy - (z*ce + yr*se)*S, d: yr*ce - z*se }; }
+  var quads = [];
+  for (var i = 0; i < N; i++) for (var j = 0; j < N; j++){
+    var x0 = -1+i*step, y0 = -1+j*step;
+    var zs = [g[i][j], g[i+1][j], g[i+1][j+1], g[i][j+1]], zavg = (zs[0]+zs[1]+zs[2]+zs[3])/4;
+    var ps = [P(x0,y0,zs[0]*ZS), P(x0+step,y0,zs[1]*ZS), P(x0+step,y0+step,zs[2]*ZS), P(x0,y0+step,zs[3]*ZS)];
+    var dzx = (zs[1]+zs[2]-zs[0]-zs[3])/2*ZS/step, dzy = (zs[2]+zs[3]-zs[0]-zs[1])/2*ZS/step;
+    var nl = Math.sqrt(dzx*dzx + dzy*dzy + 1), shade = 0.78 + 0.32*((dzx*0.55 - dzy*0.45 + 0.7)/nl);
+    var c = __h3dColor(__h3dBand(zavg, iv), shade);
+    quads.push({ ps:ps, d:(ps[0].d+ps[1].d+ps[2].d+ps[3].d)/4, col:'rgb('+c.join(',')+')', segs:cellSegs[i*1000+j] });
+  }
+  quads.sort(function(a,b){ return b.d - a.d; });
+  quads.forEach(function(q){
+    ctx.beginPath(); ctx.moveTo(q.ps[0].x,q.ps[0].y); for (var k = 1; k < 4; k++) ctx.lineTo(q.ps[k].x,q.ps[k].y); ctx.closePath();
+    ctx.fillStyle = q.col; ctx.fill(); ctx.strokeStyle = q.col; ctx.lineWidth = 0.7; ctx.stroke();
+    if (q.segs){ ctx.strokeStyle = 'rgba(70,35,10,0.95)'; ctx.lineWidth = 1.6; q.segs.forEach(function(sg){ var z = sg[2]*ZS, p = P(sg[0][0], sg[0][1], z), r = P(sg[1][0], sg[1][1], z); ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(r.x,r.y); ctx.stroke(); }); }
+  });
+  // ---- contour map ----
+  var R = 120, img = ctx.createImageData(R, R);
+  for (var py = 0; py < R; py++) for (var px = 0; px < R; px++){
+    var x = -1 + 2*(px+0.5)/R, y = 1 - 2*(py+0.5)/R, c = __h3dColor(__h3dBand(hill.f(x, y), iv), 1.0), o = (py*R + px)*4;
+    img.data[o] = c[0]; img.data[o+1] = c[1]; img.data[o+2] = c[2]; img.data[o+3] = 255;
+  }
+  var off = document.createElement('canvas'); off.width = R; off.height = R; off.getContext('2d').putImageData(img, 0, 0);
+  ctx.imageSmoothingEnabled = false; ctx.drawImage(off, M.x, M.y, M.s, M.s); ctx.imageSmoothingEnabled = true;
+  function MP(x, y){ return { x: M.x + (x+1)/2*M.s, y: M.y + (1-y)/2*M.s }; }
+  ctx.strokeStyle = '#5b2a0c'; ctx.lineWidth = 1.5;
+  allSegs.forEach(function(sg){ var p = MP(sg[0][0], sg[0][1]), q = MP(sg[1][0], sg[1][1]); ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.stroke(); });
+  ctx.strokeStyle = '#78350f'; ctx.lineWidth = 2; ctx.strokeRect(M.x, M.y, M.s, M.s);
+  ctx.fillStyle = '#1a2a4a'; ctx.font = '900 13px Segoe UI, sans-serif'; ctx.fillText('N ↑', M.x + M.s - 18, M.y + 18);
+  // peak label on map
+  var pk = __h3d.mode === 'twosided' ? MP(-0.05, 0) : MP(0, 0);
+  ctx.font = '800 13px Segoe UI, sans-serif'; ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+  ctx.strokeText('▲ ' + hill.H + ' m', pk.x, pk.y + 5); ctx.fillText('▲ ' + hill.H + ' m', pk.x, pk.y + 5);
+  if (__h3d.mode === 'twosided'){
+    ctx.font = '800 13px Segoe UI, sans-serif';
+    ctx.strokeText('steep', M.x + M.s*0.18, M.y + M.s - 10); ctx.fillText('steep', M.x + M.s*0.18, M.y + M.s - 10);
+    ctx.strokeText('gentle', M.x + M.s*0.80, M.y + M.s - 10); ctx.fillText('gentle', M.x + M.s*0.80, M.y + M.s - 10);
+  }
+  var info = document.getElementById('hill3dInfo');
+  if (info){
+    var n = levels.length;
+    var txt = __h3d.mode === 'steep' ? 'Steep hill: it climbs ' + hill.H + ' m in a short distance, so its ' + n + ' contour lines are squeezed close together.'
+      : __h3d.mode === 'gentle' ? 'Gentle hill: it climbs only ' + hill.H + ' m over a long distance, so its ' + n + ' contour lines are spread far apart.'
+      : 'One hill, two sides: on the steep west side the contour lines are packed close together; on the gentle east side they spread apart.';
+    info.innerHTML = txt + '<br><span style="color:#64748b;font-weight:600">Contour interval ' + iv + ' m: each line is ' + iv + ' m higher than the one outside it, and each color band is one ' + iv + ' m step.</span>';
+  }
+}
+function initHill3D(){
+  var cv = document.getElementById('hill3dCanvas'); if (!cv) return;
+  if (__h3d.raf) cancelAnimationFrame(__h3d.raf);
+  var drag = null;
+  function pt(e){ var t = e.touches ? e.touches[0] : e; return { x:t.clientX, y:t.clientY }; }
+  function down(e){ drag = pt(e); __h3d.spin = false; e.preventDefault(); }
+  function move(e){ if (!drag) return; var p = pt(e); __h3d.az -= (p.x - drag.x)*0.01; __h3d.el = Math.max(0.12, Math.min(1.45, __h3d.el + (p.y - drag.y)*0.008)); drag = p; __h3dDraw(); e.preventDefault(); }
+  function up(){ drag = null; }
+  cv.addEventListener('mousedown', down); cv.addEventListener('touchstart', down, {passive:false});
+  window.addEventListener('mousemove', move); window.addEventListener('touchmove', move, {passive:false});
+  window.addEventListener('mouseup', up); window.addEventListener('touchend', up);
+  var last = 0;
+  (function tick(ts){
+    if (!document.getElementById('hill3dCanvas')) return;
+    if (__h3d.spin && ts - last > 40){ __h3d.az += 0.012; last = ts; __h3dDraw(); }
+    __h3d.raf = requestAnimationFrame(tick);
+  })(0);
+  hill3dSet('mode', __h3d.mode); hill3dSet('interval', __h3d.interval);
+}
+
 
 function showLesson(unitId) {
   currentUnit = unitId;
@@ -3486,7 +3628,7 @@ function showLesson(unitId) {
     const card = document.querySelector('#lesson-content .resource-card');
     if (card) card.style.display = 'none';
   })();
-  if (unitId === 'topographic-maps') initOahuMap();
+  if (unitId === 'topographic-maps') { initOahuMap(); initHill3D(); }
   renderSidebar();
   setTopbar();
   (function(){ var top=function(){ document.querySelectorAll('.content').forEach(function(el){ el.scrollTop=0; }); window.scrollTo(0,0); }; top(); if (window.requestAnimationFrame) requestAnimationFrame(top); })();
