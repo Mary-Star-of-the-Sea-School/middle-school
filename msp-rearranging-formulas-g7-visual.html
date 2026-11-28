@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rearranging Formulas — Visual Explorer</title>
+<style>
+:root { --navy:#1a2a4a; --gold:#b8860b; --green:#059669; --red:#dc2626; --blue:#0369a1; --purple:#7c3aed; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Tahoma,sans-serif; background:linear-gradient(135deg,#dbeafe 0%,#fef3c7 50%,#f5e6ff 100%); color:#1f2937; min-height:100vh; padding:20px 14px; line-height:1.55; }
+.container { max-width:1000px; margin:0 auto; }
+header { text-align:center; margin-bottom:18px; }
+.eyebrow { display:inline-block; background:var(--navy); color:#fff; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.14em; padding:5px 14px; border-radius:999px; margin-bottom:10px; }
+h1 { font-size:1.9rem; font-weight:900; color:var(--navy); margin-bottom:6px; }
+.tagline { color:#64748b; font-size:1rem; font-style:italic; }
+.back-link { display:inline-block; background:var(--gold); color:var(--navy); padding:9px 18px; border-radius:8px; text-decoration:none; font-weight:800; font-size:.9rem; margin-bottom:14px; }
+.back-link:hover { background:#a16b0a; color:#fff; }
+.big-idea { background:linear-gradient(120deg,#fef3c7,#fef08a); border:2px solid var(--gold); border-radius:10px; padding:14px 18px; margin:14px 0; color:#78350f; }
+.card { background:#fff; border-radius:14px; padding:22px 24px; box-shadow:0 4px 14px rgba(0,0,0,0.08); margin:22px 0; border-top:5px solid var(--blue); }
+.card h2 { font-size:1.4rem; font-weight:900; color:var(--navy); margin-bottom:8px; }
+.card p.sub { color:#475569; margin-bottom:10px; }
+.pickrow { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:8px 0; align-items:center; }
+.pickrow .lbl { font-weight:800; color:var(--navy); margin-right:4px; }
+.chip { border:2px solid var(--navy); background:#fff; color:var(--navy); border-radius:999px; padding:6px 14px; font-weight:800; font-size:.95rem; cursor:pointer; font-family:inherit; }
+.chip.on { background:var(--navy); color:#fff; }
+.chip.var { font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:1.05rem; min-width:48px; }
+/* equations */
+.eq { font-family:Georgia,'Times New Roman',serif; font-size:1.7rem; display:inline-flex; align-items:center; gap:.35em; white-space:nowrap; }
+.v { font-style:italic; font-weight:700; }
+.v.t { color:var(--red); }
+.fr { display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; line-height:1.15; }
+.fr > span:first-child { border-bottom:2px solid currentColor; padding:0 .2em; }
+.fr > span:last-child { padding:0 .2em; }
+.cancel { position:relative; }
+.cancel::after { content:''; position:absolute; left:-3px; right:-3px; top:50%; border-top:3px solid var(--purple); transform:rotate(-25deg); }
+.add { color:var(--purple); font-weight:800; }
+/* balance */
+.balance { position:relative; margin:40px auto 6px; max-width:820px; height:270px; }
+.beam { position:absolute; left:6%; right:6%; top:120px; height:10px; background:#78350f; border-radius:6px; }
+.post { position:absolute; left:50%; top:126px; width:14px; margin-left:-7px; height:110px; background:#92400e; border-radius:4px; }
+.base { position:absolute; left:50%; top:228px; width:180px; margin-left:-90px; height:16px; background:#78350f; border-radius:8px; }
+.eqsign { position:absolute; left:50%; top:62px; transform:translateX(-50%); font-family:Georgia,serif; font-size:2.6rem; font-weight:900; color:var(--navy); }
+.pan { position:absolute; top:28px; width:40%; min-height:92px; background:#f8fafc; border:3px solid #94a3b8; border-bottom:6px solid #64748b; border-radius:10px 10px 50% 50% / 10px 10px 30% 30%; display:flex; align-items:center; justify-content:center; padding:10px 8px 16px; }
+.pan.l { left:4%; } .pan.r { right:4%; }
+.opchip { position:absolute; top:-6px; background:var(--purple); color:#fff; font-weight:900; border-radius:8px; padding:3px 10px; font-size:.95rem; opacity:0; transform:translateY(-14px); transition:all .45s; white-space:nowrap; }
+.opchip.show { opacity:1; transform:translateY(-26px); }
+.opchip.l { left:20%; } .opchip.r { right:20%; }
+.level { text-align:center; font-weight:800; color:var(--green); margin-top:-4px; }
+.controls { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin:12px 0; }
+.btn { background:var(--blue); color:#fff; border:none; border-radius:8px; padding:9px 18px; font-weight:800; font-size:.95rem; cursor:pointer; font-family:inherit; }
+.btn.gray { background:#64748b; }
+.btn:disabled { opacity:.45; cursor:default; }
+.steps { list-style:none; margin:10px auto 0; max-width:820px; }
+.steps li { display:flex; gap:14px; align-items:center; flex-wrap:wrap; padding:10px 12px; border-radius:8px; margin:6px 0; background:#f8fafc; border:1px solid #e2e8f0; }
+.steps li.cur { background:#f5f3ff; border-color:var(--purple); }
+.steps .n { background:var(--navy); color:#fff; border-radius:999px; width:26px; height:26px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:.85rem; flex:none; }
+.steps .why { font-weight:700; color:#334155; min-width:220px; flex:1; }
+.steps .eq { font-size:1.25rem; }
+/* triangle */
+.tri-wrap { display:flex; gap:24px; flex-wrap:wrap; align-items:center; justify-content:center; }
+svg.tri text { font-family:Georgia,serif; font-style:italic; font-weight:700; cursor:pointer; }
+.tri-out { min-width:260px; text-align:center; }
+.tri-out .eq { font-size:2rem; }
+.tri-out .rule { margin-top:10px; color:#475569; font-weight:700; }
+/* calculator */
+.calc { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin:10px 0; }
+.calc label { display:flex; flex-direction:column; gap:4px; font-weight:800; color:var(--navy); background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px 12px; }
+.calc input { font-size:1.1rem; padding:6px 8px; border:2px solid #94a3b8; border-radius:6px; font-family:Consolas,monospace; background:#fef3c7; }
+.calc .ans { background:#ecfdf5; border-color:var(--green); }
+.calc .ans .val { font-family:Consolas,monospace; font-size:1.3rem; color:var(--green); }
+.work { background:#f0f9ff; border-left:5px solid var(--blue); border-radius:8px; padding:12px 16px; margin-top:8px; }
+.work .eq { font-size:1.25rem; flex-wrap:wrap; white-space:normal; }
+.work .row { margin:4px 0; }
+.tip { background:#eff6ff; border-left:4px solid var(--blue); padding:10px 14px; border-radius:6px; margin:10px 0; font-size:.92rem; }
+footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; padding-top:16px; border-top:1px dashed #cbd5e1; }
+@media (max-width:640px){ .eq { font-size:1.25rem; } .balance { height:250px; } .pan { min-height:80px; } .eqsign { font-size:2rem; } .steps .eq { font-size:1.05rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+<a href="msos-math-7.html#unit=rearranging-formulas" class="back-link">← Back to Unit</a>
+
+<header>
+  <div class="eyebrow">Math 7 · Q2 · Rearranging Formulas · Visual Explorer</div>
+  <h1>⚖️ Rearranging Formulas</h1>
+  <p class="tagline">Keep the scale balanced: whatever you do to one side, do to the other.</p>
+</header>
+
+<div class="big-idea"><strong>Big idea:</strong> A formula is a balanced scale. To get the variable you want by itself, <strong>undo</strong> whatever is attached to it, using the inverse operation, on <strong>both sides</strong>. Multiplying undoes dividing, dividing undoes multiplying, adding undoes subtracting.</div>
+
+<div class="card">
+  <h2>1 · Balance It, Step by Step</h2>
+  <p class="sub">Pick a formula and the variable you want to solve for, then press <strong>Next step</strong>.</p>
+  <div class="pickrow" id="formulaPick"></div>
+  <div class="pickrow" id="targetPick"></div>
+  <div class="balance">
+    <div class="pan l" id="panL"></div>
+    <div class="pan r" id="panR"></div>
+    <div class="opchip l" id="opL"></div>
+    <div class="opchip r" id="opR"></div>
+    <div class="eqsign">=</div>
+    <div class="beam"></div><div class="post"></div><div class="base"></div>
+  </div>
+  <div class="level">⚖️ Still balanced</div>
+  <div class="controls">
+    <button class="btn gray" id="backBtn">◀ Back</button>
+    <button class="btn" id="nextBtn">Next step ▶</button>
+    <button class="btn gray" id="resetBtn">↺ Start over</button>
+  </div>
+  <ol class="steps" id="steps"></ol>
+</div>
+
+<div class="card" style="border-top-color:var(--purple)">
+  <h2>2 · The Formula Triangle</h2>
+  <p class="sub">For formulas with three quantities, put the one that is a <em>product</em> on top. <strong>Tap a letter to cover it</strong>: what's left shows how to find it. Side by side means <strong>multiply</strong>; one over the other means <strong>divide</strong>.</p>
+  <div class="pickrow" id="triPick"></div>
+  <div class="tri-wrap">
+    <svg class="tri" id="tri" viewBox="0 0 300 260" width="300" height="260" aria-label="Formula triangle"></svg>
+    <div class="tri-out" id="triOut"></div>
+  </div>
+</div>
+
+<div class="card" style="border-top-color:var(--green)">
+  <h2>3 · Use It</h2>
+  <p class="sub">Uses the formula and variable you chose in Part 1. Type the values you know.</p>
+  <div class="calc" id="calc"></div>
+  <div class="work" id="work"></div>
+  <div class="tip">💡 Check yourself: put your answer back into the <strong>original</strong> formula. If both sides match, your rearranging was right.</div>
+</div>
+
+<footer>Mary, Star of the Sea School · 7th Grade Math · Dr. Park · Rearranging Formulas Visual Explorer</footer>
+</div>
+
+<script>
+/* ---------- formula library ---------- */
+// type 'frac': A = B / C      type 'prod': A = B × C      type 'temp': F = 9/5·C + 32
+const F = [
+  { id:'density', name:'Density', type:'frac', vars:['D','m','V'], units:{D:'g/cm³', m:'g', V:'cm³'}, words:{D:'density', m:'mass', V:'volume'}, ex:{D:2.7, m:54, V:20} },
+  { id:'speed',   name:'Speed',   type:'frac', vars:['v','d','t'], units:{v:'m/s', d:'m', t:'s'}, words:{v:'speed', d:'distance', t:'time'}, ex:{v:12, d:240, t:20} },
+  { id:'force',   name:'Force',   type:'prod', vars:['F','m','a'], units:{F:'N', m:'kg', a:'m/s²'}, words:{F:'force', m:'mass', a:'acceleration'}, ex:{F:30, m:6, a:5} },
+  { id:'ohm',     name:"Ohm's law", type:'prod', vars:['V','I','R'], units:{V:'volts', I:'amps', R:'ohms'}, words:{V:'voltage', I:'current', R:'resistance'}, ex:{V:12, I:3, R:4} },
+  { id:'temp',    name:'Temperature', type:'temp', vars:['F','C'], units:{F:'°F', C:'°C'}, words:{F:'degrees Fahrenheit', C:'degrees Celsius'}, ex:{F:212, C:100} }
+];
+let cur = F[0], target = 'm', step = 0, triCover = null, triF = F[0];
+
+/* ---------- tiny renderer ---------- */
+const v = (x, t) => `<span class="v${x===target?' t':''}">${x}</span>`;
+const cx = s => `<span class="cancel">${s}</span>`;
+const fr = (n, d) => `<span class="fr"><span>${n}</span><span>${d}</span></span>`;
+const op = s => `<span class="add">${s}</span>`;
+const ninefive = fr('9','5'), fivenine = fr('5','9');
+
+function buildSteps(f, tg){
+  const [A,B,C] = f.vars, V = x => v(x);
+  if (f.type === 'temp'){
+    if (tg === 'F') return [{why:'Start with the formula', L:V('F'), R:`${ninefive}${V('C')} + 32`}];
+    return [
+      {why:'Start with the formula', L:V('F'), R:`${ninefive}${V('C')} + 32`},
+      {why:'Subtract 32 from both sides', L:`${V('F')} ${op('− 32')}`, R:`${ninefive}${V('C')} + ${cx('32')} ${op(cx('− 32'))}`, chip:'− 32'},
+      {why:'Simplify: +32 and −32 cancel', L:`${V('F')} − 32`, R:`${ninefive}${V('C')}`},
+      {why:'Multiply both sides by 5/9 (the flip of 9/5)', L:`${op(fivenine)}(${V('F')} − 32)`, R:`${op(cx(fivenine))}${cx(ninefive)}${V('C')}`, chip:'× 5/9'},
+      {why:'Simplify: 5/9 × 9/5 = 1', L:`${fivenine}(${V('F')} − 32)`, R:V('C')},
+      {why:'Swap sides so the answer reads left to right', L:V('C'), R:`${fivenine}(${V('F')} − 32)`, done:true}
+    ];
+  }
+  if (tg === A) return [{why:'Start with the formula', L:V(A), R: f.type==='frac' ? fr(V(B),V(C)) : `${V(B)} × ${V(C)}`}];
+  if (f.type === 'frac'){
+    const s = [
+      {why:'Start with the formula', L:V(A), R:fr(V(B),V(C))},
+      {why:`${C} is dividing, so multiply both sides by ${C}`, L:`${V(A)} ${op('× ' + C)}`, R:`${fr(V(B), cx(V(C)))} ${op(cx('× ' + C))}`, chip:'× ' + C},
+      {why:`Simplify: ÷ ${C} and × ${C} cancel`, L:`${V(A)} × ${V(C)}`, R:V(B)}
+    ];
+    if (tg === B) s.push({why:'Swap sides so the answer reads left to right', L:V(B), R:`${V(A)} × ${V(C)}`, done:true});
+    else {
+      s.push({why:`${A} is multiplying ${C}, so divide both sides by ${A}`, L:fr(`${cx(V(A))} × ${V(C)}`, op(cx(A))), R:fr(V(B), op(A)), chip:'÷ ' + A});
+      s.push({why:`Simplify: × ${A} and ÷ ${A} cancel`, L:V(C), R:fr(V(B),V(A)), done:true});
+    }
+    return s;
+  }
+  // prod: A = B × C ; solve for B or C
+  const other = tg === B ? C : B;
+  const R1 = tg === B ? `${V(B)} × ${cx(V(C))}` : `${cx(V(B))} × ${V(C)}`;
+  return [
+    {why:'Start with the formula', L:V(A), R:`${V(B)} × ${V(C)}`},
+    {why:`${other} is multiplying ${tg}, so divide both sides by ${other}`, L:fr(V(A), op(other)), R:fr(R1, op(cx(other))), chip:'÷ ' + other},
+    {why:`Simplify: × ${other} and ÷ ${other} cancel`, L:fr(V(A),V(other)), R:V(tg)},
+    {why:'Swap sides so the answer reads left to right', L:V(tg), R:fr(V(A),V(other)), done:true}
+  ];
+}
+
+/* ---------- Part 1 ---------- */
+const $ = id => document.getElementById(id);
+function chips(el, items, isOn, onPick, cls){
+  el.innerHTML = '';
+  items.forEach(it => { const b = document.createElement('button'); b.className = 'chip' + (cls ? ' ' + cls : '') + (isOn(it) ? ' on' : ''); b.innerHTML = it.label; b.onclick = () => onPick(it); el.appendChild(b); });
+}
+function formulaLabel(f){
+  const [A,B,C] = f.vars;
+  return f.type === 'frac' ? `${f.name}: ${A} = ${B}/${C}` : f.type === 'prod' ? `${f.name}: ${A} = ${B} × ${C}` : `${f.name}: F = 9/5 C + 32`;
+}
+function renderPicks(){
+  chips($('formulaPick'), F.map(f => ({label:formulaLabel(f), f})), it => it.f === cur, it => { cur = it.f; target = cur.type === 'temp' ? 'C' : cur.vars[1]; step = 0; renderAll(); });
+  const lab = document.createElement('span'); lab.className = 'lbl'; lab.textContent = 'Solve for:';
+  chips($('targetPick'), cur.vars.map(x => ({label:x, x})), it => it.x === target, it => { target = it.x; step = 0; renderAll(); }, 'var');
+  $('targetPick').prepend(lab);
+}
+function renderBalance(){
+  const S = buildSteps(cur, target), s = S[step];
+  $('panL').innerHTML = `<span class="eq">${s.L}</span>`;
+  $('panR').innerHTML = `<span class="eq">${s.R}</span>`;
+  ['opL','opR'].forEach(id => { const e = $(id); e.classList.remove('show'); if (s.chip){ e.textContent = s.chip; void e.offsetWidth; e.classList.add('show'); } });
+  $('backBtn').disabled = step === 0;
+  $('nextBtn').disabled = step === S.length - 1;
+  $('nextBtn').textContent = step === S.length - 1 ? (S.length === 1 ? `${target} is already alone ✓` : `Solved for ${target} ✓`) : 'Next step ▶';
+  $('steps').innerHTML = S.slice(0, step + 1).map((t, i) => `<li class="${i === step ? 'cur' : ''}"><span class="n">${i+1}</span><span class="why">${t.why}</span><span class="eq">${t.L} = ${t.R}</span></li>`).join('');
+}
+$('nextBtn').onclick = () => { step++; renderBalance(); };
+$('backBtn').onclick = () => { step--; renderBalance(); };
+$('resetBtn').onclick = () => { step = 0; renderBalance(); };
+
+/* ---------- Part 2: triangle ---------- */
+function renderTri(){
+  const tris = F.filter(f => f.type !== 'temp');
+  chips($('triPick'), tris.map(f => ({label:formulaLabel(f), f})), it => it.f === triF, it => { triF = it.f; triCover = null; renderTri(); });
+  const [A,B,C] = triF.vars;
+  // product on top: frac A=B/C → top B, bottom A,C ; prod A=B×C → top A, bottom B,C
+  const top = triF.type === 'frac' ? B : A, bl = triF.type === 'frac' ? A : B, br = C;
+  const cell = (x, X, Y) => {
+    const on = triCover === x;
+    return `<g onclick="triCover='${x}';renderTri()" style="cursor:pointer">
+      ${on ? `<circle cx="${X}" cy="${Y-12}" r="30" fill="#cbd5e1" stroke="#64748b" stroke-width="2"/>` : ''}
+      <text x="${X}" y="${Y}" text-anchor="middle" font-size="40" fill="${on ? '#94a3b8' : '#1a2a4a'}">${x}</text></g>`;
+  };
+  $('tri').innerHTML = `<polygon points="150,12 290,248 10,248" fill="#f5f3ff" stroke="#7c3aed" stroke-width="4"/>
+    <line x1="80" y1="130" x2="220" y2="130" stroke="#7c3aed" stroke-width="4"/>
+    <line x1="150" y1="130" x2="150" y2="248" stroke="#7c3aed" stroke-width="4"/>
+    <circle cx="150" cy="196" r="13" fill="#fff" stroke="#7c3aed" stroke-width="3"/><text x="150" y="203" text-anchor="middle" font-size="20" fill="#7c3aed" style="font-style:normal;cursor:default">×</text>
+    ${cell(top,150,108)}${cell(bl,98,212)}${cell(br,202,212)}`;
+  const w = x => `<span class="v">${x}</span>`;
+  let out;
+  if (!triCover) out = `<div class="rule">Tap a letter in the triangle.</div>`;
+  else if (triCover === top) out = `<span class="eq">${w(top)} = ${w(bl)} × ${w(br)}</span><div class="rule">${bl} and ${br} sit side by side → multiply.</div>`;
+  else { const o = triCover === bl ? br : bl; out = `<span class="eq">${w(triCover)} = ${fr(w(top), w(o))}</span><div class="rule">${top} is over ${o} → divide.</div>`; }
+  $('triOut').innerHTML = out;
+}
+
+/* ---------- Part 3: calculator ---------- */
+const nice = x => (Math.round(x*1000)/1000).toString();
+function renderCalc(){
+  const known = cur.vars.filter(x => x !== target);
+  $('calc').innerHTML = known.map(x => `<label>${cur.words[x]} (${x}) <input type="number" step="any" id="in_${x}" value="${cur.ex[x]}"> <span style="font-weight:600;color:#64748b">${cur.units[x]}</span></label>`).join('')
+    + `<label class="ans">${cur.words[target]} (${target}) <span class="val" id="ansVal">—</span> <span style="font-weight:600;color:#64748b">${cur.units[target]}</span></label>`;
+  known.forEach(x => $('in_' + x).addEventListener('input', compute));
+  compute();
+}
+function compute(){
+  const g = x => parseFloat(($('in_' + x) || {}).value), val = {};
+  cur.vars.forEach(x => { if (x !== target) val[x] = g(x); });
+  const [A,B,C] = cur.vars, w = x => `<span class="v">${x}</span>`;
+  let ans, formula, sub, check;
+  if (cur.type === 'temp'){
+    if (target === 'C'){ ans = 5/9*(val.F - 32); formula = `${w('C')} = ${fivenine}(${w('F')} − 32)`; sub = `${w('C')} = ${fivenine}(${nice(val.F)} − 32)`; check = `9/5 × ${nice(ans)} + 32 = ${nice(9/5*ans+32)}`; }
+    else { ans = 9/5*val.C + 32; formula = `${w('F')} = ${ninefive}${w('C')} + 32`; sub = `${w('F')} = ${ninefive} × ${nice(val.C)} + 32`; check = `F = ${nice(ans)} ✓`; }
+  } else if (cur.type === 'frac'){
+    if (target === A){ ans = val[B]/val[C]; formula = `${w(A)} = ${fr(w(B),w(C))}`; sub = `${w(A)} = ${fr(nice(val[B]),nice(val[C]))}`; }
+    else if (target === B){ ans = val[A]*val[C]; formula = `${w(B)} = ${w(A)} × ${w(C)}`; sub = `${w(B)} = ${nice(val[A])} × ${nice(val[C])}`; }
+    else { ans = val[B]/val[A]; formula = `${w(C)} = ${fr(w(B),w(A))}`; sub = `${w(C)} = ${fr(nice(val[B]),nice(val[A]))}`; }
+    const all = Object.assign({}, val); all[target] = ans; check = `${A} = ${B} ÷ ${C}: ${nice(all[B])} ÷ ${nice(all[C])} = ${nice(all[B]/all[C])}`;
+  } else {
+    if (target === A){ ans = val[B]*val[C]; formula = `${w(A)} = ${w(B)} × ${w(C)}`; sub = `${w(A)} = ${nice(val[B])} × ${nice(val[C])}`; }
+    else { const o = target === B ? C : B; ans = val[A]/val[o]; formula = `${w(target)} = ${fr(w(A),w(o))}`; sub = `${w(target)} = ${fr(nice(val[A]),nice(val[o]))}`; }
+    const all = Object.assign({}, val); all[target] = ans; check = `${A} = ${B} × ${C}: ${nice(all[B])} × ${nice(all[C])} = ${nice(all[B]*all[C])}`;
+  }
+  const ok = isFinite(ans);
+  $('ansVal').textContent = ok ? nice(ans) : '—';
+  $('work').innerHTML = `<div class="row"><strong>Rearranged formula:</strong> <span class="eq">${formula}</span></div>
+    <div class="row"><strong>Substitute:</strong> <span class="eq">${sub}</span></div>
+    <div class="row"><strong>Answer:</strong> <span class="eq">${w(target)} = ${ok ? nice(ans) : '?'}</span> ${cur.units[target]}</div>
+    ${ok ? `<div class="row" style="color:#065f46;font-weight:700">✔ Check in the original: ${check}</div>` : ''}`;
+}
+
+function renderAll(){ renderPicks(); renderBalance(); renderCalc(); }
+renderAll(); renderTri();
+</script>
+</body>
+</html>
