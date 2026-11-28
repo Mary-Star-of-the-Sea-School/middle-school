@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build-a-Mountain: Contour Map Project</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root { --navy:#1a2a4a; --accent:#0f766e; --accent-deep:#134e4a; --gold:#b8860b; --brown:#78350f; --dim:#64748b; --ink:#1f2937; }
+body { font-family:'Segoe UI', Tahoma, sans-serif; background:linear-gradient(135deg,#dbeafe 0%,#fef3c7 50%,#dcfce7 100%); color:var(--ink); min-height:100vh; padding:20px 16px; line-height:1.55; }
+.container { max-width:960px; margin:0 auto; }
+header { text-align:center; margin-bottom:20px; }
+.eyebrow { display:inline-block; background:var(--accent); color:#fff; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.14em; padding:5px 14px; border-radius:999px; margin-bottom:10px; }
+h1 { font-size:2.1rem; font-weight:900; color:var(--navy); margin-bottom:6px; }
+.tagline { color:var(--dim); font-size:1rem; font-style:italic; }
+main { display:flex; flex-direction:column; gap:18px; }
+section.card { background:#fff; border-radius:14px; padding:20px 26px; box-shadow:0 4px 14px rgba(0,0,0,0.08); border-top:5px solid var(--accent); }
+section.card h2 { color:var(--accent-deep); font-size:1.3rem; font-weight:800; margin-bottom:12px; }
+section.card h3 { color:var(--navy); font-size:1.05rem; font-weight:800; margin:14px 0 8px; }
+section.card p { margin-bottom:10px; }
+section.card ul, section.card ol { margin:6px 0 10px 26px; }
+section.card li { margin:6px 0; }
+.hook { background:linear-gradient(120deg,#ccfbf1,#fef3c7); border:2px solid var(--accent); border-radius:10px; padding:14px 18px; margin:10px 0; color:var(--accent-deep); }
+.tip { background:#ecfeff; border-left:5px solid #0891b2; padding:10px 14px; border-radius:6px; margin:10px 0; color:#0c4a6e; font-size:.95rem; }
+.warning { background:#fef2f2; border-left:5px solid #dc2626; padding:10px 14px; border-radius:6px; margin:10px 0; color:#7f1d1d; font-size:.95rem; }
+.formula { background:#f0fdf4; border-left:5px solid #16a34a; padding:10px 14px; border-radius:6px; margin:10px 0; color:#14532d; font-weight:700; }
+.back-link { display:inline-block; background:var(--gold); color:var(--navy); padding:9px 18px; border-radius:8px; text-decoration:none; font-weight:800; font-size:.9rem; margin-bottom:14px; }
+.back-link:hover { background:#a16b0a; color:#fff; }
+.print-btn { display:inline-block; background:var(--accent); color:#fff; padding:9px 18px; border-radius:8px; border:none; font-weight:800; font-size:.9rem; margin:0 0 14px 8px; cursor:pointer; font-family:inherit; }
+.materials { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:6px 20px; list-style:none; margin-left:0 !important; }
+.materials li::before { content:'☐ '; font-weight:900; color:var(--accent); }
+ol.steps > li { margin:12px 0; }
+ol.steps > li strong { color:var(--navy); }
+table.data { width:100%; border-collapse:collapse; margin:8px 0 14px; font-size:.95rem; }
+table.data th { background:var(--accent-deep); color:#fff; padding:8px 6px; font-size:.85rem; text-align:center; }
+table.data td { border:1px solid #94a3b8; padding:10px 6px; text-align:center; height:38px; }
+table.data td.lbl { text-align:left; font-weight:700; background:#f8fafc; width:34%; }
+.lines { border-bottom:1px solid #94a3b8; height:30px; }
+.rubric td, .rubric th { font-size:.88rem; vertical-align:top; text-align:left !important; }
+.mapbox { border:2px dashed #94a3b8; border-radius:8px; height:300px; display:flex; align-items:center; justify-content:center; color:var(--dim); font-style:italic; margin:8px 0; text-align:center; padding:10px; }
+details.teacher { background:#fffbeb; border:2px solid var(--gold); border-radius:10px; padding:12px 16px; }
+details.teacher summary { font-weight:900; color:var(--brown); cursor:pointer; }
+footer { text-align:center; margin-top:24px; color:var(--dim); font-size:.82rem; padding-top:16px; border-top:1px dashed #cbd5e1; }
+@media print {
+  body { background:#fff; padding:0; font-size:10.5pt; line-height:1.4; }
+  .back-link, .print-btn, details.teacher, footer { display:none !important; }
+  main { gap:10px; } header { margin-bottom:8px; } h1 { font-size:1.6rem; }
+  section.card { padding:10px 16px; } section.card li { margin:3px 0; } ol.steps > li { margin:6px 0; }
+  table.data td { padding:5px 6px; height:28px; } .mapbox { height:260px; } .hook { padding:8px 12px; }
+  section.card { box-shadow:none; border:1px solid #cbd5e1; border-top:4px solid var(--accent); page-break-inside:avoid; }
+  section.card.allow-break { page-break-inside:auto; }
+  .tip, .hook, .formula, .warning { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  table.data th { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="msos-math-6.html#unit=topographic-maps" class="back-link">← Back to Unit</a><button class="print-btn" onclick="window.print()">🖨️ Print</button>
+
+<header>
+  <div class="eyebrow">Math 6 · Q2 · Topographic Maps &amp; Slope · Hands-On Project</div>
+  <h1>⛰️ Build-a-Mountain</h1>
+  <p class="tagline">Make a mountain, flood it one centimeter at a time, and draw its contour map.</p>
+</header>
+
+<main>
+
+<section class="card">
+  <h2>🌊 The Big Idea</h2>
+  <div class="hook">A contour line is a <strong>shoreline</strong>. If the ocean rose 100 m around Oʻahu, the new beach would follow the 100 m contour line all the way around the island. In this project you raise the "ocean" around your own clay mountain, 1 cm at a time, and trace each new shoreline. Those shorelines become your contour map.</div>
+  <p>Names in my group: _____________________________________________________________</p>
+  <p>Our mountain's name: ______________________________ &nbsp; Date: ______________</p>
+</section>
+
+<section class="card">
+  <h2>🧰 Materials (per group)</h2>
+  <ul class="materials">
+    <li>Clear plastic box with a clear lid (shoebox size)</li>
+    <li>Modeling clay (about a fist-size lump)</li>
+    <li>Ruler (cm)</li>
+    <li>Tape</li>
+    <li>Pitcher or cup of water (a drop of food coloring helps)</li>
+    <li>Fine-tip dry-erase or wet-erase marker</li>
+    <li>A sheet of paper or a transparency</li>
+    <li>Paper towels</li>
+  </ul>
+</section>
+
+<section class="card allow-break">
+  <h2>🛠️ Part 1 — Build and Flood Your Mountain</h2>
+  <ol class="steps">
+    <li><strong>Tape the ruler</strong> standing up inside one corner of the box, with 0 cm at the bottom.</li>
+    <li><strong>Build your mountain</strong> in the middle of the box, about <strong>8 to 10 cm tall</strong>. Make one side <strong>steep</strong> (like the Koʻolau cliffs) and the other side <strong>gentle</strong>. Press the clay down firmly so it doesn't float.</li>
+    <li><strong>Mark the directions.</strong> Write <strong>N</strong> on the lid's top edge and on the box's north side, so you always put the lid back the same way. Label the steep side and the gentle side.</li>
+    <li><strong>Add water to the 1 cm mark</strong> on the ruler.</li>
+    <li><strong>Trace the shoreline.</strong> Put the lid on. Look <strong>straight down</strong> from above with one eye closed, and trace the line where the water touches the clay onto the lid. Write <strong>100 m</strong> next to it.</li>
+    <li><strong>Repeat</strong>: add water to 2 cm, 3 cm, 4 cm, … and trace a new line each time (200 m, 300 m, 400 m, …) until the peak is underwater.</li>
+    <li><strong>Mark the peak.</strong> Just before the top goes underwater, put a <strong>▲</strong> on the lid over the peak.</li>
+    <li><strong>Copy your map.</strong> Lay paper on the lid (or the lid on a window) and trace every line, the labels, the ▲ and the N arrow. Carefully pour the water out.</li>
+  </ol>
+  <div class="warning">⚠️ Look straight down every time you trace. If you look from an angle, your lines will be in the wrong place.</div>
+  <div class="tip">💡 <strong>Our scale:</strong> 1 cm on the model = <strong>100 m</strong> in real life, both up and across. So each 1 cm of water is a <strong>contour interval of 100 m</strong>.</div>
+</section>
+
+<section class="card">
+  <h2>🗺️ Part 2 — Your Contour Map</h2>
+  <p>Tape your traced map here (or draw it).</p>
+  <div class="mapbox">Tape your contour map here.<br>Include: every contour line labeled (100 m, 200 m, …), the ▲ peak, an N arrow, and the words "steep side" and "gentle side".</div>
+  <table class="data">
+    <tr><td class="lbl">Contour interval</td><td>______ cm on the model = ______ m</td></tr>
+    <tr><td class="lbl">Number of contour lines</td><td></td></tr>
+    <tr><td class="lbl">Highest contour line</td><td>______ m</td></tr>
+    <tr><td class="lbl">Height of the peak (measure the clay)</td><td>______ cm = ______ m</td></tr>
+  </table>
+</section>
+
+<section class="card allow-break">
+  <h2>📐 Part 3 — Two Hiking Routes</h2>
+  <p>On your map, draw <strong>Route A</strong> straight up the <strong>steep</strong> side, from the 100 m line to the highest line. Draw <strong>Route B</strong> straight up the <strong>gentle</strong> side, between the same two lines.</p>
+  <div class="formula">Slope = Rise ÷ Run &nbsp;&nbsp;·&nbsp;&nbsp; Run (m) = map distance (cm) × 100 &nbsp;&nbsp;·&nbsp;&nbsp; Grade = slope × 100%</div>
+  <table class="data">
+    <tr><th></th><th>Route A (steep side)</th><th>Route B (gentle side)</th></tr>
+    <tr><td class="lbl">Start elevation (m)</td><td></td><td></td></tr>
+    <tr><td class="lbl">End elevation (m)</td><td></td><td></td></tr>
+    <tr><td class="lbl">Rise (m)</td><td></td><td></td></tr>
+    <tr><td class="lbl">Map distance (cm), measured with a ruler</td><td></td><td></td></tr>
+    <tr><td class="lbl">Run (m)</td><td></td><td></td></tr>
+    <tr><td class="lbl">Slope = rise ÷ run (to 2 decimal places)</td><td></td><td></td></tr>
+    <tr><td class="lbl">Grade (%)</td><td></td><td></td></tr>
+    <tr><td class="lbl">Average spacing between lines (cm)</td><td></td><td></td></tr>
+  </table>
+  <h3>Show your work for Route A</h3>
+  <div class="lines"></div><div class="lines"></div><div class="lines"></div>
+  <h3>Show your work for Route B</h3>
+  <div class="lines"></div><div class="lines"></div><div class="lines"></div>
+</section>
+
+<section class="card allow-break">
+  <h2>💭 Part 4 — Think About It</h2>
+  <ol class="steps">
+    <li>Which route had the bigger slope? How could you tell from the map <em>before</em> you calculated?<div class="lines"></div><div class="lines"></div></li>
+    <li>Both routes had the same rise. Why were their slopes different?<div class="lines"></div><div class="lines"></div></li>
+    <li>If you had added water <strong>0.5 cm</strong> at a time instead of 1 cm, what would the contour interval be? How would your map look different?<div class="lines"></div><div class="lines"></div></li>
+    <li>Trade maps with another group. Without looking at their mountain, find its steepest side. Were you right? How did you know?<div class="lines"></div><div class="lines"></div></li>
+    <li><strong>Oʻahu challenge:</strong> Mount Kaʻala is 1,227 m tall. With our scale (1 cm = 100 m), how tall would a clay Kaʻala be? How many full contour lines would it have?<div class="lines"></div><div class="lines"></div></li>
+  </ol>
+</section>
+
+<section class="card">
+  <h2>✅ How You'll Be Graded</h2>
+  <table class="data rubric">
+    <tr><th style="width:24%">Part</th><th>Full credit</th><th style="width:10%">Points</th></tr>
+    <tr><td class="lbl">Contour map</td><td>Every line traced, labeled with the correct elevation; ▲ peak, N arrow and steep/gentle sides marked</td><td>/ 8</td></tr>
+    <tr><td class="lbl">Map data</td><td>Contour interval, number of lines and heights correct for your model</td><td>/ 4</td></tr>
+    <tr><td class="lbl">Route calculations</td><td>Rise, run (scaled correctly), slope and grade correct for both routes, with work shown</td><td>/ 10</td></tr>
+    <tr><td class="lbl">Think about it</td><td>Complete answers that use the words contour line, interval, rise, run and slope</td><td>/ 6</td></tr>
+    <tr><td class="lbl">Teamwork &amp; cleanup</td><td>Everyone had a job; station left clean and dry</td><td>/ 2</td></tr>
+    <tr><td class="lbl"><strong>Total</strong></td><td></td><td><strong>/ 30</strong></td></tr>
+  </table>
+</section>
+
+<details class="teacher">
+  <summary>👩‍🏫 Teacher notes (hidden when printed)</summary>
+  <ul style="margin:10px 0 0 22px;">
+    <li><strong>Time:</strong> about two 45-minute periods: Day 1 build, flood and trace (Parts 1–2); Day 2 routes and reflection (Parts 3–4).</li>
+    <li><strong>Jobs (groups of 3–4):</strong> sculptor, water pourer (reads the ruler at eye level), tracer, recorder; rotate the tracer job each line.</li>
+    <li><strong>Clay:</strong> oil-based modeling clay works best; air-dry or play dough gets soft and clouds the water. Press it hard against the bottom so it doesn't lift.</li>
+    <li><strong>Markers:</strong> dry-erase can smear if the lid gets wet; wet-erase or a fine permanent marker on a transparency taped to the lid is cleaner.</li>
+    <li><strong>Common error:</strong> tracing at an angle (parallax). Have the tracer stand and look straight down with one eye closed.</li>
+    <li><strong>Check:</strong> the slopes in Part 3 should match "close lines = steep". A steep side about 2 cm wide per 3 lines gives a slope near 1.5; a gentle side about 6 cm gives about 0.5.</li>
+    <li><strong>Q5 answer:</strong> 12.27 cm tall; 12 full contour lines (100 m to 1,200 m).</li>
+  </ul>
+</details>
+
+</main>
+
+<footer>Mary, Star of the Sea School · 6th Grade Math · Dr. Park · Build-a-Mountain Contour Map Project</footer>
+</div>
+</body>
+</html>
