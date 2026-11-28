@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surface Area : Volume Ratio — Visual Explorer</title>
+<style>
+:root { --navy:#1a2a4a; --gold:#b8860b; --green:#059669; --red:#dc2626; --blue:#0369a1; --teal:#0f766e; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Tahoma,sans-serif; background:linear-gradient(135deg,#dbeafe 0%,#fef3c7 50%,#dcfce7 100%); color:#1f2937; min-height:100vh; padding:20px 14px; line-height:1.55; }
+.container { max-width:1000px; margin:0 auto; }
+header { text-align:center; margin-bottom:18px; }
+.eyebrow { display:inline-block; background:var(--navy); color:#fff; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.14em; padding:5px 14px; border-radius:999px; margin-bottom:10px; }
+h1 { font-size:1.9rem; font-weight:900; color:var(--navy); margin-bottom:6px; }
+.tagline { color:#64748b; font-size:1rem; font-style:italic; }
+.back-link { display:inline-block; background:var(--gold); color:var(--navy); padding:9px 18px; border-radius:8px; text-decoration:none; font-weight:800; font-size:.9rem; margin-bottom:14px; }
+.back-link:hover { background:#a16b0a; color:#fff; }
+.big-idea { background:linear-gradient(120deg,#fef3c7,#fef08a); border:2px solid var(--gold); border-radius:10px; padding:14px 18px; margin:14px 0; color:#78350f; }
+.card { background:#fff; border-radius:14px; padding:22px 24px; box-shadow:0 4px 14px rgba(0,0,0,0.08); margin:22px 0; border-top:5px solid var(--teal); }
+.card h2 { font-size:1.4rem; font-weight:900; color:var(--navy); margin-bottom:6px; }
+.sub { color:#475569; margin-bottom:10px; }
+.row { display:flex; gap:18px; flex-wrap:wrap; align-items:stretch; }
+.row > .scene { flex:1 1 380px; }
+.row > .side { flex:1 1 300px; display:flex; flex-direction:column; gap:10px; }
+canvas.c3 { width:100%; height:340px; display:block; background:radial-gradient(circle at 50% 40%,#f8fafc,#e2e8f0); border:2px solid #cbd5e1; border-radius:12px; cursor:grab; touch-action:none; }
+.hint { font-size:.82rem; color:#64748b; text-align:center; margin-top:4px; }
+.ctrl { display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-weight:800; color:var(--navy); }
+.ctrl input[type=range] { flex:1; min-width:160px; }
+.chip { border:2px solid var(--navy); background:#fff; color:var(--navy); border-radius:999px; padding:5px 14px; font-weight:800; cursor:pointer; font-family:inherit; font-size:.92rem; }
+.chip.on { background:var(--navy); color:#fff; }
+.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.st { background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:8px; text-align:center; }
+.st .l { font-size:.72rem; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:.04em; }
+.st .v { font-family:Consolas,monospace; font-size:1.2rem; font-weight:900; color:var(--navy); }
+.st.big { grid-column:1/-1; background:#ecfdf5; border-color:var(--green); }
+.st.big .v { color:var(--green); font-size:1.5rem; }
+.work { background:#f0f9ff; border-left:5px solid var(--blue); border-radius:8px; padding:10px 14px; font-family:Consolas,monospace; font-size:.95rem; line-height:1.7; }
+canvas.chart { width:100%; height:200px; display:block; background:#fff; border:1px solid #e2e8f0; border-radius:8px; }
+.tip { background:#eff6ff; border-left:4px solid var(--blue); padding:10px 14px; border-radius:6px; margin:10px 0 0; font-size:.93rem; }
+.xsec { width:100%; max-width:260px; display:block; margin:0 auto; }
+footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; padding-top:16px; border-top:1px dashed #cbd5e1; }
+</style>
+</head>
+<body>
+<div class="container">
+<a href="msos-math-7.html#unit=surface-area-volume-ratio" class="back-link">← Back to Unit</a>
+<header>
+  <div class="eyebrow">Math 7 · Q2 · Surface Area : Volume Ratio · Visual Explorer</div>
+  <h1>🧫 Surface Area : Volume Ratio</h1>
+  <p class="tagline">Why are cells tiny? Grow a cube, cut it up, and watch the ratio change.</p>
+</header>
+<div class="big-idea"><strong>Big idea:</strong> When a cube's side doubles, its <strong>surface area</strong> grows 4 times (2²) but its <strong>volume</strong> grows 8 times (2³). Volume wins, so the <strong>SA : V ratio shrinks</strong> as things get bigger. Small things have lots of surface for their size.</div>
+
+<div class="card">
+  <h2>1 · Grow a Cube</h2>
+  <p class="sub">Slide to change the side length. Each small square is 1 cm². Drag the cube to turn it.</p>
+  <div class="row">
+    <div class="scene"><canvas class="c3" id="cvGrow"></canvas><div class="hint">Drag to rotate</div></div>
+    <div class="side">
+      <div class="ctrl">Side length s = <span id="sVal">3</span> cm <input type="range" id="sRange" min="1" max="10" value="3"></div>
+      <div class="stats">
+        <div class="st"><div class="l">Surface area</div><div class="v" id="gSA"></div></div>
+        <div class="st"><div class="l">Volume</div><div class="v" id="gV"></div></div>
+        <div class="st"><div class="l">SA ÷ V</div><div class="v" id="gR"></div></div>
+        <div class="st big"><div class="l">SA : V ratio</div><div class="v" id="gRatio"></div></div>
+      </div>
+      <div class="work" id="gWork"></div>
+    </div>
+  </div>
+  <h3 style="margin:14px 0 6px;color:var(--navy)">How SA and V grow</h3>
+  <canvas class="chart" id="chart"></canvas>
+  <div class="tip">💡 For any cube, SA : V = 6s² : s³ = <strong>6 : s</strong>. Double the side and the ratio is cut in half.</div>
+</div>
+
+<div class="card" style="border-top-color:var(--red)">
+  <h2>2 · Cut It Up</h2>
+  <p class="sub">Start with one 6 cm cube. Cut it into smaller cubes: the <strong>volume stays the same</strong>, but every cut makes new surface.</p>
+  <div class="ctrl" id="cutPick" style="justify-content:center;margin-bottom:10px;"></div>
+  <div class="row">
+    <div class="scene"><canvas class="c3" id="cvCut"></canvas><div class="hint">Drag to rotate</div></div>
+    <div class="side">
+      <div class="stats">
+        <div class="st"><div class="l">Pieces</div><div class="v" id="cN"></div></div>
+        <div class="st"><div class="l">Total SA</div><div class="v" id="cSA"></div></div>
+        <div class="st"><div class="l">Total V</div><div class="v" id="cV"></div></div>
+        <div class="st big"><div class="l">SA : V ratio</div><div class="v" id="cRatio"></div></div>
+      </div>
+      <div class="work" id="cWork"></div>
+      <div class="tip">🧅 This is why chopped onions brown faster, crushed ice melts faster, and your lungs are split into millions of tiny air sacs.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="border-top-color:var(--blue)">
+  <h2>3 · Why Cells Stay Small</h2>
+  <p class="sub">Food and oxygen soak into a cell from its surface. Suppose they can soak in <strong>0.5 cm</strong> from every face (like the classic agar-cube experiment). How much of the cube gets fed?</p>
+  <div class="ctrl" id="cellPick" style="justify-content:center;margin-bottom:10px;"></div>
+  <div class="row">
+    <div class="scene"><canvas class="c3" id="cvCell"></canvas><div class="hint">Colored = reached · white core = starving (shown cut in half)</div></div>
+    <div class="side">
+      <svg class="xsec" id="xsec" viewBox="0 0 220 220"></svg>
+      <div class="stats">
+        <div class="st"><div class="l">SA : V</div><div class="v" id="eRatio"></div></div>
+        <div class="st"><div class="l">Volume reached</div><div class="v" id="eReach"></div></div>
+        <div class="st"><div class="l">Starving core</div><div class="v" id="eCore"></div></div>
+      </div>
+      <div class="work" id="eWork"></div>
+    </div>
+  </div>
+  <div class="tip">🔬 A big cell would starve in the middle. That is why big organisms are made of <strong>trillions of tiny cells</strong> instead of one giant one.</div>
+</div>
+
+<footer>Mary, Star of the Sea School · 7th Grade Math · Dr. Park · Surface Area : Volume Ratio Visual Explorer</footer>
+</div>
+<script>
+/* Tiny 3-D box renderer: painter's algorithm, unit grid on every face, drag to turn. */
+function CubeScene(canvas, opts){
+  opts = opts || {};
+  var self = this;
+  this.cv = canvas; this.az = opts.az != null ? opts.az : -0.65; this.el = opts.el != null ? opts.el : 0.5;
+  this.boxes = []; this.labels = []; this.spin = opts.spin !== false; this.fit = opts.fit || 6; this.center = [0,0,0];
+  var drag = null;
+  function pt(e){ var t = e.touches ? e.touches[0] : e; return { x:t.clientX, y:t.clientY }; }
+  function down(e){ drag = pt(e); self.spin = false; e.preventDefault(); }
+  function move(e){ if (!drag) return; var p = pt(e); self.az -= (p.x - drag.x)*0.01; self.el = Math.max(0.08, Math.min(1.45, self.el + (p.y - drag.y)*0.008)); drag = p; self.draw(); e.preventDefault(); }
+  function up(){ drag = null; }
+  canvas.addEventListener('mousedown', down); canvas.addEventListener('touchstart', down, {passive:false});
+  window.addEventListener('mousemove', move); window.addEventListener('touchmove', move, {passive:false});
+  window.addEventListener('mouseup', up); window.addEventListener('touchend', up);
+  var last = 0;
+  (function tick(ts){
+    if (!document.body.contains(canvas)) return;
+    if (self.spin && ts - last > 40){ self.az += 0.01; last = ts; self.draw(); }
+    requestAnimationFrame(tick);
+  })(0);
+}
+CubeScene.prototype.set = function(boxes, labels, fit, center){
+  this.boxes = boxes; this.labels = labels || []; if (fit) this.fit = fit; if (center) this.center = center; this.draw();
+};
+CubeScene.prototype.draw = function(){
+  var cv = this.cv, dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  if (!W || !H) return;
+  if (cv.width !== Math.round(W*dpr) || cv.height !== Math.round(H*dpr)){ cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr); }
+  var ctx = cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+  var ca = Math.cos(this.az), sa = Math.sin(this.az), ce = Math.cos(this.el), se = Math.sin(this.el);
+  var S = Math.min(W, H*1.3) / this.fit, cx = W/2, cy = H*0.55, C = this.center;
+  function P(x, y, z){ x -= C[0]; y -= C[1]; z -= C[2]; var xr = x*ca - y*sa, yr = x*sa + y*ca; return { x: cx + xr*S, y: cy - (z*ce + yr*se)*S, d: yr*ce - z*se }; }
+  var wv = [sa*ce, ca*ce, -se];   // points away from the viewer
+  var faces = [];
+  this.boxes.forEach(function(b){
+    var x0 = b.x, y0 = b.y, z0 = b.z, sx = b.sx || b.s, sy = b.sy || b.s, sz = b.sz || b.s, x1 = x0+sx, y1 = y0+sy, z1 = z0+sz;
+    var F = [
+      { n:[0,0,1],  c:[[x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1]], u:[1,0,0], v:[0,1,0], nu:sx, nv:sy, L:1.0 },
+      { n:[0,0,-1], c:[[x0,y0,z0],[x0,y1,z0],[x1,y1,z0],[x1,y0,z0]], u:[0,1,0], v:[1,0,0], nu:sy, nv:sx, L:0.55 },
+      { n:[0,-1,0], c:[[x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1]], u:[1,0,0], v:[0,0,1], nu:sx, nv:sz, L:0.86 },
+      { n:[0,1,0],  c:[[x0,y1,z0],[x0,y1,z1],[x1,y1,z1],[x1,y1,z0]], u:[0,0,1], v:[1,0,0], nu:sz, nv:sx, L:0.7 },
+      { n:[-1,0,0], c:[[x0,y0,z0],[x0,y0,z1],[x0,y1,z1],[x0,y1,z0]], u:[0,0,1], v:[0,1,0], nu:sz, nv:sy, L:0.76 },
+      { n:[1,0,0],  c:[[x1,y0,z0],[x1,y1,z0],[x1,y1,z1],[x1,y0,z1]], u:[0,1,0], v:[0,0,1], nu:sy, nv:sz, L:0.92 }
+    ];
+    F.forEach(function(f){
+      if (f.n[0]*wv[0] + f.n[1]*wv[1] + f.n[2]*wv[2] >= 0) return;   // facing away
+      var ps = f.c.map(function(c){ return P(c[0], c[1], c[2]); });
+      faces.push({ ps:ps, f:f, b:b, d:(ps[0].d+ps[1].d+ps[2].d+ps[3].d)/4 });
+    });
+  });
+  faces.sort(function(a, b){ return b.d - a.d; });
+  faces.forEach(function(q){
+    var col = q.b.color || [56,189,248], L = q.f.L, ps = q.ps;
+    ctx.beginPath(); ctx.moveTo(ps[0].x, ps[0].y); for (var k = 1; k < 4; k++) ctx.lineTo(ps[k].x, ps[k].y); ctx.closePath();
+    ctx.fillStyle = 'rgb(' + col.map(function(c){ return Math.round(Math.min(255, c*L + (255-c)*0.08)); }).join(',') + ')'; ctx.fill();
+    if (q.b.grid !== false){
+      ctx.strokeStyle = 'rgba(15,23,42,0.35)'; ctx.lineWidth = 1;
+      var o = q.f.c[0], u = q.f.u, v = q.f.v, k;
+      for (k = 1; k < q.f.nu; k++){ var a = P(o[0]+u[0]*k, o[1]+u[1]*k, o[2]+u[2]*k), b = P(o[0]+u[0]*k+v[0]*q.f.nv, o[1]+u[1]*k+v[1]*q.f.nv, o[2]+u[2]*k+v[2]*q.f.nv); ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }
+      for (k = 1; k < q.f.nv; k++){ var a2 = P(o[0]+v[0]*k, o[1]+v[1]*k, o[2]+v[2]*k), b2 = P(o[0]+v[0]*k+u[0]*q.f.nu, o[1]+v[1]*k+u[1]*q.f.nu, o[2]+v[2]*k+u[2]*q.f.nu); ctx.beginPath(); ctx.moveTo(a2.x,a2.y); ctx.lineTo(b2.x,b2.y); ctx.stroke(); }
+    }
+    ctx.beginPath(); ctx.moveTo(ps[0].x, ps[0].y); for (var m = 1; m < 4; m++) ctx.lineTo(ps[m].x, ps[m].y); ctx.closePath();
+    ctx.strokeStyle = 'rgba(15,23,42,0.85)'; ctx.lineWidth = 1.6; ctx.stroke();
+  });
+  ctx.textAlign = 'center';
+  this.labels.forEach(function(l){
+    var p = P(l.x, l.y, l.z);
+    ctx.font = (l.bold ? '800 ' : '600 ') + (l.size || 14) + 'px Segoe UI, sans-serif';
+    (l.lines || [l.text]).forEach(function(t, i){
+      ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(255,255,255,0.95)'; ctx.strokeText(t, p.x, p.y + i*((l.size||14)+4));
+      ctx.fillStyle = l.color || '#1a2a4a'; ctx.fillText(t, p.x, p.y + i*((l.size||14)+4));
+    });
+  });
+};
+
+const $ = id => document.getElementById(id);
+const fmt = x => (Math.round(x*100)/100).toLocaleString();
+function chipRow(el, items, cur, onPick){
+  el.innerHTML = '';
+  items.forEach(it => { const b = document.createElement('button'); b.className = 'chip' + (it.v === cur ? ' on' : ''); b.textContent = it.label; b.onclick = () => onPick(it.v); el.appendChild(b); });
+}
+/* 1. Grow */
+const grow = new CubeScene($('cvGrow'));
+function drawChart(s){
+  const cv = $('chart'), dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W*dpr; cv.height = H*dpr; const c = cv.getContext('2d'); c.setTransform(dpr,0,0,dpr,0,0); c.clearRect(0,0,W,H);
+  const L = 46, R = W-14, T = 14, B = H-30, maxY = 1000;
+  const X = x => L + (x-0)/10*(R-L), Y = y => B - Math.min(y, maxY)/maxY*(B-T);
+  c.strokeStyle = '#cbd5e1'; c.fillStyle = '#64748b'; c.font = '11px Segoe UI'; c.textAlign = 'right';
+  for (let y = 0; y <= maxY; y += 250){ c.beginPath(); c.moveTo(L, Y(y)); c.lineTo(R, Y(y)); c.stroke(); c.fillText(y, L-6, Y(y)+4); }
+  c.textAlign = 'center'; for (let x = 0; x <= 10; x += 2) c.fillText(x, X(x), B+14); c.fillText('side length s (cm)', (L+R)/2, B+27);
+  [['SA = 6s²', s2 => 6*s2*s2, '#0369a1'], ['V = s³', s3 => s3*s3*s3, '#dc2626']].forEach(([name, f, col], i) => {
+    c.strokeStyle = col; c.lineWidth = 3; c.beginPath();
+    for (let x = 0; x <= 10.001; x += 0.05){ const y = f(x); if (y > maxY){ c.lineTo(X(x), Y(maxY)); break; } x === 0 ? c.moveTo(X(x), Y(y)) : c.lineTo(X(x), Y(y)); }
+    c.stroke(); c.fillStyle = col; c.font = '800 12px Segoe UI'; c.textAlign = 'left'; c.fillText(name, L+10, T+14+i*16);
+    if (f(s) <= maxY){ c.beginPath(); c.arc(X(s), Y(f(s)), 6, 0, 7); c.fill(); }
+  });
+  c.strokeStyle = '#94a3b8'; c.setLineDash([4,4]); c.lineWidth = 1; c.beginPath(); c.moveTo(X(s), T); c.lineTo(X(s), B); c.stroke(); c.setLineDash([]);
+  if (s === 6){ c.fillStyle = '#7c3aed'; c.font = '800 11px Segoe UI'; c.textAlign = 'left'; c.fillText('s = 6: SA = V = 216', X(6)-150, Y(216)-30); }
+}
+function updGrow(){
+  const s = +$('sRange').value; $('sVal').textContent = s;
+  grow.set([{x:0,y:0,z:0,s:s,color:[56,189,248]}], [], 17, [s/2, s/2, s/2]);
+  const SA = 6*s*s, V = s*s*s;
+  $('gSA').textContent = SA + ' cm²'; $('gV').textContent = V + ' cm³'; $('gR').textContent = fmt(SA/V);
+  $('gRatio').textContent = SA + ' : ' + V + '  =  ' + fmt(SA/V) + ' : 1';
+  $('gWork').innerHTML = `SA = 6 × ${s}² = 6 × ${s*s} = ${SA} cm²<br>V = ${s}³ = ${V} cm³<br>SA : V = ${SA} : ${V} = <b>${fmt(6/s)} : 1</b>`;
+  drawChart(s);
+}
+$('sRange').addEventListener('input', updGrow);
+/* 2. Cut */
+const cut = new CubeScene($('cvCut')); let k = 1;
+function updCut(){
+  chipRow($('cutPick'), [{v:1,label:'1 piece (6 cm)'},{v:2,label:'8 pieces (3 cm)'},{v:3,label:'27 pieces (2 cm)'},{v:6,label:'216 pieces (1 cm)'}], k, v => { k = v; updCut(); });
+  const s = 6/k, gap = k === 1 ? 0 : (k === 6 ? 0.45 : 0.9), boxes = [];
+  for (let i = 0; i < k; i++) for (let j = 0; j < k; j++) for (let m = 0; m < k; m++)
+    boxes.push({x:i*(s+gap), y:j*(s+gap), z:m*(s+gap), s:s, color:[248,113,113]});
+  const span = 6 + gap*(k-1);
+  cut.set(boxes, [], span*2.1, [span/2, span/2, span/2]);
+  const n = k*k*k, SA = n*6*s*s, V = 216;
+  $('cN').textContent = n; $('cSA').textContent = SA + ' cm²'; $('cV').textContent = V + ' cm³';
+  $('cRatio').textContent = fmt(SA/V) + ' : 1';
+  $('cWork').innerHTML = `each piece: ${s} × ${s} × ${s} cm<br>SA of one piece = 6 × ${s}² = ${6*s*s} cm²<br>total SA = ${n} × ${6*s*s} = <b>${SA} cm²</b><br>total V = ${n} × ${s**3} = 216 cm³ (same!)`;
+}
+/* 3. Cell / diffusion */
+const cell = new CubeScene($('cvCell'), {el:0.45}); let cs = 2; const D = 0.5;
+function updCell(){
+  chipRow($('cellPick'), [{v:1,label:'1 cm cube'},{v:2,label:'2 cm cube'},{v:3,label:'3 cm cube'},{v:5,label:'5 cm cube'}], cs, v => { cs = v; updCell(); });
+  const core = Math.max(0, cs - 2*D), reachedPct = 100*(1 - Math.pow(core/cs, 3));
+  // draw the front half of the cube: outer shell pieces + core, cut along y = cs/2
+  const half = cs/2, col = [244,114,182], boxes = [];
+  const g = false;
+  if (core <= 0) boxes.push({x:0,y:half,z:0,sx:cs,sy:half,sz:cs,color:col,grid:g});
+  else {
+    boxes.push({x:0,y:half,z:0,sx:cs,sy:half,sz:D,color:col,grid:g});          // bottom slab
+    boxes.push({x:0,y:half,z:cs-D,sx:cs,sy:half,sz:D,color:col,grid:g});       // top slab
+    boxes.push({x:0,y:half,z:D,sx:D,sy:half,sz:core,color:col,grid:g});        // left
+    boxes.push({x:cs-D,y:half,z:D,sx:D,sy:half,sz:core,color:col,grid:g});     // right
+    boxes.push({x:D,y:cs-D,z:D,sx:core,sy:D,sz:core,color:col,grid:g});        // back
+    boxes.push({x:D,y:half,z:D,sx:core,sy:half-D,sz:core,color:[255,255,255],grid:g}); // starving core
+  }
+  cell.set(boxes, [], 6*1.15, [cs/2, cs/2+0.5, cs/2]);
+  cell.az = cell.spin ? cell.az : cell.az;
+  // cross-section
+  const P = 20, Wd = 180, sc = Wd/cs, d = D*sc;
+  let svg = `<rect x="${P}" y="${P}" width="${Wd}" height="${Wd}" fill="#f472b6" stroke="#9d174d" stroke-width="2"/>`;
+  if (core > 0) svg += `<rect x="${P+d}" y="${P+d}" width="${Wd-2*d}" height="${Wd-2*d}" fill="#fff" stroke="#9d174d" stroke-dasharray="4 3"/><text x="110" y="114" text-anchor="middle" font-size="13" font-weight="800" fill="#9d174d">starving core</text>`;
+  else svg += `<text x="110" y="114" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">all reached!</text>`;
+  svg += `<text x="110" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">cross-section · ${cs} cm wide</text>`;
+  $('xsec').innerHTML = svg;
+  $('eRatio').textContent = fmt(6/cs) + ' : 1';
+  $('eReach').textContent = fmt(reachedPct) + '%';
+  $('eCore').textContent = fmt(100 - reachedPct) + '%';
+  $('eWork').innerHTML = core > 0
+    ? `core side = ${cs} − 2 × 0.5 = ${core} cm<br>core volume = ${core}³ = ${fmt(core**3)} cm³ of ${cs**3} cm³<br>reached = 1 − ${fmt(core**3)}/${cs**3} = <b>${fmt(reachedPct)}%</b>`
+    : `${cs} cm is small enough: 0.5 cm from each side reaches the center.<br>reached = <b>100%</b>`;
+}
+updGrow(); updCut(); updCell();
+window.addEventListener('resize', () => { grow.draw(); cut.draw(); cell.draw(); drawChart(+$('sRange').value); });
+</script>
+</body>
+</html>
