@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Function Lab — Speed Machine</title>
+<style>
+:root { --navy:#1a2a4a; --gold:#b8860b; --green:#059669; --red:#dc2626; --blue:#0369a1; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Tahoma,sans-serif; background:linear-gradient(135deg,#dbeafe 0%,#fef3c7 50%,#f5e6ff 100%); color:#1f2937; min-height:100vh; padding:20px 14px; line-height:1.55; }
+.container { max-width:1050px; margin:0 auto; }
+header { text-align:center; margin-bottom:16px; }
+.eyebrow { display:inline-block; background:var(--navy); color:#fff; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.14em; padding:5px 14px; border-radius:999px; margin-bottom:10px; }
+h1 { font-size:1.9rem; font-weight:900; color:var(--navy); margin-bottom:6px; }
+.tagline { color:#64748b; font-style:italic; }
+.back-link { display:inline-block; background:var(--gold); color:var(--navy); padding:9px 18px; border-radius:8px; text-decoration:none; font-weight:800; font-size:.9rem; margin-bottom:14px; }
+.card { background:#fff; border-radius:14px; padding:20px 22px; box-shadow:0 4px 14px rgba(0,0,0,0.08); margin:18px 0; border-top:5px solid var(--blue); }
+.card h2 { font-size:1.3rem; font-weight:900; color:var(--navy); margin-bottom:8px; }
+.rules { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:12px; }
+.chip { border:2px solid var(--navy); background:#fff; color:var(--navy); border-radius:999px; padding:6px 14px; font-weight:800; cursor:pointer; font-family:inherit; font-size:.92rem; }
+.chip.on { background:var(--navy); color:#fff; }
+.road-wrap { position:relative; }
+svg#scene { width:100%; height:auto; display:block; border-radius:12px; border:2px solid #cbd5e1; background:#bfdbfe; }
+.panel { display:grid; grid-template-columns:1.1fr 1fr; gap:16px; margin-top:14px; }
+@media (max-width:760px){ .panel { grid-template-columns:1fr; } }
+.ctrl { background:#f8fafc; border:1px solid #cbd5e1; border-radius:10px; padding:14px; }
+.xrow { display:flex; align-items:center; gap:10px; }
+.big-btn { width:52px; height:52px; border-radius:12px; border:none; font-size:1.6rem; font-weight:900; color:#fff; cursor:pointer; }
+.big-btn.minus { background:#dc2626; } .big-btn.plus { background:#059669; }
+.xrow input[type=range] { flex:1; accent-color:#1a2a4a; height:28px; }
+.xval { font-family:Consolas,monospace; font-size:1.5rem; font-weight:900; color:var(--red); min-width:70px; text-align:center; }
+.machine { margin-top:12px; display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; font-weight:900; }
+.machine .box { background:#ccfbf1; border:2px solid #0f766e; color:#065f46; border-radius:10px; padding:8px 12px; font-family:Consolas,monospace; }
+.machine .in { color:var(--red); font-family:Consolas,monospace; font-size:1.2rem; }
+.machine .out { color:var(--green); font-family:Consolas,monospace; font-size:1.2rem; }
+.work { margin-top:10px; background:#f0f9ff; border-left:5px solid var(--blue); border-radius:8px; padding:10px 12px; font-family:Consolas,monospace; font-size:1rem; }
+.sound-btn { margin-top:12px; border:2px solid #7c3aed; background:#fff; color:#7c3aed; border-radius:999px; padding:6px 16px; font-weight:900; cursor:pointer; font-family:inherit; }
+.sound-btn.on { background:#7c3aed; color:#fff; }
+.note { margin-top:10px; background:#f5f3ff; border-left:4px solid #7c3aed; border-radius:6px; padding:8px 12px; font-size:.95rem; }
+svg#graph { width:100%; height:auto; display:block; background:#fff; border:1px solid #cbd5e1; border-radius:10px; }
+table.hist { width:100%; border-collapse:collapse; margin-top:10px; font-size:.92rem; text-align:center; }
+table.hist th { background:var(--navy); color:#fff; padding:5px; }
+table.hist td { border:1px solid #cbd5e1; padding:4px; }
+.tip { background:#eff6ff; border-left:4px solid var(--blue); padding:10px 14px; border-radius:6px; margin-top:10px; font-size:.93rem; }
+footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; padding-top:16px; border-top:1px dashed #cbd5e1; }
+</style>
+</head>
+<body>
+<div class="container">
+<a href="msos-math-8.html#unit=functions" class="back-link">← Back to Unit</a>
+<header>
+  <div class="eyebrow">Math 8 · Functions · Function Lab</div>
+  <h1>🚗 Function Lab: The Speed Machine</h1>
+  <p class="tagline">Change the input x, and the function decides how fast the car goes.</p>
+</header>
+
+<div class="card">
+  <h2>Pick a function</h2>
+  <div class="rules" id="rules"></div>
+  <div class="road-wrap">
+    <svg id="scene" viewBox="0 0 900 300" aria-label="car on a road">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#93c5fd"/><stop offset="1" stop-color="#e0f2fe"/></linearGradient>
+        <linearGradient id="body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f87171"/><stop offset="1" stop-color="#b91c1c"/></linearGradient>
+      </defs>
+      <rect x="0" y="0" width="900" height="300" fill="url(#sky)"/>
+      <g id="hills"></g>
+      <rect x="0" y="200" width="900" height="100" fill="#4b5563"/>
+      <rect x="0" y="196" width="900" height="6" fill="#d1d5db"/>
+      <rect x="0" y="294" width="900" height="6" fill="#d1d5db"/>
+      <g id="dashes"></g>
+      <g id="lines"></g>
+      <!-- car -->
+      <g id="car" transform="translate(300,170)">
+        <ellipse cx="110" cy="92" rx="120" ry="8" fill="#000" opacity=".25"/>
+        <path d="M10 70 Q10 46 34 42 L72 40 Q96 10 140 10 L170 12 Q196 16 214 42 L232 48 Q246 52 246 68 L246 78 Q246 84 238 84 L16 84 Q10 84 10 78 Z" fill="url(#body)" stroke="#7f1d1d" stroke-width="3"/>
+        <path d="M84 40 Q102 18 136 18 L138 40 Z" fill="#bfdbfe" stroke="#1e3a8a" stroke-width="2"/>
+        <path d="M148 18 L168 19 Q190 22 204 40 L148 40 Z" fill="#bfdbfe" stroke="#1e3a8a" stroke-width="2"/>
+        <rect x="234" y="56" width="12" height="8" rx="2" fill="#fde68a"/>
+        <rect x="10" y="58" width="8" height="8" rx="2" fill="#fca5a5"/>
+        <g id="w1" transform="translate(62,84)"><circle r="22" fill="#111827"/><circle r="11" fill="#9ca3af"/><g id="sp1" stroke="#374151" stroke-width="3"><line x1="-11" y1="0" x2="11" y2="0"/><line x1="0" y1="-11" x2="0" y2="11"/></g></g>
+        <g id="w2" transform="translate(190,84)"><circle r="22" fill="#111827"/><circle r="11" fill="#9ca3af"/><g id="sp2" stroke="#374151" stroke-width="3"><line x1="-11" y1="0" x2="11" y2="0"/><line x1="0" y1="-11" x2="0" y2="11"/></g></g>
+        <g id="exhaust" opacity="0"><circle cx="-6" cy="72" r="6" fill="#cbd5e1"/><circle cx="-20" cy="66" r="9" fill="#e2e8f0"/></g>
+      </g>
+      <!-- speedometer -->
+      <g transform="translate(770,95)">
+        <circle r="78" fill="#0f172a" stroke="#e2e8f0" stroke-width="4"/>
+        <g id="ticks"></g>
+        <line id="needle" x1="0" y1="0" x2="0" y2="-62" stroke="#ef4444" stroke-width="4" stroke-linecap="round" transform="rotate(-120)"/>
+        <circle r="7" fill="#ef4444"/>
+        <text id="spdTxt" y="42" text-anchor="middle" font-size="22" font-weight="900" fill="#fff" font-family="Consolas,monospace">0</text>
+        <text y="60" text-anchor="middle" font-size="11" font-weight="700" fill="#94a3b8">mph</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="panel">
+    <div class="ctrl">
+      <div style="font-weight:900;color:var(--navy);margin-bottom:6px;" id="xLabel">Input x</div>
+      <div class="xrow">
+        <button class="big-btn minus" id="minus" aria-label="decrease x">−</button>
+        <input type="range" id="x" min="0" max="10" step="1" value="0">
+        <button class="big-btn plus" id="plus" aria-label="increase x">+</button>
+        <div class="xval" id="xVal">0</div>
+      </div>
+      <div class="machine"><span class="in" id="mIn">x = 0</span> ➜ <span class="box" id="mRule">f(x)</span> ➜ <span class="out" id="mOut">0 mph</span></div>
+      <div class="work" id="work"></div>
+      <button class="sound-btn" id="soundBtn">🔇 Sound off — click to turn on</button>
+      <div class="note" id="note"></div>
+    </div>
+    <div class="ctrl">
+      <div style="font-weight:900;color:var(--navy);margin-bottom:6px;">Graph of the function</div>
+      <svg id="graph" viewBox="0 0 400 300"></svg>
+      <table class="hist"><thead><tr><th>x</th><th>f(x) = speed (mph)</th><th>change</th></tr></thead><tbody id="hist"></tbody></table>
+    </div>
+  </div>
+  <div class="tip">💡 Press <strong>+</strong> and <strong>−</strong> one step at a time and watch the <strong>change</strong> column. For a <strong>linear</strong> function the speed always changes by the same amount (the slope). For a <strong>nonlinear</strong> function the change keeps growing.</div>
+</div>
+
+<footer>Mary, Star of the Sea School · 8th Grade Math · Dr. Park · Function Lab</footer>
+</div>
+
+<script>
+const RULES = [
+  { id:'lin',  name:'f(x) = 6x',       xl:'Gas pedal x (0–10)', f:x=>6*x,      w:x=>`f(${x}) = 6 × ${x} = ${6*x}`,             note:'<b>Linear, proportional.</b> Each +1 in x adds <b>6 mph</b>. x = 0 gives 0 mph, so the line starts at the origin.' },
+  { id:'lin2', name:'f(x) = 5x + 10',  xl:'Gas pedal x (0–10)', f:x=>5*x+10,   w:x=>`f(${x}) = 5 × ${x} + 10 = ${5*x} + 10 = ${5*x+10}`, note:'<b>Linear.</b> Each +1 in x adds <b>5 mph</b> (the slope). At x = 0 the car still rolls at <b>10 mph</b> (the y-intercept).' },
+  { id:'sq',   name:'f(x) = 0.7x²',    xl:'Gas pedal x (0–10)', f:x=>0.7*x*x,  w:x=>`f(${x}) = 0.7 × ${x}² = 0.7 × ${x*x} = ${r(0.7*x*x)}`, note:'<b>Nonlinear.</b> Small x barely moves the car, then each step adds more and more speed. The graph is a curve.' },
+  { id:'dec',  name:'f(x) = 70 − 7x',  xl:'Brake x (0–10)',     f:x=>70-7*x,   w:x=>`f(${x}) = 70 − 7 × ${x} = 70 − ${7*x} = ${70-7*x}`, note:'<b>Linear, decreasing.</b> x is the brake. Each +1 in x takes away <b>7 mph</b>, so the slope is <b>−7</b>.' }
+];
+const MAXS = 80;
+let rule = RULES[0], x = 0, shown = 0, prevX = null, hist = [];
+const $ = id => document.getElementById(id);
+function r(v){ return Math.round(v*10)/10; }
+
+/* ---------- scene setup ---------- */
+(function(){
+  let t = ''; for (let k = 0; k <= 8; k++){ const a = -120 + k*30, rad = a*Math.PI/180, s = Math.sin(rad), c = -Math.cos(rad);
+    t += `<line x1="${s*66}" y1="${c*66}" x2="${s*76}" y2="${c*76}" stroke="#e2e8f0" stroke-width="3"/><text x="${s*52}" y="${c*52+4}" text-anchor="middle" font-size="11" font-weight="700" fill="#e2e8f0">${k*10}</text>`; }
+  $('ticks').innerHTML = t;
+  let h = ''; for (let k = 0; k < 6; k++) h += `<ellipse class="hill" cx="${k*200+60}" cy="205" rx="140" ry="${50+(k%3)*18}" fill="${k%2?'#86efac':'#4ade80'}"/>`;
+  $('hills').innerHTML = h;
+  let d = ''; for (let k = 0; k < 10; k++) d += `<rect class="dash" x="${k*120}" y="243" width="60" height="8" rx="3" fill="#fde047"/>`;
+  $('dashes').innerHTML = d;
+})();
+
+/* ---------- sound (Web Audio engine) ---------- */
+let ac = null, osc1, osc2, filt, gain, soundOn = false;
+function startSound(){
+  if (!ac){ ac = new (window.AudioContext || window.webkitAudioContext)();
+    osc1 = ac.createOscillator(); osc1.type = 'sawtooth';
+    osc2 = ac.createOscillator(); osc2.type = 'square';
+    filt = ac.createBiquadFilter(); filt.type = 'lowpass'; filt.frequency.value = 600;
+    gain = ac.createGain(); gain.gain.value = 0;
+    const g2 = ac.createGain(); g2.gain.value = 0.35;
+    osc1.connect(filt); osc2.connect(g2); g2.connect(filt); filt.connect(gain); gain.connect(ac.destination);
+    osc1.start(); osc2.start(); }
+  ac.resume(); soundOn = true;
+}
+function stopSound(){ soundOn = false; if (gain) gain.gain.setTargetAtTime(0, ac.currentTime, 0.05); }
+$('soundBtn').onclick = () => { if (soundOn){ stopSound(); $('soundBtn').classList.remove('on'); $('soundBtn').textContent = '🔇 Sound off — click to turn on'; }
+  else { startSound(); $('soundBtn').classList.add('on'); $('soundBtn').textContent = '🔊 Engine sound on'; } };
+function updateSound(spd){
+  if (!soundOn || !ac) return;
+  const t = ac.currentTime, base = 38 + spd*2.6;
+  osc1.frequency.setTargetAtTime(base, t, 0.08); osc2.frequency.setTargetAtTime(base*0.5 + 3, t, 0.08);
+  filt.frequency.setTargetAtTime(350 + spd*16, t, 0.1);
+  gain.gain.setTargetAtTime(spd < 0.5 ? 0.04 : 0.06 + spd/MAXS*0.1, t, 0.1);
+}
+
+/* ---------- graph ---------- */
+function drawGraph(){
+  const L = 46, T = 14, W = 400, H = 300, PW = W-L-14, PH = H-T-36;
+  const X = v => L + v/10*PW, Y = v => T + (MAXS - v)/MAXS*PH;
+  let g = '';
+  for (let v = 0; v <= 10; v++){ g += `<line x1="${X(v)}" y1="${T}" x2="${X(v)}" y2="${T+PH}" stroke="${v?'#e2e8f0':'#475569'}"/><text x="${X(v)}" y="${T+PH+14}" font-size="10" text-anchor="middle" fill="#475569">${v}</text>`; }
+  for (let v = 0; v <= MAXS; v += 10){ g += `<line x1="${L}" y1="${Y(v)}" x2="${L+PW}" y2="${Y(v)}" stroke="${v?'#e2e8f0':'#475569'}"/><text x="${L-5}" y="${Y(v)+3.5}" font-size="10" text-anchor="end" fill="#475569">${v}</text>`; }
+  g += `<text x="${L+PW}" y="${T+PH+30}" font-size="11" font-weight="800" text-anchor="end" fill="#1a2a4a">x (input)</text><text x="${L+4}" y="${T+10}" font-size="11" font-weight="800" fill="#1a2a4a">speed f(x)</text>`;
+  let d = ''; for (let v = 0; v <= 10.001; v += 0.1) d += (d ? 'L' : 'M') + X(v).toFixed(1) + ' ' + Y(rule.f(v)).toFixed(1);
+  g += `<path d="${d}" fill="none" stroke="#7c3aed" stroke-width="2.5" opacity=".45"/>`;
+  hist.forEach(h => { g += `<circle cx="${X(h)}" cy="${Y(rule.f(h))}" r="4" fill="#059669"/>`; });
+  const cx = X(x), cy = Y(rule.f(x));
+  g += `<line x1="${cx}" y1="${T+PH}" x2="${cx}" y2="${cy}" stroke="#dc2626" stroke-dasharray="4 3"/><line x1="${L}" y1="${cy}" x2="${cx}" y2="${cy}" stroke="#059669" stroke-dasharray="4 3"/>`;
+  g += `<circle cx="${cx}" cy="${cy}" r="8" fill="#dc2626" stroke="#fff" stroke-width="2"/><text x="${cx + (x > 7 ? -10 : 10)}" y="${cy - 10}" text-anchor="${x > 7 ? 'end' : 'start'}" font-size="12" font-weight="900" fill="#1a2a4a" paint-order="stroke" stroke="#fff" stroke-width="3">(${x}, ${r(rule.f(x))})</text>`;
+  $('graph').innerHTML = g;
+}
+
+/* ---------- update on input ---------- */
+function setX(v){
+  v = Math.max(0, Math.min(10, v));
+  if (v === x && prevX !== null) return;
+  const before = x; x = v; $('x').value = v; $('xVal').textContent = v;
+  if (!hist.includes(v)) hist.push(v);
+  const y = r(rule.f(v)), yb = r(rule.f(before));
+  $('mIn').textContent = 'x = ' + v; $('mOut').textContent = y + ' mph';
+  $('work').textContent = rule.w(v) + ' mph';
+  const rows = hist.slice().sort((a,b)=>a-b);
+  $('hist').innerHTML = rows.map((h, i) => { const fy = r(rule.f(h)), pr = i ? r(rule.f(rows[i-1])) : null, step = i ? h - rows[i-1] : null;
+    const ch = pr === null ? '—' : (step === 1 ? (fy - pr >= 0 ? '+' : '−') + Math.abs(r(fy - pr)) : '(skipped)');
+    return `<tr${h === v ? ' style="background:#fef2f2;font-weight:800"' : ''}><td style="color:#dc2626">${h}</td><td style="color:#059669">${fy}</td><td>${ch}</td></tr>`; }).join('');
+  prevX = before; drawGraph();
+}
+function setRule(rr){ rule = rr; hist = []; prevX = null; $('mRule').textContent = rr.name; $('xLabel').textContent = rr.xl; $('note').innerHTML = rr.note;
+  document.querySelectorAll('#rules .chip').forEach(b => b.classList.toggle('on', b.dataset.id === rr.id));
+  const keep = x; x = -1; setX(keep); }
+RULES.forEach(rr => { const b = document.createElement('button'); b.className = 'chip'; b.dataset.id = rr.id; b.textContent = rr.name; b.onclick = () => setRule(rr); $('rules').appendChild(b); });
+$('x').addEventListener('input', e => setX(+e.target.value));
+$('minus').onclick = () => setX(x - 1); $('plus').onclick = () => setX(x + 1);
+document.addEventListener('keydown', e => { if (e.target.tagName === 'INPUT' && e.target.type !== 'range') return; if (e.key === 'ArrowUp' || e.key === '+'){ setX(x + 1); e.preventDefault(); } if (e.key === 'ArrowDown' || e.key === '-'){ setX(x - 1); e.preventDefault(); } });
+
+/* ---------- animation ---------- */
+let last = performance.now(), dashOff = 0, hillOff = 0, wheel = 0;
+function frame(now){
+  const dt = Math.min(0.05, (now - last)/1000); last = now;
+  const target = Math.max(0, rule.f(x));
+  shown += (target - shown) * Math.min(1, dt*2.5);
+  const px = shown * 9 * dt;            // pixels per frame on the road
+  dashOff = (dashOff + px) % 120; hillOff = (hillOff + px*0.25) % 200; wheel += px * 2.6;
+  document.querySelectorAll('.dash').forEach((el, k) => el.setAttribute('x', k*120 - dashOff));
+  document.querySelectorAll('.hill').forEach((el, k) => el.setAttribute('cx', k*200 + 60 - hillOff));
+  $('sp1').setAttribute('transform', `rotate(${wheel})`); $('sp2').setAttribute('transform', `rotate(${wheel})`);
+  const bob = shown > 1 ? Math.sin(now/60) * Math.min(1.5, shown/40) : 0;
+  $('car').setAttribute('transform', `translate(300,${170 + bob})`);
+  $('exhaust').setAttribute('opacity', shown > 1 ? Math.min(0.8, shown/60) : 0);
+  $('needle').setAttribute('transform', `rotate(${-120 + Math.min(MAXS, shown)/MAXS*240})`);
+  $('spdTxt').textContent = Math.round(shown);
+  updateSound(shown);
+  requestAnimationFrame(frame);
+}
+setRule(RULES[0]); requestAnimationFrame(frame);
+</script>
+</body>
+</html>
