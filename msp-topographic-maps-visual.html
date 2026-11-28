@@ -68,7 +68,7 @@ footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; pa
       <option value="50">50 m</option>
     </select>
   </label>
-  <label>Map scale: <span id="scaleReadout">bar = 400 m</span></label>
+  <label>Map scale: <span id="scaleReadout">bar = 200 m</span></label>
   <label><input type="checkbox" id="rulerToggle" checked> Show ruler</label>
   <button type="button" id="rulerSnap" class="rbtn">📏 Put ruler on A→B</button>
 </div>
@@ -94,7 +94,7 @@ footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; pa
       <line x1="0" y1="0" x2="80" y2="0" stroke="#78350f" stroke-width="3"/>
       <line x1="0" y1="-4" x2="0" y2="4" stroke="#78350f" stroke-width="2"/>
       <line x1="80" y1="-4" x2="80" y2="4" stroke="#78350f" stroke-width="2"/>
-      <text x="40" y="-8" text-anchor="middle" font-size="11" font-weight="700" fill="#78350f">400 m</text>
+      <text x="40" y="-8" text-anchor="middle" font-size="11" font-weight="700" fill="#78350f">200 m</text>
     </g>
     <g id="ruler" transform="translate(40,40) rotate(0)"></g>
     <line id="pathLine" x1="120" y1="300" x2="380" y2="150" stroke="#7c3aed" stroke-width="3" stroke-dasharray="6 4"/>
@@ -121,7 +121,7 @@ footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; pa
 <div class="slope-verdict gentle" id="verdict">Gentle — easy hike</div>
 
 <div class="tip">
-  💡 <strong>Read the map:</strong> Contours here mark elevation in <span id="intervalRead">20</span>-meter jumps. The hill itself never changes — switch the interval and watch: a <strong>smaller</strong> interval draws <strong>more lines closer together</strong>, a <strong>larger</strong> interval draws <strong>fewer lines farther apart</strong>. Bold lines are labeled. The ▲ is the peak (600 m).
+  💡 <strong>Read the map:</strong> Contours here mark elevation in <span id="intervalRead">20</span>-meter jumps. The hill itself never changes — switch the interval and watch: a <strong>smaller</strong> interval draws <strong>more lines closer together</strong>, a <strong>larger</strong> interval draws <strong>fewer lines farther apart</strong>. Bold lines are labeled. The ▲ is the peak (300 m).
 </div>
 </div>
 
@@ -151,10 +151,10 @@ const contoursG = document.getElementById('contours');
 const intervalSel = document.getElementById('interval');
 
 const CENTER = { x: 320, y: 220 };      // peak location on map
-const PEAK_ELEV = 600;                   // meters at the peak
+const PEAK_ELEV = 300;                   // meters at the peak
 const SIGMA = 230;                       // hill width (px)
 const ASPECT_Y = 0.75;                   // ellipse squish
-const METERS_PER_PX = 400/80;            // scale bar: 400 m over 80 px
+const METERS_PER_PX = 200/80;            // scale bar: 200 m over 80 px
 const NS_SVG = 'http://www.w3.org/2000/svg';
 
 // One fixed hill. The contour interval only changes which elevations get a line,
@@ -168,7 +168,7 @@ function elevAtPoint(x, y){
 }
 function drawContours(){
   const interval = parseFloat(intervalSel.value);
-  const indexEvery = interval <= 50 ? 100 : interval;   // bold + labeled lines
+  const indexEvery = interval <= 20 ? interval*5 : interval;   // bold + labeled lines
   contoursG.innerHTML = '';
   const labels = [];
   for (let e = interval; e < PEAK_ELEV; e += interval){
@@ -261,12 +261,12 @@ window.addEventListener('touchend', () => { if (dragging) dragging.style.cursor=
 
 /* Movable ruler: 0–800 m, zero end is the pivot */
 const ruler = document.getElementById('ruler');
-const RULER_M = 2000, PX_PER_M = 1/METERS_PER_PX, RULER_PX = RULER_M*PX_PER_M, RH = 28;
+const RULER_M = 1000, PX_PER_M = 1/METERS_PER_PX, RULER_PX = RULER_M*PX_PER_M, RH = 28;
 const NS = 'http://www.w3.org/2000/svg';
 function mk(tag, attrs, parent){ const el = document.createElementNS(NS, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); (parent||ruler).appendChild(el); return el; }
 mk('rect', {x:-8, y:0, width:RULER_PX+16, height:RH, rx:3, fill:'#fde68a', 'fill-opacity':0.85, stroke:'#b8860b', 'stroke-width':1.5});
-for (let m = 0; m <= RULER_M; m += 50){
-  const x = m*PX_PER_M, big = m % 200 === 0, mid = m % 100 === 0;
+for (let m = 0; m <= RULER_M; m += 20){
+  const x = m*PX_PER_M, big = m % 100 === 0, mid = m % 50 === 0;
   mk('line', {x1:x, y1:0, x2:x, y2: big ? 12 : (mid ? 8 : 5), stroke:'#1a2a4a', 'stroke-width': big ? 1.4 : 0.8});
   if (big) mk('text', {x:x, y:23, 'text-anchor':'middle', 'font-size':9, 'font-weight':800, fill:'#1a2a4a'}).textContent = (m === RULER_M ? m + ' m' : m);
 }
