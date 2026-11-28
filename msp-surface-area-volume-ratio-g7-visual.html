@@ -98,7 +98,7 @@ footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; pa
   <div class="row">
     <div class="scene"><canvas class="c3" id="cvCell"></canvas><div class="hint">Colored = reached · white core = starving (shown cut in half)</div></div>
     <div class="side">
-      <svg class="xsec" id="xsec" viewBox="0 0 220 220"></svg>
+      <svg class="xsec" id="xsec" viewBox="0 0 220 250"></svg>
       <div class="stats">
         <div class="st"><div class="l">SA : V</div><div class="v" id="eRatio"></div></div>
         <div class="st"><div class="l">Volume reached</div><div class="v" id="eReach"></div></div>
@@ -254,7 +254,7 @@ function updCell(){
     boxes.push({x:D,y:cs-D,z:D,sx:core,sy:D,sz:core,color:col,grid:g});        // back
     boxes.push({x:D,y:half,z:D,sx:core,sy:half-D,sz:core,color:[255,255,255],grid:g}); // starving core
   }
-  cell.set(boxes, [], 6*1.15, [cs/2, cs/2+0.5, cs/2]);
+  cell.set(boxes, [], 10.5, [cs/2, cs*0.75, cs/2]);
   cell.az = cell.spin ? cell.az : cell.az;
   // cross-section
   const P = 20, Wd = 180, sc = Wd/cs, d = D*sc;
@@ -262,12 +262,17 @@ function updCell(){
   if (core > 0) svg += `<rect x="${P+d}" y="${P+d}" width="${Wd-2*d}" height="${Wd-2*d}" fill="#fff" stroke="#9d174d" stroke-dasharray="4 3"/><text x="110" y="114" text-anchor="middle" font-size="13" font-weight="800" fill="#9d174d">starving core</text>`;
   else svg += `<text x="110" y="114" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">all reached!</text>`;
   svg += `<text x="110" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">cross-section · ${cs} cm wide</text>`;
+  if (core > 0){
+    const y = P + Wd + 14, x0 = P, x1 = P + d, x2 = P + Wd - d, x3 = P + Wd;
+    const seg = (xa, xb, lab, col) => `<line x1="${xa+1}" y1="${y}" x2="${xb-1}" y2="${y}" stroke="${col}" stroke-width="2"/><line x1="${xa+1}" y1="${y-5}" x2="${xa+1}" y2="${y+5}" stroke="${col}" stroke-width="2"/><line x1="${xb-1}" y1="${y-5}" x2="${xb-1}" y2="${y+5}" stroke="${col}" stroke-width="2"/><text x="${(xa+xb)/2}" y="${y+16}" text-anchor="middle" font-size="11" font-weight="800" fill="${col}">${lab}</text>`;
+    svg += seg(x0, x1, '0.5', '#be185d') + seg(x1, x2, core + ' cm core', '#334155') + seg(x2, x3, '0.5', '#be185d');
+  }
   $('xsec').innerHTML = svg;
   $('eRatio').textContent = fmt(6/cs) + ' : 1';
   $('eReach').textContent = fmt(reachedPct) + '%';
   $('eCore').textContent = fmt(100 - reachedPct) + '%';
   $('eWork').innerHTML = core > 0
-    ? `core side = ${cs} − 2 × 0.5 = ${core} cm<br>core volume = ${core}³ = ${fmt(core**3)} cm³ of ${cs**3} cm³<br>reached = 1 − ${fmt(core**3)}/${cs**3} = <b>${fmt(reachedPct)}%</b>`
+    ? `<span style="font-family:Segoe UI,sans-serif;color:#334155">Food soaks in 0.5 cm from the <b>left</b> face and 0.5 cm from the <b>right</b> face, so the unfed core is 0.5 cm shorter on <b>each</b> side (same for front/back and top/bottom).</span><br>core side = ${cs} − 0.5 − 0.5 = ${cs} − 2 × 0.5 = ${core} cm<br>core volume = ${core}³ = ${fmt(core**3)} cm³ of ${cs**3} cm³<br>reached = 1 − ${fmt(core**3)}/${cs**3} = <b>${fmt(reachedPct)}%</b>`
     : `${cs} cm is small enough: 0.5 cm from each side reaches the center.<br>reached = <b>100%</b>`;
 }
 updGrow(); updCut(); updCell();
