@@ -57,6 +57,12 @@ footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; pa
 <div class="card">
   <h2>Pick a function</h2>
   <div class="rules" id="rules"></div>
+  <div id="customRow" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin:-4px 0 12px;">
+    <label for="customF" style="font-weight:900;color:var(--navy);">✏️ Your own: f(x) =</label>
+    <input id="customF" type="text" placeholder="e.g. 4x + 20" autocomplete="off" spellcheck="false" style="font-family:Consolas,monospace;font-size:1.1rem;padding:6px 10px;border:2px solid #94a3b8;border-radius:8px;width:200px;">
+    <button id="customGo" class="chip" style="border-color:#7c3aed;color:#7c3aed;">Use it</button>
+    <span id="customMsg" style="font-size:.85rem;color:#64748b;">Use x, numbers, + − × ÷, ^ for powers, and ( ). Speeds show from 0 to 80 mph.</span>
+  </div>
   <div class="road-wrap">
     <svg id="scene" viewBox="0 0 900 300" aria-label="car on a road">
       <defs>
@@ -232,6 +238,34 @@ function frame(now){
   updateSound(shown);
   requestAnimationFrame(frame);
 }
+
+/* ---------- custom function ---------- */
+function compileF(src){
+  let e = src.toLowerCase().replace(/\s+/g,'').replace(/[−–]/g,'-').replace(/[×·]/g,'*').replace(/÷/g,'/').replace(/²/g,'^2').replace(/³/g,'^3');
+  if (!e || !/^[0-9x+\-*/^().]+$/.test(e) || !/x/.test(e) && !/\d/.test(e)) return null;
+  e = e.replace(/(\d|\))(?=x|\()/g, '$1*').replace(/x(?=\d|\(|x)/g, 'x*');
+  e = e.replace(/\^/g, '**');
+  try { const fn = new Function('x', 'return (' + e + ');'); const t = fn(2); if (typeof t !== 'number' || !isFinite(t)) return null; return fn; } catch(err){ return null; }
+}
+function useCustom(){
+  const src = $('customF').value.trim(), fn = compileF(src);
+  if (!fn){ $('customMsg').innerHTML = '<span style="color:#dc2626;font-weight:800">Hmm, I can’t read that. Try something like 4x + 20 or x^2.</span>'; return; }
+  const pretty = src.replace(/\*/g,' × ').replace(/\s+/g,' ').replace(/-/g,'−').replace(/\^2/g,'²').replace(/\^3/g,'³');
+  const ys = []; for (let k = 0; k <= 10; k++) ys.push(fn(k));
+  const d1 = ys.slice(1).map((v,k) => v - ys[k]), lin = d1.every(v => Math.abs(v - d1[0]) < 1e-9);
+  const m = r(d1[0]), b = r(ys[0]);
+  let note = lin
+    ? `<b>Linear.</b> Each +1 in x changes the speed by <b>${m >= 0 ? '+' : '−'}${Math.abs(m)} mph</b> (the slope). At x = 0 the speed is <b>${String(b).replace('-', '−')} mph</b> (the y-intercept).`
+    : '<b>Nonlinear.</b> The change in speed is different for each step of x, so the graph is a curve.';
+  if (ys.some(v => v < 0)) note += ' <br>⚠️ Some outputs are negative. A car can’t go below 0 mph, so the car stops there.';
+  if (ys.some(v => v > MAXS)) note += ' <br>⚠️ Some outputs are above 80 mph, so they go off the speedometer.';
+  const custom = { id:'custom', name:'f(x) = ' + pretty, xl:'Input x (0–10)', f:fn,
+    w:x => `f(${x}) = ${pretty.replace(/(\d)x/g, '$1(' + x + ')').replace(/x/g, x < 0 ? '(' + x + ')' : x)} = ${String(r(fn(x))).replace('-', '−')}`, note };
+  $('customMsg').textContent = 'Now using your function. Press + and − to test it.';
+  setRule(custom);
+}
+$('customGo').onclick = useCustom;
+$('customF').addEventListener('keydown', e => { if (e.key === 'Enter') useCustom(); });
 setRule(RULES[0]); requestAnimationFrame(frame);
 </script>
 </body>
