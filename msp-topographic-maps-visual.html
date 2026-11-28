@@ -66,9 +66,11 @@ footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; pa
       <option value="10">10 m</option>
       <option value="20" selected>20 m</option>
       <option value="50">50 m</option>
+      <option value="100">100 m</option>
+      <option value="150">150 m</option>
     </select>
   </label>
-  <label>Map scale: <span id="scaleReadout">bar = 200 m</span></label>
+  <label>Map scale: <span id="scaleReadout">bar = 400 m</span></label>
   <label><input type="checkbox" id="rulerToggle" checked> Show ruler</label>
   <button type="button" id="rulerSnap" class="rbtn">📏 Put ruler on A→B</button>
 </div>
@@ -94,7 +96,7 @@ footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; pa
       <line x1="0" y1="0" x2="80" y2="0" stroke="#78350f" stroke-width="3"/>
       <line x1="0" y1="-4" x2="0" y2="4" stroke="#78350f" stroke-width="2"/>
       <line x1="80" y1="-4" x2="80" y2="4" stroke="#78350f" stroke-width="2"/>
-      <text x="40" y="-8" text-anchor="middle" font-size="11" font-weight="700" fill="#78350f">200 m</text>
+      <text x="40" y="-8" text-anchor="middle" font-size="11" font-weight="700" fill="#78350f">400 m</text>
     </g>
     <g id="ruler" transform="translate(40,40) rotate(0)"></g>
     <line id="pathLine" x1="120" y1="300" x2="380" y2="150" stroke="#7c3aed" stroke-width="3" stroke-dasharray="6 4"/>
@@ -121,7 +123,7 @@ footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; pa
 <div class="slope-verdict gentle" id="verdict">Gentle — easy hike</div>
 
 <div class="tip">
-  💡 <strong>Read the map:</strong> Contours here mark elevation in <span id="intervalRead">20</span>-meter jumps. The center of the hill is <strong>the peak</strong>. Move A near the center and B far away — the closer to the peak, the higher the elevation.
+  💡 <strong>Read the map:</strong> Contours here mark elevation in <span id="intervalRead">20</span>-meter jumps. The hill itself never changes — switch the interval and watch: a <strong>smaller</strong> interval draws <strong>more lines closer together</strong>, a <strong>larger</strong> interval draws <strong>fewer lines farther apart</strong>. Bold lines are labeled. The ▲ is the peak (600 m).
 </div>
 </div>
 
@@ -151,62 +153,60 @@ const contoursG = document.getElementById('contours');
 const intervalSel = document.getElementById('interval');
 
 const CENTER = { x: 320, y: 220 };      // peak location on map
-const PEAK_ELEV = 300;                   // meters at the peak
-const RADII = [40, 75, 110, 150, 195, 245]; // px radii for contour ellipses (inner = highest)
+const PEAK_ELEV = 600;                   // meters at the peak
+const SIGMA = 230;                       // hill width (px)
 const ASPECT_Y = 0.75;                   // ellipse squish
-const METERS_PER_PX = 200/80;            // scale bar: 200 m over 80 px
+const METERS_PER_PX = 400/80;            // scale bar: 400 m over 80 px
+const NS_SVG = 'http://www.w3.org/2000/svg';
 
-function contourElevation(radius, interval){
-  // inner rings = higher elevation
-  // radius 40 → PEAK - 0 (peak elevation zone)
-  // then each outer ring drops by interval
-  const idx = RADII.indexOf(radius);
-  return PEAK_ELEV - idx * interval;
-}
+// One fixed hill. The contour interval only changes which elevations get a line,
+// so a smaller interval draws more lines closer together on the same hill.
+function elevAtRadius(r){ return PEAK_ELEV * Math.exp(-(r/SIGMA)*(r/SIGMA)); }
+function radiusAtElev(e){ return SIGMA * Math.sqrt(Math.log(PEAK_ELEV / e)); }
 function elevAtPoint(x, y){
-  const interval = parseFloat(intervalSel.value);
   const dx = x - CENTER.x;
   const dy = (y - CENTER.y) / ASPECT_Y;
-  const r = Math.sqrt(dx*dx + dy*dy);
-  // find which contour ring this radius falls in
-  // higher r = lower elevation, drop 1 interval per (RADII[1]-RADII[0]) px of extra radius
-  // interpolate linearly through the ring stack
-  if (r <= RADII[0]) return PEAK_ELEV;
-  for (let i = 0; i < RADII.length-1; i++){
-    if (r >= RADII[i] && r <= RADII[i+1]){
-      const t = (r - RADII[i]) / (RADII[i+1] - RADII[i]);
-      const eLow = PEAK_ELEV - i*interval;
-      const eHigh = PEAK_ELEV - (i+1)*interval;
-      return eLow + t*(eHigh - eLow);
-    }
-  }
-  return PEAK_ELEV - RADII.length*interval;
+  return elevAtRadius(Math.sqrt(dx*dx + dy*dy));
 }
 function drawContours(){
   const interval = parseFloat(intervalSel.value);
+  const indexEvery = interval <= 50 ? 100 : interval;   // bold + labeled lines
   contoursG.innerHTML = '';
-  RADII.forEach((r, i) => {
-    const e = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
-    e.setAttribute('cx', CENTER.x);
-    e.setAttribute('cy', CENTER.y);
-    e.setAttribute('rx', r);
-    e.setAttribute('ry', r*ASPECT_Y);
-    e.setAttribute('fill','none');
-    e.setAttribute('stroke','#78350f');
-    e.setAttribute('stroke-width', (i%2===0)?'2':'1.2');
-    e.setAttribute('opacity','0.75');
-    contoursG.appendChild(e);
-    if (i%2 === 0){
-      const t = document.createElementNS('http://www.w3.org/2000/svg','text');
-      t.setAttribute('x', CENTER.x + r*0.7);
-      t.setAttribute('y', CENTER.y - r*ASPECT_Y*0.55);
-      t.setAttribute('font-size','10');
-      t.setAttribute('font-weight','700');
-      t.setAttribute('fill','#78350f');
-      t.textContent = contourElevation(r, interval) + ' m';
-      contoursG.appendChild(t);
-    }
+  const labels = [];
+  for (let e = interval; e < PEAK_ELEV; e += interval){
+    const r = radiusAtElev(e);
+    if (r > 430) continue;                               // off the map
+    const isIndex = e % indexEvery === 0;
+    const el = document.createElementNS(NS_SVG,'ellipse');
+    el.setAttribute('cx', CENTER.x); el.setAttribute('cy', CENTER.y);
+    el.setAttribute('rx', r); el.setAttribute('ry', r*ASPECT_Y);
+    el.setAttribute('fill','none'); el.setAttribute('stroke','#78350f');
+    el.setAttribute('stroke-width', isIndex ? '2' : (interval <= 10 ? '0.7' : '1.1'));
+    el.setAttribute('opacity','0.8');
+    contoursG.appendChild(el);
+    if (isIndex) labels.push({e, r});
+  }
+  // labels along a ray to the upper right, with a white halo so they stay readable
+  const ang = -38 * Math.PI/180;
+  labels.forEach(({e, r}) => {
+    if (CENTER.x + r*Math.cos(ang) > 495) return;        // would be cut off at the edge
+    const t = document.createElementNS(NS_SVG,'text');
+    t.setAttribute('x', CENTER.x + r*Math.cos(ang));
+    t.setAttribute('y', CENTER.y + r*ASPECT_Y*Math.sin(ang) + 3);
+    t.setAttribute('text-anchor','middle');
+    t.setAttribute('font-size','10'); t.setAttribute('font-weight','800');
+    t.setAttribute('fill','#78350f');
+    t.setAttribute('paint-order','stroke'); t.setAttribute('stroke','#f7f3ea'); t.setAttribute('stroke-width','3');
+    t.textContent = e + ' m';
+    contoursG.appendChild(t);
   });
+  // peak marker
+  const pk = document.createElementNS(NS_SVG,'text');
+  pk.setAttribute('x', CENTER.x); pk.setAttribute('y', CENTER.y + 4);
+  pk.setAttribute('text-anchor','middle'); pk.setAttribute('font-size','10'); pk.setAttribute('font-weight','900');
+  pk.setAttribute('fill','#78350f'); pk.setAttribute('paint-order','stroke'); pk.setAttribute('stroke','#f7f3ea'); pk.setAttribute('stroke-width','3');
+  pk.textContent = '▲ ' + PEAK_ELEV + ' m';
+  contoursG.appendChild(pk);
   document.getElementById('intervalRead').textContent = interval;
   update();
 }
@@ -263,12 +263,12 @@ window.addEventListener('touchend', () => { if (dragging) dragging.style.cursor=
 
 /* Movable ruler: 0–800 m, zero end is the pivot */
 const ruler = document.getElementById('ruler');
-const RULER_M = 1000, PX_PER_M = 1/METERS_PER_PX, RULER_PX = RULER_M*PX_PER_M, RH = 28;
+const RULER_M = 2000, PX_PER_M = 1/METERS_PER_PX, RULER_PX = RULER_M*PX_PER_M, RH = 28;
 const NS = 'http://www.w3.org/2000/svg';
 function mk(tag, attrs, parent){ const el = document.createElementNS(NS, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); (parent||ruler).appendChild(el); return el; }
 mk('rect', {x:-8, y:0, width:RULER_PX+16, height:RH, rx:3, fill:'#fde68a', 'fill-opacity':0.85, stroke:'#b8860b', 'stroke-width':1.5});
-for (let m = 0; m <= RULER_M; m += 20){
-  const x = m*PX_PER_M, big = m % 100 === 0, mid = m % 50 === 0;
+for (let m = 0; m <= RULER_M; m += 50){
+  const x = m*PX_PER_M, big = m % 200 === 0, mid = m % 100 === 0;
   mk('line', {x1:x, y1:0, x2:x, y2: big ? 12 : (mid ? 8 : 5), stroke:'#1a2a4a', 'stroke-width': big ? 1.4 : 0.8});
   if (big) mk('text', {x:x, y:23, 'text-anchor':'middle', 'font-size':9, 'font-weight':800, fill:'#1a2a4a'}).textContent = (m === RULER_M ? m + ' m' : m);
 }
