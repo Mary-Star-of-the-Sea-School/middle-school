@@ -61,6 +61,7 @@ footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; pa
     <label for="customF" style="font-weight:900;color:var(--navy);">✏️ Your own: f(x) =</label>
     <input id="customF" type="text" placeholder="e.g. 4x + 20" autocomplete="off" spellcheck="false" style="font-family:Consolas,monospace;font-size:1.1rem;padding:6px 10px;border:2px solid #94a3b8;border-radius:8px;width:200px;">
     <button id="customGo" class="chip" style="border-color:#7c3aed;color:#7c3aed;">Use it</button>
+    <button id="customClear" class="chip" style="border-color:#64748b;color:#64748b;">Clear</button>
     <span id="customMsg" style="font-size:.85rem;color:#64748b;">Use x, numbers, + − × ÷, ^ for powers, and ( ). Speeds show from 0 to 80 mph.</span>
   </div>
   <div class="road-wrap">
@@ -265,6 +266,7 @@ function useCustom(){
   setRule(custom);
 }
 $('customGo').onclick = useCustom;
+$('customClear').onclick = () => { $('customF').value = ''; $('customMsg').textContent = 'Use x, numbers, + − × ÷, ^ for powers, and ( ). Speeds show from 0 to 80 mph.'; if (rule.id === 'custom') setRule(RULES[0]); $('customF').focus(); };
 $('customF').addEventListener('keydown', e => { if (e.key === 'Enter') useCustom(); });
 setRule(RULES[0]); requestAnimationFrame(frame);
 </script>
