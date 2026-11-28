@@ -36,6 +36,11 @@ svg.topo { background:#f7f3ea; border:2px solid #78350f; border-radius:10px; tou
 .slope-verdict.mod { background:#fef3c7; color:#78350f; border:2px solid #b8860b; }
 .slope-verdict.steep { background:#fee2e2; color:#7f1d1d; border:2px solid #dc2626; }
 .tip { background:#eff6ff; border-left:4px solid var(--blue); padding:10px 14px; border-radius:6px; margin:10px 0; font-size:.92rem; }
+.rbtn { padding:6px 12px; border:1.5px solid var(--gold); background:#fef3c7; color:var(--navy); border-radius:6px; font-weight:800; font-family:inherit; font-size:.9rem; cursor:pointer; }
+.rbtn:hover { background:#fde68a; }
+.ruler-help { text-align:center; font-size:.88rem; color:#475569; margin:4px 0 0; }
+#ruler { cursor:move; }
+#rulerKnob { cursor:grab; }
 footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; padding-top:16px; border-top:1px dashed #cbd5e1; }
 </style>
 </head>
@@ -63,8 +68,11 @@ footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; pa
       <option value="50">50 m</option>
     </select>
   </label>
-  <label>Map scale: <span id="scaleReadout">1 cm = 100 m</span></label>
+  <label>Map scale: <span id="scaleReadout">bar = 200 m</span></label>
+  <label><input type="checkbox" id="rulerToggle" checked> Show ruler</label>
+  <button type="button" id="rulerSnap" class="rbtn">📏 Put ruler on A→B</button>
 </div>
+<p class="ruler-help">Drag the yellow ruler to move it. Drag the round handle on its end to turn it. Put <strong>0</strong> on hiker A and point the ruler at B, then read the distance.</p>
 
 <div class="map-wrap">
   <svg class="topo" id="topo" viewBox="0 0 520 420" width="520" height="420">
@@ -88,6 +96,7 @@ footer { text-align:center; margin-top:24px; color:#64748b; font-size:.82rem; pa
       <line x1="80" y1="-4" x2="80" y2="4" stroke="#78350f" stroke-width="2"/>
       <text x="40" y="-8" text-anchor="middle" font-size="11" font-weight="700" fill="#78350f">200 m</text>
     </g>
+    <g id="ruler" transform="translate(40,40) rotate(0)"></g>
     <line id="pathLine" x1="120" y1="300" x2="380" y2="150" stroke="#7c3aed" stroke-width="3" stroke-dasharray="6 4"/>
     <circle id="pointA" cx="120" cy="300" r="12" fill="#dc2626" stroke="#fff" stroke-width="3" style="cursor:grab;"/>
     <text id="labelA" x="120" y="285" text-anchor="middle" font-size="13" font-weight="900" fill="#dc2626">A</text>
@@ -251,6 +260,49 @@ window.addEventListener('mousemove', e => { if (!dragging) return; const p = ptF
 window.addEventListener('touchmove', e => { if (!dragging) return; const p = ptFromEvt(e); dragging.setAttribute('cx', p.x); dragging.setAttribute('cy', p.y); update(); e.preventDefault(); }, {passive:false});
 window.addEventListener('mouseup', () => { if (dragging) dragging.style.cursor='grab'; dragging = null; });
 window.addEventListener('touchend', () => { if (dragging) dragging.style.cursor='grab'; dragging = null; });
+
+/* Movable ruler: 0–800 m, zero end is the pivot */
+const ruler = document.getElementById('ruler');
+const RULER_M = 1000, PX_PER_M = 1/METERS_PER_PX, RULER_PX = RULER_M*PX_PER_M, RH = 28;
+const NS = 'http://www.w3.org/2000/svg';
+function mk(tag, attrs, parent){ const el = document.createElementNS(NS, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); (parent||ruler).appendChild(el); return el; }
+mk('rect', {x:-8, y:0, width:RULER_PX+16, height:RH, rx:3, fill:'#fde68a', 'fill-opacity':0.85, stroke:'#b8860b', 'stroke-width':1.5});
+for (let m = 0; m <= RULER_M; m += 20){
+  const x = m*PX_PER_M, big = m % 100 === 0, mid = m % 50 === 0;
+  mk('line', {x1:x, y1:0, x2:x, y2: big ? 12 : (mid ? 8 : 5), stroke:'#1a2a4a', 'stroke-width': big ? 1.4 : 0.8});
+  if (big) mk('text', {x:x, y:23, 'text-anchor':'middle', 'font-size':9, 'font-weight':800, fill:'#1a2a4a'}).textContent = (m === RULER_M ? m + ' m' : m);
+}
+const knob = mk('circle', {id:'rulerKnob', cx:RULER_PX+18, cy:RH/2, r:9, fill:'#b8860b', stroke:'#fff', 'stroke-width':2});
+mk('text', {x:RULER_PX+18, y:RH/2+4, 'text-anchor':'middle', 'font-size':11, fill:'#fff', 'pointer-events':'none'}).textContent = '⟳';
+let R = { x:40, y:40, a:0 };
+function drawRuler(){ ruler.setAttribute('transform', `translate(${R.x},${R.y}) rotate(${R.a})`); }
+let rMode = null, rOff = null;
+function svgPt(e){ const src = e.touches ? e.touches[0] : e; const pt = svg.createSVGPoint(); pt.x = src.clientX; pt.y = src.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse()); }
+function rStart(mode){ return e => { if (dragging) return; rMode = mode; const p = svgPt(e); rOff = { dx:p.x - R.x, dy:p.y - R.y }; e.preventDefault(); e.stopPropagation(); }; }
+ruler.addEventListener('mousedown', rStart('move'));
+ruler.addEventListener('touchstart', rStart('move'), {passive:false});
+knob.addEventListener('mousedown', rStart('rotate'));
+knob.addEventListener('touchstart', rStart('rotate'), {passive:false});
+function rMove(e){
+  if (!rMode) return;
+  const p = svgPt(e);
+  if (rMode === 'move'){ R.x = Math.max(0, Math.min(520, p.x - rOff.dx)); R.y = Math.max(0, Math.min(420, p.y - rOff.dy)); }
+  else { R.a = Math.atan2(p.y - R.y, p.x - R.x) * 180/Math.PI; }
+  drawRuler(); e.preventDefault();
+}
+window.addEventListener('mousemove', rMove);
+window.addEventListener('touchmove', rMove, {passive:false});
+window.addEventListener('mouseup', () => rMode = null);
+window.addEventListener('touchend', () => rMode = null);
+document.getElementById('rulerToggle').addEventListener('change', e => { ruler.style.display = e.target.checked ? '' : 'none'; });
+document.getElementById('rulerSnap').addEventListener('click', () => {
+  const ax = +pointA.getAttribute('cx'), ay = +pointA.getAttribute('cy');
+  const bx = +pointB.getAttribute('cx'), by = +pointB.getAttribute('cy');
+  R = { x:ax, y:ay, a: Math.atan2(by-ay, bx-ax)*180/Math.PI };
+  document.getElementById('rulerToggle').checked = true; ruler.style.display = '';
+  drawRuler();
+});
+drawRuler();
 
 intervalSel.addEventListener('change', drawContours);
 drawContours();
